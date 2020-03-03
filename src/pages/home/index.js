@@ -6,10 +6,16 @@ import './index.scss';
 @connect(({home}) => ({
   ...home,
 }))
+
 class Index extends Component {
   config = {
-    navigationBarTitleText: 'home',
+    navigationBarTitleText: 'index',
   };
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   componentDidMount = () => {
 
@@ -17,8 +23,8 @@ class Index extends Component {
 
   render() {
     return (
-      <View className="home-page">
-        home
+      <View className="index-page">
+        index
       </View>
     )
   }
