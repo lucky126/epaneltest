@@ -24,7 +24,14 @@ class Index extends Component {
   render() {
     return (
       <View className="index-page">
-        index
+         <view class="copyrightinfo">
+          <cover-image src="../../assert/images/logo.png"></cover-image>
+          <view class="siteurl">www.epanel.cn</view>
+        </view>
+        <view class="wechatlogin">
+          <button type="primary" bindtap="openwx">微信登录</button>   
+          <button bindtap="openform">云调查登录</button>
+        </view>
       </View>
     )
   }
