@@ -24,7 +24,9 @@ class Index extends Component {
   };
   
   handleForm = () => {
-    console.log('open form')
+    Taro.navigateTo({
+      url: '/pages/login/formlogin'
+    })
   }
   
   handleWx = () => {
