@@ -2,10 +2,9 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
-import { AtButton } from 'taro-ui'
 
-@connect(({home}) => ({
-  ...home,
+@connect(({login}) => ({
+  ...login,
 }))
 
 class Index extends Component {
@@ -25,7 +24,7 @@ class Index extends Component {
   render() {
     return (
       <View className="index-page">
-        <AtButton type='primary'>按钮文案</AtButton>
+        index
       </View>
     )
   }

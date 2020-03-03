@@ -2,12 +2,13 @@ import Taro, { Component } from '@tarojs/taro'
 
 import "./config/taroConfig"
 
-import Home from './pages/home';
+import Login from './pages/login';
 import dva from './utils/dva';
 import models from './models';
 import { Provider } from '@tarojs/redux';
 import { globalData } from "./utils/common";
 
+import 'taro-ui/dist/style/index.scss'
 import './styles/base.scss';
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -59,6 +60,7 @@ class App extends Component {
 
   config = {
     pages: [
+      'pages/login/index',
       'pages/home/index'
     ],
     window: {
@@ -74,7 +76,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <Home />
+        <Login />
       </Provider>
     )
   }
