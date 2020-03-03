@@ -1,6 +1,8 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
+import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux';
+import Logo from '../../assets/images/logo.png'
 import './index.scss';
 
 @connect(({login}) => ({
@@ -9,7 +11,7 @@ import './index.scss';
 
 class Index extends Component {
   config = {
-    navigationBarTitleText: 'index',
+    navigationBarTitleText: '云调查',
   };
 
   constructor(props) {
@@ -20,18 +22,30 @@ class Index extends Component {
   componentDidMount = () => {
 
   };
+  
+  handleForm = () => {
+    console.log('open form')
+  }
+  
+  handleWx = () => {
+    console.log('open wx')
+  }
 
   render() {
     return (
       <View className="index-page">
-         <view class="copyrightinfo">
-          <cover-image src="../../assert/images/logo.png"></cover-image>
-          <view class="siteurl">www.epanel.cn</view>
-        </view>
-        <view class="wechatlogin">
-          <button type="primary" bindtap="openwx">微信登录</button>   
-          <button bindtap="openform">云调查登录</button>
-        </view>
+        <View className="login">
+          <View class="copyright-info">
+            <Image src={Logo} style='width: 158px;height: 20px;'></Image>
+            <View class="siteurl">www.epanel.cn</View>
+          </View>
+          <View class="loginbutton">
+            <AtButton type="primary" circle="true" onClick={this.handleWx}>微信登录</AtButton>
+          </View>
+          <View class="loginbutton">
+            <AtButton onClick={this.handleForm} circle="true">云调查登录</AtButton>
+          </View>
+        </View>
       </View>
     )
   }
