@@ -125,7 +125,7 @@ fs.writeFileSync(`${pageName}.scss`, scssTep);
 // })
 
 if (!fs.existsSync(`./src/pages/${dirName}/model.js`)) {
-  fs.writeFileSync('model.js', modelTep);
+  fs.writeFileSync('model.js', configTep);
 }else{
   console.log('model文件已经存在未更新')
 }
@@ -137,7 +137,7 @@ if (!fs.existsSync(`./src/pages/${dirName}/config.js`)) {
 }
 
 if (!fs.existsSync(`./src/pages/${dirName}/service.js`)) {
-  fs.writeFileSync('service.js', modelTep);
+  fs.writeFileSync('service.js', serviceTep);
 }else{
   console.log('service文件已经存在未更新')
 }

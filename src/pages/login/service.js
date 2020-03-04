@@ -1,27 +1,8 @@
-import * as loginApi from './service';
+import Request from '../../utils/request';
 
-export default {
-  namespace: 'login',
-  state: {
-
-  },
-
-  effects: {
-    * effectsDemo(_, { call, put }) {
-      const { status, data } = yield call(loginApi.demo, {});
-      if (status === 'ok') {
-        yield put({ type: 'save',
-          payload: {
-            topData: data,
-          } });
-      }
-    },
-  },
-
-  reducers: {
-    save(state, { payload }) {
-      return { ...state, ...payload };
-    },
-  },
-
-};
+export const login = data => Request({
+  url: '/v2/service/api',
+  method: 'UserLogin.login',
+  type : 'user',
+  data,
+});

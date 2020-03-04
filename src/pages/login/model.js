@@ -7,8 +7,8 @@ export default {
   },
 
   effects: {
-    * effectsDemo(_, { call, put }) {
-      const { status, data } = yield call(loginApi.demo, {});
+    * effectsLogin({ payload: values }, { call, put }) {
+      const { status, data } = yield call(loginApi.login, values);
       if (status === 'ok') {
         yield put({ type: 'save',
           payload: {

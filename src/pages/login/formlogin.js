@@ -52,6 +52,10 @@ class FormLogin extends Component {
         if (password2) {
           if (utils.isPass(password2)) {
             console.log(params)
+            this.props.dispatch({
+              type: 'login/effectsLogin',
+              payload: params
+            })
           } else {
             this.errorMessage('请输入6-20位数字、字母、常用符号@,&,*,$,^,-,_或其组合')
           }
