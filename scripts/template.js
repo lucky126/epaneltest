@@ -23,7 +23,7 @@ const capPageName = titleCase(pageName);
 const indexTep = `import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import './index.scss';
+import './${pageName}.scss';
 
 @connect(({${dirName}}) => ({
   ...${dirName},
@@ -45,7 +45,7 @@ class ${capPageName} extends Component {
 
   render() {
     return (
-      <View className="${pageName}-page">
+      <View className="page">
         ${pageName}
       </View>
     )
@@ -58,9 +58,6 @@ export default ${capPageName};
 // scss文件模版
 const scssTep = `@import "../../styles/mixin";
 
-.${pageName}-page {
-  @include wh(100%, 100%);
-}
 `;
 
 // model文件模版

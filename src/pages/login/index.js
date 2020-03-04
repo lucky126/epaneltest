@@ -35,17 +35,17 @@ class Index extends Component {
 
   render() {
     return (
-      <View className="index-page">
+      <View className="page">
         <View className="login">
           <View class="copyright-info">
             <Image src={Logo} style='width: 158px;height: 20px;'></Image>
             <View class="siteurl">www.epanel.cn</View>
           </View>
           <View class="loginbutton">
-            <AtButton type="primary" circle="true" onClick={this.handleWx}>微信登录</AtButton>
+            <AtButton type="primary" circle onClick={this.handleWx}>微信登录</AtButton>
           </View>
           <View class="loginbutton">
-            <AtButton onClick={this.handleForm} circle="true">云调查登录</AtButton>
+            <AtButton onClick={this.handleForm} circle>云调查登录</AtButton>
           </View>
         </View>
       </View>
