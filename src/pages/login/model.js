@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro';
 import * as loginApi from './service';
 
 export default {
@@ -7,7 +8,7 @@ export default {
   },
 
   effects: {
-    * effectsLogin({ payload: values }, { call, put }) {
+    * formLogin({ payload: values }, { call, put }) {
       const { status, data } = yield call(loginApi.login, values);
       if (status === 'ok') {
         yield put({ type: 'save',

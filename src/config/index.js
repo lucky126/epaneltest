@@ -5,12 +5,12 @@
 /** 
  * 线上环境
  */
-export const ONLINEHOST = 'http://www.epanel.cn'
+export const ONLINEHOST = 'https://www.epanel.cn'
 
 /** 
  * 测试环境
  */
-export const QAHOST = 'http://f.epanel.cn'
+export const QAHOST = 'https://f.epanel.cn'
 
 /** 
  * 线上mock
@@ -29,11 +29,31 @@ export const MAINHOST = ONLINEHOST
 
 // 输出日志信息
 export const noConsole = false;
-/**
- * 全局的分享信息 不用每一个都去写
- */
-export const SHAREINFO = {
-    'title': '分享标题',
-    'path': '路径',
-    'imageUrl': '图片'
-  }
+
+export const HTTP_STATUS = {
+  SUCCESS: 200,
+  CLIENT_ERROR: 400,
+  AUTHENTICATE: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
+  GATEWAY_TIMEOUT: 504
+}
+ 
+// promise status
+export const SUCCESS = { success:'success'}
+export const FAIL = { fail:'fail'}
+export const COMPLETE = { complete:'complete'}
+ 
+export const PROMISE_STATUS = {
+  success: 'success',
+  fail: 'fail',
+  complete: 'complete'
+}
+ 
+export const RESULT_STATUS = {
+  SUCCESS:0,
+  SIGNATURE_FAILED: 1000  // 签名失败
+}

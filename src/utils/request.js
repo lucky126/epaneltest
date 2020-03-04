@@ -1,51 +1,49 @@
 import Taro from '@tarojs/taro';
-import { MAINHOST, noConsole } from '../config';
+import { MAINHOST, noConsole, HTTP_STATUS } from '../config';
+import { commonParame } from '../config/requestConfig'
 
-const timestamp = '2017-06-30 07:49:40'
-const transSeq = 'IG2gmPscw0DoKlPQ'
-const version = 'V2.0'
+const url = '/v2/service/apis'
 
-export default (options = { method: 'GET', data: {} }) => {
+let token = ''
+
+export default (options) => {
   if (!noConsole) {
     console.log(
-      `${new Date().toLocaleString()}【 url=${options.url} 】【 type=${options.type} 】【 method=${options.method} 】data=${JSON.stringify(
+      `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 】data=${JSON.stringify(
         options.data
       )}`
     );
   }
   return Taro.request({
-    url: MAINHOST + options.url,
+    url: MAINHOST + url,
     data: {
       "method": options.method,
-      "params": options.data,
-      "timestamp": timestamp,
-      "transSeq": transSeq,
+      "params": options.data,      
       "type": options.type,
-      "version": version
+      ...commonParame
     },
     header: {
       'Content-Type': 'application/json',
+      'token': token
     },
-    method: 'POST',
+    method: 'POST'
   }).then(res => {
     const { statusCode, data } = res;
-    if (statusCode >= 200 && statusCode < 300) {
+    if (statusCode === HTTP_STATUS.NOT_FOUND) {
+      return logError('api', '请求资源不存在')
+    } else if (statusCode === HTTP_STATUS.BAD_GATEWAY) {
+      return logError('api', '服务端出现了问题')
+    } else if (statusCode === HTTP_STATUS.FORBIDDEN) {
+      return logError('api', '没有权限访问')
+    } else if (statusCode === HTTP_STATUS.SUCCESS) {
       if (!noConsole) {
         console.log(
-          `${new Date().toLocaleString()}【 M=${options.url} 】【接口响应：】`,
-          res.data
+          `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 【接口响应：】`,
+          data
         );
       }
-      if (data.status !== 'ok') {
-        Taro.showToast({
-          title: `${res.data.error.message}~` || res.data.error.code,
-          icon: 'none',
-          mask: true,
-        });
-      }
-      return data;
-    } else {
-      throw new Error(`网络请求错误，状态码${statusCode}`);
+
+      return data
     }
   });
 };

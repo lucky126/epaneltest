@@ -53,7 +53,7 @@ class FormLogin extends Component {
           if (utils.isPass(password2)) {
             console.log(params)
             this.props.dispatch({
-              type: 'login/effectsLogin',
+              type: 'login/formLogin',
               payload: params
             })
           } else {
