@@ -4,13 +4,14 @@ import { connect } from '@tarojs/redux';
 import './index.scss';
 import { AtButton } from 'taro-ui'
 
-@connect(({home}) => ({
+@connect(({home, common}) => ({
   ...home,
+  ...common
 }))
 
 class Index extends Component {
   config = {
-    navigationBarTitleText: 'index',
+    navigationBarTitleText: '问卷列表',
   };
 
   constructor(props) {
@@ -19,7 +20,11 @@ class Index extends Component {
   }
 
   componentDidMount = () => {
-
+    if(!this.props.token){
+      Taro.redirectTo({
+        url: '../login/index'
+      })
+    }
   };
 
   render() {

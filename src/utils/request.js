@@ -50,10 +50,7 @@ export function syncAction(options) {
               data: data.token
             })
           }
-
-          options.afterSuccess({
-            response: data.message
-          });
+          
         } else {
           if (data.status == 401) {
             Taro.redirectTo({

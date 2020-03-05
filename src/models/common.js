@@ -3,7 +3,8 @@ import Taro from '@tarojs/taro';
 export default {
   namespace: 'common',
   state: {
-    access_token: Taro.getStorageSync('access_token'),
+    token: Taro.getStorageSync('token'),
+    userInfo: Taro.getStorageSync('userInfo')
   },
 
   effects: {},

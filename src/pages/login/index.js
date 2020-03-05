@@ -5,8 +5,9 @@ import { connect } from '@tarojs/redux';
 import Logo from '../../assets/images/logo.png'
 import './index.scss';
 
-@connect(({login}) => ({
+@connect(({login, common}) => ({
   ...login,
+  ...common
 }))
 
 class Index extends Component {
@@ -20,7 +21,11 @@ class Index extends Component {
   }
 
   componentDidMount = () => {
-
+    if(this.props.token){
+      Taro.redirectTo({
+        url: '../home/index'
+      })
+    }
   };
   
   handleForm = () => {

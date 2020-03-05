@@ -55,6 +55,8 @@ class FormLogin extends Component {
             this.props.dispatch({
               type: 'login/formLogin',
               payload: params
+            }).then(()=>{
+              console.log('process')
             })
           } else {
             this.errorMessage('请输入6-20位数字、字母、常用符号@,&,*,$,^,-,_或其组合')
