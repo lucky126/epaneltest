@@ -9,6 +9,7 @@ let token = Taro.getStorageSync('token')
 export function syncAction(options) {
   if (!noConsole) {
     console.log(options)
+    console.log(token)
     console.log(
       `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 】data=${JSON.stringify(
         options.data
@@ -25,7 +26,7 @@ export function syncAction(options) {
     },
     header: {
       'Content-Type': 'application/json',
-      'token': token
+      'Authorization': 'ePanel ' + token
     },
     method: 'POST',
     success: function (res) {
@@ -53,8 +54,9 @@ export function syncAction(options) {
           
         } else {
           if (data.status == 401) {
+            Taro.removeStorageSync('token')
             Taro.redirectTo({
-              url: './',
+              url: './login/login',
             })          
           }
           options.afterError({

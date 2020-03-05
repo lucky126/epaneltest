@@ -3,18 +3,24 @@ import * as homeApi from './service';
 export default {
   namespace: 'home',
   state: {
-
+    list: ''
   },
 
   effects: {
-    * effectsDemo(_, { call, put }) {
-      const { status, data } = yield call(homeApi.demo, {});
-      if (status === 'ok') {
-        yield put({ type: 'save',
-          payload: {
-            topData: data,
-          } });
+    * getQuestionaires({ payload: values }, { call, put }) {
+      let afterError = function ({ response }) {
+
       }
+
+      const { data } = yield call(homeApi.getQuestionaires, values, afterError);
+
+      yield put({
+        type: 'save',
+        payload: {
+          list: data.message.data.list,
+        }
+      });
+
     },
   },
 
