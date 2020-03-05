@@ -16,27 +16,21 @@ if (!dirName) {
 }
 
 //页面模板
-const indexTep = `
-import Taro, { Component } from '@tarojs/taro'
+const indexTep = `import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { ${capPirName}Props, ${capPirName}State } from './${dirName}.interface'
-import './${dirName}.scss'
+import PropTypes from 'prop-types';
+import './index.scss'
 
 class ${capPirName} extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+  static propTypes = {
+  };
 
-  static options = {
-    addGlobalClass: true
-  }
-
-  static defaultProps:${capPirName}Props = {}
+  static defaultProps = {
+  };
 
   render() {
     return (
-      <View className='fx-${dirName}-wrap'>
+      <View className='${dirName}-wrap'>
       </View>
     )
   }
@@ -46,19 +40,18 @@ export default ${capPirName}
 `
 
 // scss文件模版
-const scssTep = `@import "../../assets/scss/variables";
-.#{$prefix} {
-  &-${dirName}-wrap {
-    width: 100%;
-  }
+const scssTep = `${dirName}-wrap {
+  width: 100%;
 }
 `
-
-fs.mkdirSync(`./src/components/${dirName}`); // mkdir $1
+// 判断文件夹是否创建，如果否则创建
+if (!fs.existsSync(`./src/components/${dirName}`)) {
+  fs.mkdirSync(`./src/components/${dirName}`); // mkdir $1
+}
 process.chdir(`./src/components/${dirName}`); // cd $1
 
-fs.writeFileSync(`${dirName}.tsx`, indexTep); //tsx
-fs.writeFileSync(`${dirName}.scss`, scssTep); // scss
+fs.writeFileSync(`index.js`, indexTep); //tsx
+fs.writeFileSync(`index.scss`, scssTep); // scss
 
 
 console.log(`组件${dirName}已创建`);

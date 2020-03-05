@@ -7,12 +7,12 @@ export default {
   },
 
   effects: {
-    * getQuestionaires({ payload: values }, { call, put }) {
+    * getQuestionaires({ payload: values, token }, { call, put }) {
       let afterError = function ({ response }) {
 
       }
 
-      const { data } = yield call(homeApi.getQuestionaires, values, afterError);
+      const { data } = yield call(homeApi.getQuestionaires, values, afterError, token);
 
       yield put({
         type: 'save',

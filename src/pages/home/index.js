@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import Questionaires from '../../components/questionaire'
 import './index.scss';
 import { AtSearchBar } from 'taro-ui'
 
@@ -25,13 +26,13 @@ class Index extends Component {
       status: '',
       qtnType: '',
       sortOrder: 'desc',
-      qtnName: '',  
+      qtnName: '',
       createTimeBegin: '',
       createTimeEnd: '',
       startTime: null,
       endTime: null,
       limitBeginTime: false,
-      limitExpireTime: false,   
+      limitExpireTime: false,
       userId: 0,
       isCurrUser: true,
       isOpen: false,
@@ -73,7 +74,7 @@ class Index extends Component {
       qtnName
     } = this.state
 
-    let params =  {
+    let params = {
       page,
       pageSize,
       status,
@@ -91,13 +92,14 @@ class Index extends Component {
 
     this.props.dispatch({
       type: 'home/getQuestionaires',
-      payload: params
-    }).then(()=>{
+      payload: params,
+      token: this.props.token
+    }).then(() => {
       console.log('get questionaires')
     })
   }
 
-  onChange (value) {
+  onChange(value) {
     this.setState({
       value: value
     })
@@ -105,21 +107,20 @@ class Index extends Component {
 
   render() {
     const { list } = this.props
-    console.log(list)
+
     return (
       <View className="page">
         <AtMessage />
         <AtSearchBar
-        value={this.state.value}
-        onChange={this.onChange.bind(this)}
-      />
-        <AtList>
-          {list.map((item, index) => (
-           <View>
-             ({item.id}){item.qtnTitle}
-           </View>
+          value={this.state.value}
+          onChange={this.onChange.bind(this)}
+        />
+        <View className="questionaires">
+          {list && list.map((item, index) => (
+            // <View>({item.id}){item.qtnTitle}</View>
+            <Questionaires qtn={item} />
           ))}
-        </AtList>
+        </View>
       </View>
     )
   }

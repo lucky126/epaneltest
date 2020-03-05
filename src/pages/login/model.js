@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro';
+import { noConsole } from '../../config';
 import * as loginApi from './service';
 
 export default {
@@ -10,23 +11,24 @@ export default {
 
   effects: {
     * formLogin({ payload: values }, { call, put }) {
-     
+
       let afterError = function ({ response }) {
 
       }
 
       const { data } = yield call(loginApi.login, values, afterError);
 
-      console.log(data)
-
-      console.log(
-        `${new Date().toLocaleString()} 【response】`,
-        data
-      );
-      console.log(
-        `${new Date().toLocaleString()} [token]`,
-        data.message.data.token
-      );
+      if (!noConsole) {
+        console.log(
+          `${new Date().toLocaleString()} 【response】`,
+          data
+        );
+        console.log(
+          `${new Date().toLocaleString()} [token]`,
+          data.message.data.token
+        );
+      }
+      
       Taro.setStorage({
         key: "token",
         data: data.message.data.token
@@ -61,7 +63,7 @@ export default {
       setTimeout(() => {
         Taro.redirectTo({
           url: '../home/index'
-        }) 
+        })
       }, 500);
     },
   },

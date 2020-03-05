@@ -7,6 +7,8 @@ const url = '/v2/service/apis'
 let token = Taro.getStorageSync('token')
 
 export function syncAction(options) {
+  token = options.token || token
+  
   if (!noConsole) {
     console.log(options)
     console.log(token)

@@ -6,7 +6,7 @@ export const formatTime = time => {
     `${pad(time.getHours())}:${pad(time.getMinutes())}:${pad(time.getSeconds())}.${pad(time.getMilliseconds(), 3)}`
 }
 
-export var globalData: any = {} // 全局公共变量
+export var globalData = {} // 全局公共变量
 
   
   // 截取字符串

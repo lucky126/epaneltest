@@ -21,11 +21,7 @@ class Index extends Component {
   }
 
   componentDidMount = () => {
-    if(this.props.token){
-      Taro.redirectTo({
-        url: '../home/index'
-      })
-    }
+    
   };
   
   handleForm = () => {

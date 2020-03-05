@@ -1,0 +1,25 @@
+.questionaire-wrap {
+  width: 100%;
+  background-color: #FFF;
+  color: #333;
+  border-radius: 10px;
+  -moz-box-shadow:2px 2px 5px #333333; 
+  -webkit-box-shadow:2px 2px 5px #333333; 
+  box-shadow:2px 2px 5px #333333;
+  margin-bottom: 10PX;
+  
+  .InfoRow{
+    padding: 10PX;
+    border-bottom: solid 1PX #666;
+  }
+
+  .dateRow{
+    color: #666;
+  }
+
+  .optRow{
+    padding: 10PX;
+  }
+}
+
+
