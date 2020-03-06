@@ -1,8 +1,7 @@
 import * as Request from '../../utils/request';
 
-export const login = (data, afterError) => Request.syncAction({
+export const login = (data) => Request.syncAction({
   method: 'UserLogin.login',
   type: 'user',
-  data,
-  afterError
+  data
 });

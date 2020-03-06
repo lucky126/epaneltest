@@ -25,7 +25,7 @@ export const ISMOCK = false
 /**
  * 当前的host  ONLINEHOST | QAHOST | MOCKHOST
  */
-export const MAINHOST = ONLINEHOST
+export const MAINHOST = QAHOST
 
 // 输出日志信息
 export const noConsole = false;

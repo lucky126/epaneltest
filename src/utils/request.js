@@ -8,10 +8,11 @@ let token = Taro.getStorageSync('token')
 
 export function syncAction(options) {
   token = options.token || token
-  
+
   if (!noConsole) {
-    console.log(options)
-    console.log(token)
+    console.log(`${new Date().toLocaleString()} token=${JSON.stringify(
+      token
+    )}`)
     console.log(
       `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 】data=${JSON.stringify(
         options.data
@@ -32,45 +33,31 @@ export function syncAction(options) {
     },
     method: 'POST',
     success: function (res) {
-      const { statusCode, data } = res;
-      if (statusCode === HTTP_STATUS.NOT_FOUND) {
-        return logError('api', '请求资源不存在')
-      } else if (statusCode === HTTP_STATUS.BAD_GATEWAY) {
-        return logError('api', '服务端出现了问题')
-      } else if (statusCode === HTTP_STATUS.FORBIDDEN) {
-        return logError('api', '没有权限访问')
-      } else if (statusCode === HTTP_STATUS.SUCCESS) {
+      const { data } = res;
+      
+      if (data.status === HTTP_STATUS.SUCCESS) {
         if (!noConsole) {
           console.log(
             `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 【接口响应：】`,
             data
           );
         }
-        if (data.status == 200) {
-          if (data.token) {
-            Taro.setStorage({
-              key: "token",
-              data: data.token
-            })
-          }
-          
-        } else {
-          if (data.status == 401) {
-            Taro.removeStorageSync('token')
-            Taro.redirectTo({
-              url: './login/login',
-            })          
-          }
-          options.afterError({
-            response: data
-          });
+
+        if (data.token) {
+          Taro.setStorage({
+            key: "token",
+            data: data.token
+          })
         }
-      }
+      } else if (data.status === HTTP_STATUS.AUTHENTICATE) {
+        Taro.removeStorageSync('token')
+        Taro.redirectTo({
+          url: './login/login',
+        })
+      } 
     },
     fail: function (res) {
-      options.afterError({
-        response: res.body
-      });
+      
     }
   });
 }
