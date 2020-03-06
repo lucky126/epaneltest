@@ -6,6 +6,10 @@ const url = '/v2/service/apis'
 
 let token = Taro.getStorageSync('token')
 
+export function action(){
+
+}
+
 export function syncAction(options) {
   token = options.token || token
 
@@ -34,7 +38,7 @@ export function syncAction(options) {
     method: 'POST',
     success: function (res) {
       const { data } = res;
-      
+
       if (data.status === HTTP_STATUS.SUCCESS) {
         if (!noConsole) {
           console.log(
@@ -54,10 +58,10 @@ export function syncAction(options) {
         Taro.redirectTo({
           url: './login/login',
         })
-      } 
+      }
     },
-    fail: function (res) {
-      
+    fail: function () {
+
     }
   });
 }

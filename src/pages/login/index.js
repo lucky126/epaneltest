@@ -35,21 +35,23 @@ class Index extends Component {
   }
   
   handleWx = () => {
-    console.log('open wx')
+    Taro.navigateTo({
+      url: '/pages/login/wxlogin'
+    })
   }
 
   render() {
     return (
-      <View className="page">
-        <View className="login">
-          <View class="copyright-info">
+      <View className='page'>
+        <View className='login'>
+          <View class='copyright-info'>
             <Image src={Logo} style='width: 158px;height: 20px;'></Image>
-            <View class="siteurl">www.epanel.cn</View>
+            <View class='siteurl'>www.epanel.cn</View>
           </View>
-          <View class="loginbutton">
-            <AtButton type="primary" circle onClick={this.handleWx}>微信登录</AtButton>
+          <View class='loginbutton'>
+            <AtButton type='primary' circle onClick={this.handleWx}>微信登录</AtButton>
           </View>
-          <View class="loginbutton">
+          <View class='loginbutton'>
             <AtButton onClick={this.handleForm} circle>云调查登录</AtButton>
           </View>
         </View>

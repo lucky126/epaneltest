@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import Questionaires from '../../components/questionaire'
 import './index.scss';
-import { AtSearchBar } from 'taro-ui'
+import { AtSearchBar, AtMessage } from 'taro-ui'
 
 @connect(({ home, common }) => ({
   ...home,
@@ -117,13 +117,13 @@ class Index extends Component {
     const { list } = this.props
 
     return (
-      <View className="page">
+      <View className='page'>
         <AtMessage />
         <AtSearchBar
           value={this.state.value}
           onChange={this.onChange.bind(this)}
         />
-        <View className="questionaires">
+        <View className='questionaires'>
           {list && list.map((item, index) => (
             // <View>({item.id}){item.qtnTitle}</View>
             <Questionaires qtn={item} />

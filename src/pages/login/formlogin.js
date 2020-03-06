@@ -74,7 +74,7 @@ class FormLogin extends Component {
 
   render() {
     return (
-      <View className="page">
+      <View className='page'>
          <View className='panel'>
             <AtMessage />
             <View className='panel__title'>请输入您的帐户信息</View>
@@ -99,7 +99,7 @@ class FormLogin extends Component {
                 />
 
                 <View className='loginbutton'>
-                  <AtButton type="primary" circle onClick={this.handleLogin}>立即登录</AtButton>
+                  <AtButton type='primary' circle onClick={this.handleLogin}>立即登录</AtButton>
                 </View>   
             </View>         
           </View>
