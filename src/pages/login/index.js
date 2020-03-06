@@ -21,7 +21,11 @@ class Index extends Component {
   }
 
   componentDidMount = () => {
-    
+    const token = Taro.getStorageSync('token');
+    if (!!token) {
+      Taro.redirectTo({ url: '/pages/home/index' })
+      return
+    }
   };
   
   handleForm = () => {

@@ -61,6 +61,14 @@ class Index extends Component {
     this.getData()
   };
 
+  componentWillUnmount = () => {
+    if (this.props.token) {
+      Taro.redirectTo({
+        url: '../home/index'
+      })
+    }
+  }
+
   getData = () => {
     const {
       page,
