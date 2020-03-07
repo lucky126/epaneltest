@@ -74,10 +74,10 @@ class FormLogin extends Component {
 
   render() {
     return (
-      <View className='page'>
-         <View className='panel'>
+      <View className='page at-row at-row__justify--center'>
+         <View className='panel at-col at-col-10'>
             <AtMessage />
-            <View className='panel__title'>请输入您的帐户信息</View>
+            <View className='panel__title'>请输入您在云调查的帐户</View>
             <View className='panel__content no-padding'>
             <View className='example-item'>
               

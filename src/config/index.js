@@ -27,6 +27,13 @@ export const ISMOCK = false
  */
 export const MAINHOST = QAHOST
 
+/**
+ * wx 根据 code 获取session地址
+ */
+export const WXGETSESSION = 'https://api.weixin.qq.com/sns/jscode2session'
+export const APPID = 'wx844f3ac30b2146d2'
+export const SECRET = '324309c588990cf320bc50ba2b8fa297'
+
 // 输出日志信息
 export const noConsole = false;
 
@@ -41,19 +48,19 @@ export const HTTP_STATUS = {
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504
 }
- 
+
 // promise status
-export const SUCCESS = { success:'success'}
-export const FAIL = { fail:'fail'}
-export const COMPLETE = { complete:'complete'}
- 
+export const SUCCESS = { success: 'success' }
+export const FAIL = { fail: 'fail' }
+export const COMPLETE = { complete: 'complete' }
+
 export const PROMISE_STATUS = {
   success: 'success',
   fail: 'fail',
   complete: 'complete'
 }
- 
+
 export const RESULT_STATUS = {
-  SUCCESS:0,
+  SUCCESS: 0,
   SIGNATURE_FAILED: 1000  // 签名失败
 }

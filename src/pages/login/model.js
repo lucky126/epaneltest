@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { noConsole,HTTP_STATUS } from '../../config';
+import { noConsole, HTTP_STATUS } from '../../config';
 import * as loginApi from './service';
 
 export default {
@@ -10,6 +10,12 @@ export default {
   },
 
   effects: {
+    * wxCode2Session({ payload: values }, { call, put }) {
+
+      const { data } = yield call(loginApi.wxCode2Session, values);
+      console.log(data)
+
+    },
     * formLogin({ payload: values }, { call, put }) {
 
       const { data } = yield call(loginApi.login, values);

@@ -6,10 +6,46 @@ const url = '/v2/service/apis'
 
 let token = Taro.getStorageSync('token')
 
-export function action(){
+/**
+ * 针对外部调用使用
+ * @param {*} options 
+ */
+export function defaultAction(options){
+  if (!noConsole) {
+    console.log(
+      `${new Date().toLocaleString()}【 url=${options.url} 】【 method=${options.method} 】data=${JSON.stringify(
+        options.data
+      )}`
+    );
+  }
 
+  return Taro.request({
+    url: options.url,
+    data: options.data ? options.data : {},
+    header: options.header ? options.header : {},
+    method: options.method ? options.method : 'GET',
+    success: function (res) {
+      const { data } = res;
+
+      if (data.status === HTTP_STATUS.SUCCESS) {
+        if (!noConsole) {
+          console.log(
+            `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 【接口响应：】`,
+            data
+          );
+        }
+      } 
+    },
+    fail: function () {
+
+    }
+  });
 }
 
+/**
+ * 内部调用用
+ * @param {*} options 
+ */
 export function syncAction(options) {
   token = options.token || token
 
