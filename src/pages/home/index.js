@@ -21,7 +21,7 @@ class Index extends Component {
     this.state = {
       total: 0,
       page: 1,
-      pageSize: 10,
+      pageSize: 6,
       isLoading: false,
       status: '',
       qtnType: '',
@@ -98,6 +98,16 @@ class Index extends Component {
         createTimeEnd == '' ? createTimeEnd : createTimeEnd + ' 23:59:59'
     }
 
+    //获得问卷类型
+    this.props.dispatch({
+      type: 'home/getQuestionaireTypes',
+      payload: {},
+      token: this.props.token
+    }).then(() => {
+      console.log('get questionaireType')
+    })
+
+    //获得问卷列表
     this.props.dispatch({
       type: 'home/getQuestionaires',
       payload: params,
@@ -114,7 +124,11 @@ class Index extends Component {
   }
 
   render() {
-    const { list } = this.props
+    const { qtnList,qtnTypes } = this.props
+
+    const qtProps = {
+      qtnTypes
+    }
 
     return (
       <View className='page'>
@@ -124,9 +138,9 @@ class Index extends Component {
           onChange={this.onChange.bind(this)}
         />
         <View className='questionaires'>
-          {list && list.map((item, index) => (
+          {qtnList && qtnList.map((item, index) => (
             // <View>({item.id}){item.qtnTitle}</View>
-            <Questionaires qtn={item} />
+            <Questionaires qtn={item} {...qtProps}/>
           ))}
         </View>
       </View>

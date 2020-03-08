@@ -13,8 +13,34 @@
     border-bottom: solid 1PX #666;
   }
 
-  .dateRow{
+  .titleRow{
+    padding: 5PX 0;
+  }
+
+  .dataRow{
     color: #666;
+    padding: 5PX 0;
+
+    .collect
+    {
+      float: right;
+
+      .finishNum {
+        font-size: large;
+        color: #00FF00;
+      }
+    }
+  }  
+
+  .typeRow{
+    padding: 5PX 0;
+  }
+
+  .typeName{
+    background-color: #F6F7F6;
+    padding: 3PX;
+    border: solid 1px #dedede;
+    border-radius: 10px;
   }
 
   .optRow{

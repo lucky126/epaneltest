@@ -6,3 +6,10 @@ export const getQuestionaires = (data, token) => Request.syncAction({
   data,
   token
 });
+
+export const getQuestionaireType = (data, token) => Request.syncAction({
+  method: 'QuestionnaireService.queryQuestionnaireType',
+  type: 'questionnaire',
+  data,
+  token
+});
