@@ -121,6 +121,14 @@ class Index extends Component {
 
   }
   
+  handleLogout = () => {
+    console.log('logout')
+    Taro.removeStorageSync('token')
+    Taro.redirectTo({
+      url: './login/login',
+    })
+  }
+  
   render() {
     const { qtnList, qtnTypes } = this.props
 
@@ -132,7 +140,7 @@ class Index extends Component {
       <View className='page'>
         <AtMessage />
         <AtNavBar
-          onClickRgIconSt={this.handleClick}
+          onClickRgIconSt={this.handleLogout}
           onClickRgIconNd={this.handleClick}
           onClickLeftIcon={this.handleClick}
           color='#000'
