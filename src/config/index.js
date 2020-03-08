@@ -64,3 +64,10 @@ export const RESULT_STATUS = {
   SUCCESS: 0,
   SIGNATURE_FAILED: 1000  // 签名失败
 }
+
+// 问卷基本状态
+export const statusOpts = [
+  { value: 0, label: '编辑中' },
+  { value: 2, label: '回收中' },
+  { value: 5, label: '已结束' }
+]

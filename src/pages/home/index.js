@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import Questionaires from '../../components/questionaire'
 import './index.scss';
-import { AtSearchBar, AtMessage } from 'taro-ui'
+import { AtNavBar, AtMessage } from 'taro-ui'
 
 @connect(({ home, common }) => ({
   ...home,
@@ -117,14 +117,12 @@ class Index extends Component {
     })
   }
 
-  onChange(value) {
-    this.setState({
-      value: value
-    })
-  }
+  handleClick = () => {
 
+  }
+  
   render() {
-    const { qtnList,qtnTypes } = this.props
+    const { qtnList, qtnTypes } = this.props
 
     const qtProps = {
       qtnTypes
@@ -133,14 +131,20 @@ class Index extends Component {
     return (
       <View className='page'>
         <AtMessage />
-        <AtSearchBar
-          value={this.state.value}
-          onChange={this.onChange.bind(this)}
-        />
+        <AtNavBar
+          onClickRgIconSt={this.handleClick}
+          onClickRgIconNd={this.handleClick}
+          onClickLeftIcon={this.handleClick}
+          color='#000'
+          leftText='+新建问卷'
+          rightFirstIconType='user'
+        >
+          <View>我的问卷</View>
+        </AtNavBar>
         <View className='questionaires'>
           {qtnList && qtnList.map((item, index) => (
             // <View>({item.id}){item.qtnTitle}</View>
-            <Questionaires qtn={item} {...qtProps}/>
+            <Questionaires qtn={item} {...qtProps} />
           ))}
         </View>
       </View>
