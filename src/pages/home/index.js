@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import Questionaires from '../../components/questionaire'
 import './index.scss';
-import { AtNavBar, AtMessage } from 'taro-ui'
+import { AtNavBar, AtMessage, AtModal } from 'taro-ui'
 
 @connect(({ home, common }) => ({
   ...home,
@@ -19,6 +19,7 @@ class Index extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      isModalOpened: false,
       total: 0,
       page: 1,
       pageSize: 6,
@@ -125,7 +126,19 @@ class Index extends Component {
     console.log('logout')
     Taro.removeStorageSync('token')
     Taro.redirectTo({
-      url: './login/login',
+      url: '/pages/login/index',
+    })
+  }
+
+  handleModalShow = () => {
+    this.setState({
+      ['isModalOpened']: true
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+      ['isModalOpened']: false
     })
   }
   
@@ -139,8 +152,18 @@ class Index extends Component {
     return (
       <View className='page'>
         <AtMessage />
+        <AtModal
+          isOpened={this.state.isModalOpened}
+          title='确认退出？'
+          cancelText='取消'
+          confirmText='确认'
+          content='您确认要退出云调查系统？'
+          onClose={this.closeModal}
+          onCancel={this.closeModal}
+          onConfirm={this.handleLogout}
+        />
         <AtNavBar
-          onClickRgIconSt={this.handleLogout}
+          onClickRgIconSt={this.handleModalShow}
           onClickRgIconNd={this.handleClick}
           onClickLeftIcon={this.handleClick}
           color='#000'

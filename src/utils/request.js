@@ -92,7 +92,7 @@ export function syncAction(options) {
       } else if (data.status === HTTP_STATUS.AUTHENTICATE) {
         Taro.removeStorageSync('token')
         Taro.redirectTo({
-          url: './login/login',
+          url: '/pages/login/index',
         })
       }
     },
