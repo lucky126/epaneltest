@@ -10,7 +10,7 @@ import './index.scss';
   ...common
 }))
 
-class Index extends Component {
+class Login extends Component {
   config = {
     navigationBarTitleText: '云调查',
   };
@@ -83,4 +83,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default Login;

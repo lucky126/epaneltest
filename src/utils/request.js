@@ -73,9 +73,10 @@ export function syncAction(options) {
     },
     method: 'POST',
     success: function (res) {
+      console.log(res)
       const { data } = res;
 
-      if (data.status === HTTP_STATUS.SUCCESS) {
+      if (data.status == HTTP_STATUS.SUCCESS) {
         if (!noConsole) {
           console.log(
             `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 【接口响应：】`,
@@ -89,7 +90,7 @@ export function syncAction(options) {
             data: data.token
           })
         }
-      } else if (data.status === HTTP_STATUS.AUTHENTICATE) {
+      } else if (data.status == HTTP_STATUS.AUTHENTICATE) {
         Taro.removeStorageSync('token')
         Taro.redirectTo({
           url: '/pages/login/index',

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -18,8 +18,32 @@ class Questionaire extends Component {
     qtn: '',
   };
 
+  handleEdit= (id) => {
+    console.log('edit' + id)
+  }
+  handleShow= (id) => {
+    console.log('show' + id)
+  }
+
+  handleData = (id) => {
+    Taro.navigateTo({
+      url: '/pages/data/index?id=' + id
+    })
+  }
+
+  handleInvitation =(id) => {
+    console.log('Invitation' + id)
+  }
+
   render() {
     const { qtn, qtnTypes } = this.props;
+
+    let ftButton = u192
+    let ftAction = this.handleShow.bind(this, qtn.id)
+    if(qtn.status===0){
+      ftButton=u190
+      ftAction = this.handleEdit.bind(this, qtn.id)
+    }
 
     return (
       <View className='questionaire-wrap'>
@@ -36,13 +60,13 @@ class Questionaire extends Component {
         <View className='optRow at-row'>
           <View className='at-col at-col-6'>{qtn.statusDescn}</View>
           <View className='at-col at-col-2'>
-            <Image src={u190} style='width:25px;height:25px;' onClick={this.handle} />
+            <Image src={ftButton} style='width:25px;height:25px;' onClick={ftAction} />
           </View>
           <View className='at-col at-col-2'>
-            <Image src={u210} style='width:25px;height:25px;' onClick={this.handle} />
+            <Image src={u210} style='width:25px;height:25px;' onClick={this.handleInvitation.bind(this, qtn.id)} />
           </View>
           <View className='at-col at-col-2'>
-            <Image src={u198} style='width:25px;height:25px;' onClick={this.handle} />
+            <Image src={u198} style='width:25px;height:25px;' onClick={this.handleData.bind(this, qtn.id)} />
           </View>
         </View>
       </View>

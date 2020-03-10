@@ -45,7 +45,7 @@ class ${capPageName} extends Component {
 
   render() {
     return (
-      <View className="page">
+      <View className='page'>
         ${pageName}
       </View>
     )
@@ -125,13 +125,13 @@ fs.writeFileSync(`${pageName}.scss`, scssTep);
 // })
 
 if (!fs.existsSync(`./src/pages/${dirName}/model.js`)) {
-  fs.writeFileSync('model.js', configTep);
+  fs.writeFileSync('model.js', modelTep);
 }else{
   console.log('model文件已经存在未更新')
 }
 
 if (!fs.existsSync(`./src/pages/${dirName}/config.js`)) {
-  fs.writeFileSync('config.js', modelTep);
+  fs.writeFileSync('config.js', configTep);
 }else{
   console.log('config文件已经存在未更新')
 }

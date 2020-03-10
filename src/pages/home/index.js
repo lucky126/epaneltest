@@ -11,7 +11,7 @@ import { AtNavBar, AtMessage, AtModal } from 'taro-ui'
 }))
 
 
-class Index extends Component {
+class Home extends Component {
   config = {
     navigationBarTitleText: '问卷列表',
   };
@@ -183,4 +183,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default Home;
