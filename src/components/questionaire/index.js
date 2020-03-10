@@ -19,20 +19,21 @@ class Questionaire extends Component {
   };
 
   handleEdit= (id) => {
-    console.log('edit' + id)
+    console.log('edit ' + id)
   }
   handleShow= (id) => {
-    console.log('show' + id)
+    console.log('show ' + id)
   }
 
   handleData = (id) => {
+    console.log('data ' + id)
     Taro.navigateTo({
       url: '/pages/data/index?id=' + id
     })
   }
 
   handleInvitation =(id) => {
-    console.log('Invitation' + id)
+    console.log('Invitation ' + id)
   }
 
   render() {

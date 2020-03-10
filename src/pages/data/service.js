@@ -1,7 +1,9 @@
-import Request from '../../utils/request';
+import * as Request from '../../utils/request';
 
-export const demo = data => Request({
-  url: '路径',
-  method: 'POST',
+export const getRetrievalProgress = (data, token) => Request.syncAction({
+  method: 'RetrievalProgress.getRetrievalProgress',
+  type: 'dataanalyse',
   data,
+  token
 });
+

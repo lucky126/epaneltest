@@ -3,34 +3,18 @@ import * as dataApi from './service';
 export default {
   namespace: 'data',
   state: {
-    qtnList: '',
-    qtnTypes: ''
+    RetrievalProgress: ''
   },
 
   effects: {
-    * getQuestionaireTypes({ token }, { call, put }) {
-      const { data } = yield call(dataApi.getQuestionaireType, {}, token);
-
-      let qtnTypes = data.message.data.list
-      var dic = new Array();
-      qtnTypes.forEach(item => {
-        dic[item.type] = item.typeName
-      })
-
+    
+    * getRetrievalProgress({ payload: values, token }, { call, put }) {
+      const { data } = yield call(dataApi.getRetrievalProgress, values, token);
+console.log(data)
       yield put({
         type: 'save',
         payload: {
-          qtnTypes: dic,
-        }
-      });
-    },
-    * getQuestionaires({ payload: values, token }, { call, put }) {
-      const { data } = yield call(dataApi.getQuestionaires, values, token);
-
-      yield put({
-        type: 'save',
-        payload: {
-          qtnList: data.message.data.list,
+          RetrievalProgress: data.message.data
         }
       });
 
