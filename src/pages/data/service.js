@@ -1,8 +1,10 @@
-import * as Request from '../../utils/request';
+import {syncAction} from '../../utils/request';
 
-export const getRetrievalProgress = (data, token) => Request.syncAction({
+const DATAANALYSE = 'dataanalyse'
+
+export const getRetrievalProgress = (data, token) => syncAction({
   method: 'RetrievalProgress.getRetrievalProgress',
-  type: 'dataanalyse',
+  type: DATAANALYSE,
   data,
   token
 });

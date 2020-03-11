@@ -98,12 +98,15 @@ export default {
 `
 
 // service页面模版
-const serviceTep = `import Request from '../../utils/request';
+const serviceTep = `import {syncAction} from '../../utils/request';
 
-export const demo = data => Request({
-  url: '路径',
-  method: 'POST',
+const TYPE = 'type'
+
+export const demo = (data, token) => syncAction({
+  method: '',
+  type: TYPE,
   data,
+  token
 });
 `;
 

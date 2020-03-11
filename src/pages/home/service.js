@@ -1,15 +1,17 @@
-import * as Request from '../../utils/request';
+import {syncAction} from '../../utils/request';
 
-export const getQuestionaires = (data, token) => Request.syncAction({
+const QUESTIONNAIRE = 'questionnaire'
+
+export const getQuestionaires = (data, token) => syncAction({
   method: 'QuestionnaireCreater.queryQuestionnaire',
-  type: 'questionnaire',
+  type: QUESTIONNAIRE,
   data,
   token
 });
 
-export const getQuestionaireType = (data, token) => Request.syncAction({
+export const getQuestionaireType = (data, token) => syncAction({
   method: 'QuestionnaireService.queryQuestionnaireType',
-  type: 'questionnaire',
+  type: QUESTIONNAIRE,
   data,
   token
 });
