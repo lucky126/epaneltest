@@ -52,7 +52,7 @@ class Home extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     if (!this.props.token) {
       Taro.redirectTo({
         url: '../login/index'
@@ -62,7 +62,7 @@ class Home extends Component {
     this.getData()
   };
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     if (this.props.token) {
       Taro.redirectTo({
         url: '../home/index'
@@ -70,7 +70,7 @@ class Home extends Component {
     }
   }
 
-  getData = () => {
+  getData() {
     const {
       page,
       pageSize,
@@ -136,7 +136,7 @@ class Home extends Component {
     })
   }
 
-  closeModal = () => {
+  closeModa = () => {
     this.setState({
       ['isModalOpened']: false
     })

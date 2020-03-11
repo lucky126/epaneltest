@@ -66,18 +66,20 @@ const modelTep = `import * as ${dirName}Api from './service';
 export default {
   namespace: '${dirName}',
   state: {
-
+    demo: ''
   },
 
   effects: {
-    * effectsDemo(_, { call, put }) {
-      const { status, data } = yield call(${dirName}Api.demo, {});
-      if (status === 'ok') {
-        yield put({ type: 'save',
-          payload: {
-            topData: data,
-          } });
-      }
+    * demo({ payload: values, token }, { call, put }) {
+      const { data } = yield call(${dirName}Api.demo, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          demo: data.message.data.demo
+        }
+      });
+
     },
   },
 

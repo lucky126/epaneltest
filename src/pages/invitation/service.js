@@ -1,4 +1,4 @@
-import {syncAction} from '../../utils/request';
+import { syncAction } from '../../utils/request';
 
 const INVITION = 'invition'
 
@@ -22,4 +22,12 @@ export const getPanelDemand = (data, token) => syncAction({
   data,
   token
 });
+
+export const beginRetrieve = (data, token) => syncAction({
+  method: 'InvitationManager.beginRetrieve',
+  type: INVITION,
+  data,
+  token
+});
+
 

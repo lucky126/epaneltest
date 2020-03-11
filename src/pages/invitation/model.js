@@ -3,18 +3,43 @@ import * as invitationApi from './service';
 export default {
   namespace: 'invitation',
   state: {
-
+    qtnStatus: '',
+    limitConstraints: ''
   },
 
   effects: {
-    * effectsDemo(_, { call, put }) {
-      const { status, data } = yield call(invitationApi.demo, {});
-      if (status === 'ok') {
-        yield put({ type: 'save',
-          payload: {
-            topData: data,
-          } });
-      }
+    * statusCheck({ payload: values, token }, { call, put }) {
+      const { data } = yield call(invitationApi.statusCheck, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          qtnStatus: data.message.data.qtnStatus
+        }
+      });
+
+    },
+    * getLimitConstraints({ payload: values, token }, { call, put }) {
+      const { data } = yield call(invitationApi.getLimitConstraints, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          limitConstraints: data.message.data
+        }
+      });
+
+    },
+    * beginRetrieve({ payload: values, token }, { call, put }) {
+      const { data } = yield call(invitationApi.beginRetrieve, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          qtnStatus: data.message.data.qtnStatus
+        }
+      });
+
     },
   },
 

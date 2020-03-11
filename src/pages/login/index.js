@@ -36,7 +36,6 @@ class Login extends Component {
   
   handleWeappLogin = (res) => {
     if(res.detail.userInfo){ // 返回的信息中包含用户信息则证明用户允许获取信息授权
-      console.log('授权成功')
     
       Taro.login()
         .then(resLogin => {

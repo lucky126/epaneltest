@@ -6,7 +6,7 @@ class RetrievalProgress extends Component {
 
   render() {
     let { RetrievalProgress } = this.props
-    console.log(RetrievalProgress)
+
     return (
       <View className='progress-wrap'>
         <View className='at-row at-row__justify--center'>

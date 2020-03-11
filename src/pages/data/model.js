@@ -10,7 +10,7 @@ export default {
     
     * getRetrievalProgress({ payload: values, token }, { call, put }) {
       const { data } = yield call(dataApi.getRetrievalProgress, values, token);
-console.log(data)
+
       yield put({
         type: 'save',
         payload: {

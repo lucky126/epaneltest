@@ -40,7 +40,7 @@ class FormLogin extends Component {
     })
   }
 
-  handleLogin = () =>{
+  handleLogin = () => {
     const {username, password, rememberMe} = this.state
     let username2 = username.replace(/\s+/g, '')
     let password2 = password.replace(/\s+/g, '')
@@ -51,7 +51,7 @@ class FormLogin extends Component {
       if (utils.isPhone(username2) || utils.isMail(username2)) {
         if (password2) {
           if (utils.isPass(password2)) {
-            console.log(params)
+
             this.props.dispatch({
               type: 'login/formLogin',
               payload: params

@@ -40,7 +40,7 @@ export default ${capPirName}
 `
 
 // scss文件模版
-const scssTep = `${dirName}-wrap {
+const scssTep = `.${dirName}-wrap {
   width: 100%;
 }
 `

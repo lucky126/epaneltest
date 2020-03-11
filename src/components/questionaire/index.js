@@ -26,14 +26,15 @@ class Questionaire extends Component {
   }
 
   handleData = (id) => {
-    console.log('data ' + id)
     Taro.navigateTo({
       url: '/pages/data/index?id=' + id
     })
   }
 
   handleInvitation =(id) => {
-    console.log('Invitation ' + id)
+    Taro.navigateTo({
+      url: '/pages/invitation/index?id=' + id
+    })
   }
 
   render() {
