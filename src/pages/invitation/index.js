@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { BeginToCollect } from '../../components/beginToCollect'
+import { Link } from '../../components/link'
 import './index.scss';
 import { AtTabs, AtTabsPane, AtNavBar } from 'taro-ui'
 
@@ -24,21 +25,23 @@ class Invitation extends Component {
   }
 
   componentDidMount() {
-    this.getData()
+    this.setState({
+      qtnId: this.$router.params.id,
+    });
+    this.getData(this.$router.params.id)
   };
 
-  getData() {
-    const { id } = this.$router.params
-    this.setState({
-      qtnId: id
-    })
+  getData(qtnId) {
     //获得问卷发布状态
     this.props.dispatch({
       type: 'invitation/statusCheck',
-      payload: { qtnId: id },
+      payload: { qtnId },
       token: this.props.token
     }).then(() => {
       console.log('get statusCheck')
+      if (this.props.qtnStatus !== 0) {
+        this.getWebLink(qtnId)
+      }
     })
   }
 
@@ -53,8 +56,8 @@ class Invitation extends Component {
   }
 
   beginRetrieveData = () => {
-    const{ qtnId } = this.state
-    console.log('qtnId=' + qtnId)
+    const { qtnId } = this.state
+
     // 更新问卷发布状态
     this.props.dispatch({
       type: 'invitation/beginRetrieve',
@@ -65,11 +68,27 @@ class Invitation extends Component {
     })
   }
 
+  getWebLink(id) {
+
+    // 获取问卷链接和二维码地址
+    this.props.dispatch({
+      type: 'invitation/getWebLink',
+      payload: { qtnId: id },
+      token: this.props.token
+    }).then(() => {
+      console.log('get WebLink')
+    })
+
+  }
+
   render() {
-    const { qtnStatus } = this.props
+    const { qtnStatus, linkData } = this.props
+
+    let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
-    if(qtnStatus !== 0){
+    if (qtnStatus !== 0) {
       tabList = [{ title: '开放链接' }, { title: '其他渠道' }]
+      rightFirstIconType = 'settings'
     }
 
     return (
@@ -78,14 +97,14 @@ class Invitation extends Component {
           onClickRgIconSt={this.handleSetting}
           color='#000'
           title='收集数据'
-          rightFirstIconType='settings'
+          rightFirstIconType={rightFirstIconType}
         />
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={this.state.current} index={0} >
             {(qtnStatus === 0) ? (
               <BeginToCollect beginRetrieveData={this.beginRetrieveData} />
             ) : (
-                <Text>已发布</Text>
+                <Link linkData={linkData} />
               )}
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>

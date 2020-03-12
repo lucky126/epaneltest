@@ -4,11 +4,14 @@ export default {
   namespace: 'invitation',
   state: {
     qtnStatus: '',
-    limitConstraints: ''
+    limitConstraints: '',
+    linkData: ''
   },
 
   effects: {
     * statusCheck({ payload: values, token }, { call, put }) {
+      console.log('values')
+      console.log(values)
       const { data } = yield call(invitationApi.statusCheck, values, token);
 
       yield put({
@@ -37,6 +40,17 @@ export default {
         type: 'save',
         payload: {
           qtnStatus: data.message.data.qtnStatus
+        }
+      });
+
+    },
+    * getWebLink({ payload: values, token }, { call, put }) {
+      const { data } = yield call(invitationApi.getWebLink, values, token);
+      
+      yield put({
+        type: 'save',
+        payload: {
+          linkData: data.message.data
         }
       });
 
