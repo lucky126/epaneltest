@@ -53,7 +53,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.token) {
+    const token = this.props.token || Taro.getStorageSync('token');
+    if (!token) {
       Taro.redirectTo({
         url: '../login/index'
       })
@@ -63,11 +64,7 @@ class Home extends Component {
   };
 
   componentWillUnmount() {
-    if (this.props.token) {
-      Taro.redirectTo({
-        url: '../home/index'
-      })
-    }
+   
   }
 
   getData() {

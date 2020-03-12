@@ -21,7 +21,7 @@ class Login extends Component {
   }
 
   componentDidMount = () => {
-    const token = Taro.getStorageSync('token') ||　this.props.token;
+    const token = this.props.token || Taro.getStorageSync('token');
     if (!!token) {
       Taro.redirectTo({ url: '/pages/home/index' })
       return
