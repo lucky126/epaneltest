@@ -21,8 +21,14 @@ class Login extends Component {
   }
 
   componentDidMount = () => {
-    const token = this.props.token || Taro.getStorageSync('token');
-    if (!!token) {
+    const token = this.props.token || Taro.getStorageSync('token')
+    const logintime = Taro.getStorageSync('logintime')
+    let now =  new Date().valueOf()
+    let duration = now - logintime
+
+    console.log('duration=' + duration)
+    
+    if (!!token && duration < 1000*60*60) {
       Taro.redirectTo({ url: '/pages/home/index' })
       return
     }

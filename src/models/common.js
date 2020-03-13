@@ -4,7 +4,8 @@ export default {
   namespace: 'common',
   state: {
     token: Taro.getStorageSync('token'),
-    userInfo: Taro.getStorageSync('userInfo')
+    userinfo: Taro.getStorageSync('userinfo'),
+    logintime: Taro.getStorageSync('loginTime'),
   },
 
   effects: {},

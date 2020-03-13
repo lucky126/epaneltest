@@ -6,7 +6,7 @@ export default {
   namespace: 'login',
   state: {
     token: '',
-    userInfo: ''
+    userinfo: ''
   },
 
   effects: {
@@ -31,7 +31,7 @@ export default {
             data.message.data.token
           );
         }
-
+        let now = new Date().valueOf()
         Taro.setStorage({
           key: "token",
           data: data.message.data.token
@@ -39,6 +39,10 @@ export default {
         Taro.setStorage({
           key: "userinfo",
           data: data.message.data.user
+        })
+        Taro.setStorage({
+          key: "logintime",
+          data: now
         })
 
         Taro.atMessage({
@@ -59,7 +63,8 @@ export default {
           type: 'common/save',
           payload: {
             token: data.message.data.token,
-            userinfo: data.message.data.user
+            userinfo: data.message.data.user,
+            logintime: now
           }
         });
 

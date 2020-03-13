@@ -120,10 +120,10 @@ class Home extends Component {
   }
   
   handleLogout = () => {
-    console.log('logout')
-    Taro.removeStorageSync('token')
-    Taro.redirectTo({
-      url: '/pages/login/index',
+    this.props.dispatch({
+      type: 'home/logout',
+    }).then(() => {
+      console.log('logout')
     })
   }
 

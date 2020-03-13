@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro';
 import * as homeApi from './service';
 
 export default {
@@ -33,6 +34,23 @@ export default {
           qtnList: data.message.data.list,
         }
       });
+
+    },
+    * logout(_, { put }) {
+
+      yield put({
+        type: 'common/save',
+        payload: {
+          token: '',
+          userinfo: '',
+          logintime: ''
+        }
+      });
+
+      Taro.removeStorageSync('token')
+      Taro.redirectTo({
+        url: '/pages/login/index',
+      })
 
     },
   },
