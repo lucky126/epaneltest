@@ -5,7 +5,12 @@ export default {
   state: {
     qtnStatus: '',
     limitConstraints: '',
-    panelDemand: '',
+    limitPanelNum: '',
+    panelTotalNum: '',
+    limitBeginTime: '',
+    beginTime: '',
+    limitExpireTime: '',
+    expireTime: '',
     linkData: ''
   },
 
@@ -37,10 +42,16 @@ export default {
     * getPanelDemand({ payload: values, token }, { call, put }) {
       const { data } = yield call(invitationApi.getPanelDemand, values, token);
 
+      const panelDemand = data.message.data
       yield put({
         type: 'save',
         payload: {
-          panelDemand: data.message.data
+          limitPanelNum: panelDemand.limitPanelNum,
+          panelTotalNum: panelDemand.panelTotalNum,
+          limitBeginTime: panelDemand.limitBeginTime,
+          beginTime: panelDemand.beginTime,
+          limitExpireTime: panelDemand.limitExpireTime,
+          expireTime: panelDemand.expireTime
         }
       });
 
@@ -58,7 +69,7 @@ export default {
     },
     * getWebLink({ payload: values, token }, { call, put }) {
       const { data } = yield call(invitationApi.getWebLink, values, token);
-      
+
       yield put({
         type: 'save',
         payload: {
@@ -68,15 +79,7 @@ export default {
 
     },
     * updatePanelDemand({ payload: values, token }, { call, put }) {
-      const { data } = yield call(invitationApi.updatePanelDemand, values, token);
-      
-      // yield put({
-      //   type: 'save',
-      //   payload: {
-      //     panelDemand: data.message.data
-      //   }
-      // });
-
+      yield call(invitationApi.updatePanelDemand, values, token);
     },
   },
 

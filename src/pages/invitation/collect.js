@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
-import { AtNavBar, AtList, AtListItem, AtFloatLayout } from 'taro-ui'
+import { AtNavBar, AtList, AtListItem, AtFloatLayout, AtInput, AtSwitch, AtMessage } from 'taro-ui'
 
 @connect(({ invitation, common }) => ({
   ...invitation,
@@ -17,14 +17,14 @@ class Collect extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      qtnId: 0
+      qtnId: 0,
     }
   }
 
   componentDidMount() {
     this.setState({
       qtnId: this.$router.params.id,
-      isOpened: false
+      isShowTotalNum: false
     });
     this.getData(this.$router.params.id)
   };
@@ -56,11 +56,90 @@ class Collect extends Component {
     })
   }
 
-  handlePanelSetting = () => {
-    this.setState({
-      isOpened: true
+  showSuccessMsg = () => {
+    Taro.atMessage({
+      'message': '更新成功！',
+      'type': 'success',
+      'duration': 1000
     })
   }
+
+  // 打开样本数量设置面板
+  handlePanelTotalNumSetting = () => {
+    this.setState({
+      isShowTotalNum: true
+    })
+  }
+
+  // 关闭样本数量设置面板
+  handlePanelTotalNumClose = () => {
+    this.setState({
+      isShowTotalNum: false
+    })
+  }
+
+  // 修改样本设置开关let
+  handleChangeSetTotalNum(value) {
+    let { panelTotalNum, limitBeginTime, beginTime, limitExpireTime, expireTime } = this.props
+    const { qtnId } = this.state
+
+    if (!value) {
+      panelTotalNum = 0
+
+      this.props.dispatch({
+        type: 'invitation/save',
+        payload: {
+          panelTotalNum: panelTotalNum
+        }
+      })
+    }
+
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { limitPanelNum: value }
+    })
+
+
+    this.props.dispatch({
+      type: 'invitation/updatePanelDemand',
+      payload: {
+        qtnId,
+        limitPanelNum: value,
+        panelTotalNum: panelTotalNum,
+        beginTime: limitBeginTime ? beginTime : "",
+        expireTime: limitExpireTime ? expireTime : ""
+      }
+    }).then(() => {
+      this.showSuccessMsg()
+    })
+  }
+
+  // 修改样本数量
+  handleChangeTotalNum = (value) => {
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { panelTotalNum: value }
+    })
+
+    let { panelTotalNum, limitBeginTime, beginTime, limitExpireTime, expireTime } = this.props
+    const { qtnId } = this.state
+
+    this.props.dispatch({
+      type: 'invitation/updatePanelDemand',
+      payload: {
+        qtnId,
+        limitPanelNum: value,
+        panelTotalNum: panelTotalNum,
+        beginTime: limitBeginTime ? beginTime : "",
+        expireTime: limitExpireTime ? expireTime : ""
+      }
+    }).then(() => {
+      this.showSuccessMsg()
+    })
+    // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
+    return value
+  }
+
 
   handleBeginTimeSetting = () => {
 
@@ -70,20 +149,11 @@ class Collect extends Component {
 
   }
 
-  handleClose = () => {
-    this.setState({
-      isOpened: false
-    })
-  }
-
   render() {
-    const { limitConstraints, panelDemand } = this.props
-    console.log(panelDemand)
-    console.log(limitConstraints)
+    const { limitConstraints, limitPanelNum, panelTotalNum, limitBeginTime, beginTime, limitExpireTime, expireTime } = this.props
 
-    let panelTotalNum = panelDemand.limitPanelNum ? panelDemand.panelTotalNum : '未设置'
-    let beginTime = panelDemand.limitBeginTime ? panelDemand.beginTime : '未设置'
-    let expireTime = panelDemand.limitExpireTime ? panelDemand.expireTime : '未设置'
+    let beginTimeList = limitBeginTime ? beginTime : '未设置'
+    let expireTimeList = limitExpireTime ? expireTime : '未设置'
 
     let ipLimitNum = limitConstraints.ipLimit ? limitConstraints.ipLimitNum : '未设置'
     let answerLimitNum = '未设置'
@@ -93,6 +163,7 @@ class Collect extends Component {
 
     return (
       <View className='page'>
+        <AtMessage />
         <AtNavBar
           onClickLeftIcon={this.handleBack}
           color='#000'
@@ -106,17 +177,17 @@ class Collect extends Component {
               <AtList>
                 <AtListItem title='目标数量'
                   arrow='right'
-                  extraText={panelTotalNum}
+                  extraText={limitPanelNum ? panelTotalNum : '未设置'}
                   onClick={this.handlePanelTotalNumSetting}
                 />
                 <AtListItem title='开始时间'
                   arrow='right'
-                  extraText={beginTime}
+                  extraText={beginTimeList}
                   onClick={this.handleBeginTimeSetting}
                 />
                 <AtListItem title='结束时间'
                   arrow='right'
-                  extraText={expireTime}
+                  extraText={expireTimeList}
                   onClick={this.handleExpireTimeSetting}
                 />
               </AtList>
@@ -132,8 +203,8 @@ class Collect extends Component {
               <AtList>
                 <AtListItem title='IP地址限制'
                   arrow='right'
-                  extraText={ipLimitNum} o
-                  nClick={this.handleClick}
+                  extraText={ipLimitNum}
+                  onClick={this.handleClick}
                 />
                 <AtListItem title='答题设备唯一'
                   isSwitch
@@ -151,9 +222,26 @@ class Collect extends Component {
           </View>
         </View>
 
-        <AtFloatLayout isOpened={this.state.isOpened} title='这是个标题' onClose={this.handleClose.bind(this)}>
-          这是内容区 随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写这是内容区
-          随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写
+        <AtFloatLayout isOpened={this.state.isShowTotalNum} title='回收成功样本数量设置' onClose={this.handlePanelTotalNumClose.bind(this)}>
+          <View className='at-row'>
+            <View className='at-col at-col-12'>
+              <AtSwitch title='开启设置' checked={limitPanelNum} onChange={this.handleChangeSetTotalNum.bind(this)} />
+            </View>
+          </View>
+          {(limitPanelNum) ? (
+            <View className='at-row'>
+              <View className='at-col at-col-12'>
+                <AtInput
+                  name='value'
+                  title='样本数量'
+                  type='text'
+                  placeholder='请输入样本数量'
+                  value={limitPanelNum ? panelTotalNum : 0}
+                  onChange={this.handleChangeTotalNum.bind(this)}
+                />
+              </View>
+            </View>
+          ) : (<View></View>)}
         </AtFloatLayout>
       </View>
     )
