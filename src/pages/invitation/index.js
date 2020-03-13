@@ -51,8 +51,12 @@ class Invitation extends Component {
     })
   }
 
-  handleSetting() {
-
+  handleSetting = () => {
+    const { qtnId } = this.state
+    
+    Taro.navigateTo({
+      url: '/pages/invitation/collect?id=' + qtnId
+    })
   }
 
   beginRetrieveData = () => {

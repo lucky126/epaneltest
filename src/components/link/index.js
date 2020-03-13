@@ -29,7 +29,7 @@ class Link extends Component {
   render() {
     const { linkData } = this.props
 
-    console.log(linkData)
+    // console.log(linkData)
     return (
       <View className='link-wrap'>
         <View className='linkInfoRow at-row'>

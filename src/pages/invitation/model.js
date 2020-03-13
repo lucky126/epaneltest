@@ -5,6 +5,7 @@ export default {
   state: {
     qtnStatus: '',
     limitConstraints: '',
+    panelDemand: '',
     linkData: ''
   },
 
@@ -29,6 +30,17 @@ export default {
         type: 'save',
         payload: {
           limitConstraints: data.message.data
+        }
+      });
+
+    },
+    * getPanelDemand({ payload: values, token }, { call, put }) {
+      const { data } = yield call(invitationApi.getPanelDemand, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          panelDemand: data.message.data
         }
       });
 

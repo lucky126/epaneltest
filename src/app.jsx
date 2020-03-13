@@ -64,7 +64,8 @@ class App extends Component {
       'pages/home/index',
       'pages/login/formlogin',
       'pages/data/index',
-      'pages/invitation/index'
+      'pages/invitation/index',
+      'pages/invitation/collect'
     ],
     window: {
       backgroundTextStyle: 'light',
