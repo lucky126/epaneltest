@@ -67,6 +67,17 @@ export default {
       });
 
     },
+    * updatePanelDemand({ payload: values, token }, { call, put }) {
+      const { data } = yield call(invitationApi.updatePanelDemand, values, token);
+      
+      // yield put({
+      //   type: 'save',
+      //   payload: {
+      //     panelDemand: data.message.data
+      //   }
+      // });
+
+    },
   },
 
   reducers: {

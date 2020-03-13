@@ -42,3 +42,18 @@ export const getWebLink = (data, token) => syncAction({
   token
 });
 
+//提交样本需求数据
+export const updatePanelDemand = (data, token) => syncAction({
+  method: 'PanelQuota.updatePanelDemand',
+  type: INVITION,
+  data,
+  token
+});
+
+//提交唯一限制信息
+export const updateLimitConstraints = (data, token) => syncAction({
+  method: 'PanelQuota.updateLimitConstraints',
+  type: INVITION,
+  data,
+  token
+});

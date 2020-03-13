@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
-import { AtNavBar, AtList, AtListItem } from 'taro-ui'
+import { AtNavBar, AtList, AtListItem, AtFloatLayout } from 'taro-ui'
 
 @connect(({ invitation, common }) => ({
   ...invitation,
@@ -24,6 +24,7 @@ class Collect extends Component {
   componentDidMount() {
     this.setState({
       qtnId: this.$router.params.id,
+      isOpened: false
     });
     this.getData(this.$router.params.id)
   };
@@ -52,6 +53,26 @@ class Collect extends Component {
   handleBack() {
     Taro.navigateBack({
       delta: 1
+    })
+  }
+
+  handlePanelSetting = () => {
+    this.setState({
+      isOpened: true
+    })
+  }
+
+  handleBeginTimeSetting = () => {
+
+  }
+
+  handleExpireTimeSetting = () => {
+
+  }
+
+  handleClose = () => {
+    this.setState({
+      isOpened: false
     })
   }
 
@@ -86,17 +107,17 @@ class Collect extends Component {
                 <AtListItem title='目标数量'
                   arrow='right'
                   extraText={panelTotalNum}
-                  onClick={this.handleClick}
+                  onClick={this.handlePanelTotalNumSetting}
                 />
                 <AtListItem title='开始时间'
                   arrow='right'
                   extraText={beginTime}
-                  onClick={this.handleClick}
+                  onClick={this.handleBeginTimeSetting}
                 />
                 <AtListItem title='结束时间'
                   arrow='right'
                   extraText={expireTime}
-                  onClick={this.handleClick}
+                  onClick={this.handleExpireTimeSetting}
                 />
               </AtList>
 
@@ -129,6 +150,11 @@ class Collect extends Component {
             </View>
           </View>
         </View>
+
+        <AtFloatLayout isOpened={this.state.isOpened} title='这是个标题' onClose={this.handleClose.bind(this)}>
+          这是内容区 随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写这是内容区
+          随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写
+        </AtFloatLayout>
       </View>
     )
   }
