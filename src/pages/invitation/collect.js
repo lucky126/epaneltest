@@ -65,16 +65,9 @@ class Collect extends Component {
   }
 
   // 打开样本数量设置面板
-  handlePanelTotalNumSetting = () => {
+  handlePanelTotalNumSetting = (value) => {
     this.setState({
-      isShowTotalNum: true
-    })
-  }
-
-  // 关闭样本数量设置面板
-  handlePanelTotalNumClose = () => {
-    this.setState({
-      isShowTotalNum: false
+      isShowTotalNum: value
     })
   }
 
@@ -178,7 +171,7 @@ class Collect extends Component {
                 <AtListItem title='目标数量'
                   arrow='right'
                   extraText={limitPanelNum ? panelTotalNum : '未设置'}
-                  onClick={this.handlePanelTotalNumSetting}
+                  onClick={this.handlePanelTotalNumSetting.bind(this, true)}
                 />
                 <AtListItem title='开始时间'
                   arrow='right'
@@ -222,7 +215,8 @@ class Collect extends Component {
           </View>
         </View>
 
-        <AtFloatLayout isOpened={this.state.isShowTotalNum} title='回收成功样本数量设置' onClose={this.handlePanelTotalNumClose.bind(this)}>
+        <AtFloatLayout isOpened={this.state.isShowTotalNum} title='回收成功样本数量设置'
+          onClose={this.handlePanelTotalNumSetting.bind(this, false)}>
           <View className='at-row'>
             <View className='at-col at-col-12'>
               <AtSwitch title='开启设置' checked={limitPanelNum} onChange={this.handleChangeSetTotalNum.bind(this)} />

@@ -1,4 +1,5 @@
 @import "taro-ui/dist/style/components/flex.scss";
+@import "../../styles/base.scss";
 
 .link-wrap {
   width: 100%;
@@ -20,4 +21,8 @@
 .copyRow{
   margin: 10PX;
   padding-right: 10PX;
+}
+
+.copyrightInfo {
+  padding: 10PX 2PX;
 }

@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import PropTypes from 'prop-types';
+import { QRCode } from 'taro-code'
 import './index.scss'
 import { AtCard, AtButton } from 'taro-ui';
 
@@ -13,7 +13,7 @@ class Link extends Component {
 
   };
 
-  copyUrl = () =>{
+  copyUrl = () => {
     Taro.setClipboardData({
       data: this.props.linkData.weblinkUrl,
       success: function () {
@@ -49,8 +49,21 @@ class Link extends Component {
 
         <View className='linkInfoRow at-row'>
           <View className='at-col'>
-           <AtCard title='二维码'>
-              这也是内容区 可以随意定义功能
+            <AtCard title='二维码'>
+              <View className='at-row'>
+                <View className='at-col at-col-12 wordbreak copyrightInfo'>
+                郑重声明：通过二维码访问问卷进行调查所应用的“二维码调查方法及系统”发明专利 【专利号：ZL 2014 1 0026192.3】依法受保护。在中国，云调查(www.epanel.cn)拥有该专利排他性实施许可，任何第三方不得实施、使用该专利技术，本公司保留对任何侵权行为的追究权利。
+                </View>
+              </View>
+              <View>
+                <QRCode
+                  text={linkData.weblinkUrl}
+                  size={150}
+                  scale={4}
+                  errorCorrectLevel='M'
+                  typeNumber={2}
+                />
+              </View>
             </AtCard>
           </View>
         </View>

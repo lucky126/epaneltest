@@ -26,6 +26,12 @@ view {
   box-sizing: border-box;
 }
 
+.wordbreak{
+  white-space:normal; 
+  word-break:break-all;
+  overflow:hidden;
+}
+
 .panel {
   margin: 80px 0 56px;
 

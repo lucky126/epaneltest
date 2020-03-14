@@ -40,7 +40,9 @@ export default ${capPirName}
 `
 
 // scss文件模版
-const scssTep = `.${dirName}-wrap {
+const scssTep = `@import "../../styles/base.scss";
+
+.${dirName}-wrap {
   width: 100%;
 }
 `
