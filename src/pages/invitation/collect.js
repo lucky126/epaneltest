@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import { DateTimePicker } from '../../components/DateTimePicker'
 import './index.scss';
 import { AtNavBar, AtList, AtListItem, AtFloatLayout, AtInput, AtSwitch, AtMessage } from 'taro-ui'
 
@@ -18,13 +19,15 @@ class Collect extends Component {
     super(props)
     this.state = {
       qtnId: 0,
+      isShowTotalNum: false,
+      isShowBeginTime: false,
+      isShowExpireTime: false
     }
   }
 
   componentDidMount() {
     this.setState({
-      qtnId: this.$router.params.id,
-      isShowTotalNum: false
+      qtnId: this.$router.params.id
     });
     this.getData(this.$router.params.id)
   };
@@ -133,13 +136,30 @@ class Collect extends Component {
     return value
   }
 
-
-  handleBeginTimeSetting = () => {
-
+  // 开始时间设置开关
+  handleBeginTimeSetting = (value) => {
+    this.setState({
+      isShowBeginTime: value
+    })
   }
 
-  handleExpireTimeSetting = () => {
+  // 截止时间设置开关
+  handleExpireTimeSetting = (value) => {
+    this.setState({
+      isShowExpireTime: value
+    })
+  }
 
+  saveBeginTime = ({ current }) => {
+    console.log('save begintime')
+    console.log(current)
+    this.handleBeginTimeSetting(false)
+  }
+
+  saveExpireTime = ({ current }) => {
+    console.log('save expiretime')
+    console.log(current)
+    this.handleExpireTimeSetting(false)
   }
 
   render() {
@@ -176,12 +196,12 @@ class Collect extends Component {
                 <AtListItem title='开始时间'
                   arrow='right'
                   extraText={beginTimeList}
-                  onClick={this.handleBeginTimeSetting}
+                  onClick={this.handleBeginTimeSetting.bind(this, true)}
                 />
                 <AtListItem title='结束时间'
                   arrow='right'
                   extraText={expireTimeList}
-                  onClick={this.handleExpireTimeSetting}
+                  onClick={this.handleExpireTimeSetting.bind(this, true)}
                 />
               </AtList>
 
@@ -236,6 +256,22 @@ class Collect extends Component {
               </View>
             </View>
           ) : (<View></View>)}
+        </AtFloatLayout>
+
+        <AtFloatLayout isOpened={this.state.isShowBeginTime} title='开始时间设置'
+          onClose={this.handleBeginTimeSetting.bind(this, false)}>
+          <DateTimePicker initValue={beginTime}
+            placeholder={beginTime || '请设置时间'}
+            onOk={this.saveBeginTime}
+            onCancel={this.handleBeginTimeSetting.bind(this, false)} />
+        </AtFloatLayout>
+
+        <AtFloatLayout isOpened={this.state.isShowExpireTime} title='结束时间设置'
+          onClose={this.handleExpireTimeSetting.bind(this, false)}>
+          <DateTimePicker initValue={expireTime}
+            placeholder={expireTime || '请设置时间'}
+            onOk={this.saveExpireTime}
+            onCancel={this.handleExpireTimeSetting.bind(this, false)} />
         </AtFloatLayout>
       </View>
     )
