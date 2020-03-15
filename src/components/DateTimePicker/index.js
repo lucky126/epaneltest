@@ -59,9 +59,9 @@ export default class DateTimePicker extends Component {
         })
     };
 
-    // 取消
-    cancelHandel = () => {
-        this.props.onCancel && this.props.onCancel();
+    // 清空
+    clearHandel = () => {
+        this.props.onClear && this.props.onClear();
     };
 
     // 确定
@@ -121,7 +121,7 @@ export default class DateTimePicker extends Component {
                     <View className="model-box">
                         <View className="model-picker">
                             <View className="button-model">
-                                <Text class="btn-txt" onClick={this.cancelHandel}>取消</Text>
+                                <Text class="btn-txt" onClick={this.clearHandel}>清除</Text>
                                 <Text class="btn-txt" onClick={this.okHandel}>确定</Text>
                             </View>
                             <View className="cont_model">

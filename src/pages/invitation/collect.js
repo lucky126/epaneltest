@@ -95,19 +95,7 @@ class Collect extends Component {
       payload: { limitPanelNum: value }
     })
 
-
-    this.props.dispatch({
-      type: 'invitation/updatePanelDemand',
-      payload: {
-        qtnId,
-        limitPanelNum: value,
-        panelTotalNum: panelTotalNum,
-        beginTime: limitBeginTime ? beginTime : "",
-        expireTime: limitExpireTime ? expireTime : ""
-      }
-    }).then(() => {
-      this.showSuccessMsg()
-    })
+    this.updatePanelDemand()
   }
 
   // 修改样本数量
@@ -117,23 +105,28 @@ class Collect extends Component {
       payload: { panelTotalNum: value }
     })
 
-    let { panelTotalNum, limitBeginTime, beginTime, limitExpireTime, expireTime } = this.props
+    this.updatePanelDemand()
+    // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
+    return value
+  }
+  
+  // 保存样本设置
+  updatePanelDemand = () => {
+    let { limitPanelNum, panelTotalNum, limitBeginTime, beginTime, limitExpireTime, expireTime } = this.props
     const { qtnId } = this.state
 
     this.props.dispatch({
       type: 'invitation/updatePanelDemand',
       payload: {
         qtnId,
-        limitPanelNum: value,
-        panelTotalNum: panelTotalNum,
+        limitPanelNum,
+        panelTotalNum,
         beginTime: limitBeginTime ? beginTime : "",
         expireTime: limitExpireTime ? expireTime : ""
       }
     }).then(() => {
       this.showSuccessMsg()
     })
-    // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
-    return value
   }
 
   // 开始时间设置开关
@@ -153,12 +146,66 @@ class Collect extends Component {
   saveBeginTime = ({ current }) => {
     console.log('save begintime')
     console.log(current)
+  
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { 
+        limitBeginTime: true,
+        beginTime: current
+       }
+    })
+  
+    this.updatePanelDemand()
+
+    this.handleBeginTimeSetting(false)
+  }
+  
+  clearBeginTime = () => {
+    console.log('clear begintime')
+  
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { 
+        limitBeginTime: false,
+        beginTime: ''
+       }
+    })
+  
+    this.updatePanelDemand()
+
     this.handleBeginTimeSetting(false)
   }
 
   saveExpireTime = ({ current }) => {
     console.log('save expiretime')
     console.log(current)
+  
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { 
+        limitExpireTime: true,
+        expireTime: current
+       }
+    })
+  
+    this.updatePanelDemand()
+
+    this.handleExpireTimeSetting(false)
+  }
+  
+  clearExpireTime = () => {
+    console.log('clear expiretime')
+  
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { 
+        limitExpireTime: false,
+        expireTime: ''
+       }
+    })
+  
+    this.updatePanelDemand()
+
     this.handleExpireTimeSetting(false)
   }
 
@@ -261,17 +308,15 @@ class Collect extends Component {
         <AtFloatLayout isOpened={this.state.isShowBeginTime} title='开始时间设置'
           onClose={this.handleBeginTimeSetting.bind(this, false)}>
           <DateTimePicker initValue={beginTime}
-            placeholder={beginTime || '请设置时间'}
             onOk={this.saveBeginTime}
-            onCancel={this.handleBeginTimeSetting.bind(this, false)} />
+            onClear={this.clearBeginTime} />
         </AtFloatLayout>
 
         <AtFloatLayout isOpened={this.state.isShowExpireTime} title='结束时间设置'
           onClose={this.handleExpireTimeSetting.bind(this, false)}>
           <DateTimePicker initValue={expireTime}
-            placeholder={expireTime || '请设置时间'}
             onOk={this.saveExpireTime}
-            onCancel={this.handleExpireTimeSetting.bind(this, false)} />
+            onClear={this.clearExpireTime} />
         </AtFloatLayout>
       </View>
     )
