@@ -1,8 +1,8 @@
 {
   "miniprogramRoot": "./dist",
-  "projectname": "epaneltest",
-  "description": "epanel survey weApp",
-  "appid": "wx844f3ac30b2146d2",
+  "projectname": "云调查",
+  "description": "云调查小程序",
+  "appid": "wx7c2fb36925f527c0",
   "setting": {
     "urlCheck": true,
     "es6": false,

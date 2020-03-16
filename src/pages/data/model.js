@@ -3,7 +3,7 @@ import * as dataApi from './service';
 export default {
   namespace: 'data',
   state: {
-    RetrievalProgress: ''
+    RetrievalProgressData: ''
   },
 
   effects: {
@@ -14,7 +14,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          RetrievalProgress: data.message.data
+          RetrievalProgressData: data.message.data
         }
       });
 

@@ -53,13 +53,13 @@ class Data extends Component {
 
 
   render() {
-    const { RetrievalProgress } = this.props
+    const { RetrievalProgressData } = this.props
     const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
     return (
       <View className='page'>
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={this.state.current} index={0} >
-            <RetrievalProgress RetrievalProgress={RetrievalProgress} />
+            <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
             <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页二的内容</View>
