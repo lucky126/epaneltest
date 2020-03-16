@@ -31,8 +31,8 @@ export const MAINHOST = QAHOST
  * wx 根据 code 获取session地址
  */
 export const WXGETSESSION = 'https://api.weixin.qq.com/sns/jscode2session'
-export const APPID = 'wx844f3ac30b2146d2'
-export const SECRET = '324309c588990cf320bc50ba2b8fa297'
+export const APPID = 'wx7c2fb36925f527c0'
+export const SECRET = '0218f83ffe2a60bbd3b4788eba1beab9'
 
 // 输出日志信息
 export const noConsole = false;

@@ -11,7 +11,12 @@ export default {
     beginTime: '',
     limitExpireTime: '',
     expireTime: '',
-    linkData: ''
+    ipLimit: '',
+    ipLimitNum: '',
+    deviceUniqueness: '',
+    isAnswerLimit: '',
+    limitNum: '',
+    moreConf: ''
   },
 
   effects: {
@@ -31,10 +36,18 @@ export default {
     * getLimitConstraints({ payload: values, token }, { call, put }) {
       const { data } = yield call(invitationApi.getLimitConstraints, values, token);
 
+      const limitConstraints = data.message.data
+      const answerLinitInfo = !!limitConstraints.moreConf && JSON.parse(limitConstraints.moreConf);
+
       yield put({
         type: 'save',
         payload: {
-          limitConstraints: data.message.data
+          ipLimit: limitConstraints.ipLimit,
+          ipLimitNum: limitConstraints.ipLimitNum,
+          deviceUniqueness: limitConstraints.deviceUniqueness,
+          isAnswerLimit: answerLinitInfo.isAnswerLimit,
+          limitNum: answerLinitInfo.limitNum,
+          moreConf: limitConstraints.moreConf
         }
       });
 
@@ -78,8 +91,11 @@ export default {
       });
 
     },
-    * updatePanelDemand({ payload: values, token }, { call, put }) {
+    * updatePanelDemand({ payload: values, token }, { call }) {
       yield call(invitationApi.updatePanelDemand, values, token);
+    },
+    * updateLimitConstraints({ payload: values, token }, { call }) {
+      yield call(invitationApi.updateLimitConstraints, values, token);
     },
   },
 

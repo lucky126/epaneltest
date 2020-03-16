@@ -42,10 +42,11 @@ class Login extends Component {
   
   handleWeappLogin = (res) => {
     if(res.detail.userInfo){ // 返回的信息中包含用户信息则证明用户允许获取信息授权
-    
+      // console.log(res.detail.encryptedData)
       Taro.login()
         .then(resLogin => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        
           if (resLogin.code){
             // 登录
             console.log(resLogin.code)
