@@ -42,7 +42,7 @@ class Collect extends Component {
       payload: { qtnId },
       token: this.props.token
     }).then(() => {
-      console.log('get PanelDemand')
+
     })
 
     // 获取问卷唯一限制设置
@@ -51,7 +51,7 @@ class Collect extends Component {
       payload: { qtnId },
       token: this.props.token
     }).then(() => {
-      console.log('get LimitConstraints')
+
     })
   }
 
@@ -143,8 +143,6 @@ class Collect extends Component {
 
   // 保存开始时间设置
   saveBeginTime = ({ current }) => {
-    console.log('save begintime')
-    console.log(current)
 
     this.props.dispatch({
       type: 'invitation/save',
@@ -161,7 +159,6 @@ class Collect extends Component {
 
   // 清除开始时间设置
   clearBeginTime = () => {
-    console.log('clear begintime')
 
     this.props.dispatch({
       type: 'invitation/save',
@@ -178,8 +175,6 @@ class Collect extends Component {
 
   // 保存截至时间设置
   saveExpireTime = ({ current }) => {
-    console.log('save expiretime')
-    console.log(current)
 
     this.props.dispatch({
       type: 'invitation/save',
@@ -196,7 +191,6 @@ class Collect extends Component {
 
   // 清除截止时间设置
   clearExpireTime = () => {
-    console.log('clear expiretime')
 
     this.props.dispatch({
       type: 'invitation/save',
@@ -212,7 +206,7 @@ class Collect extends Component {
   }
 
   // IP限制设置面板
-  handleIpLimitSetting = (value) => {
+  handlePanelIpLimitSetting = (value) => {
     this.setState({
       isShowIpLimit: value
     })
@@ -220,22 +214,13 @@ class Collect extends Component {
 
   // 修改IP限制设置开关
   handleChangeSetIpLimit(value) {
-    let { ipLimit } = this.props
 
-    let ipLimitlNum = 0
-    
-    if (!ipLimit) {
-      ipLimitlNum = 3
-    }
-
-    if (!value) {
-      this.props.dispatch({
-        type: 'invitation/save',
-        payload: {
-          ipLimitlNum: ipLimitlNum
-        }
-      })
-    }
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: {
+        ipLimitNum: value ? 3 : 0
+      }
+    })
 
     this.props.dispatch({
       type: 'invitation/save',
@@ -249,28 +234,61 @@ class Collect extends Component {
   handleChangeIpLimitNum = (value) => {
     this.props.dispatch({
       type: 'invitation/save',
-      payload: { ipLimitlNum: value }
+      payload: { ipLimitNum: value }
     })
 
     this.updateLimitConstraints()
     // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
     return value
   }
+  
+  // 修改设备唯一设置
+  handleChangeSetDeviceUniq = (e) => {
+
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { deviceUniqueness: e.detail.value }
+    })
+
+    this.updateLimitConstraints()
+  }
 
   // 保存唯一限制设置
   updateLimitConstraints = () => {
-    let { ipLimit, ipLimitNum, deviceUniqueness, isAnswerLimit, limitNum, moreConf } = this.props
+    let { ipLimit, ipLimitNum, showTime, deviceUniqueness, isAnswerLimit, limitNum, moreConf } = this.props
     const { qtnId } = this.state
 
-    this.props.dispatch({
-      type: 'invitation/updateLimitConstraints',
-      payload: {
+    const newMoreConf = {
+      isSetPeriodLimit: isAnswerLimit,
+      period: showTime,
+      limit: limitNum,
+      sex: moreConf.sex,
+      other: moreConf.other,
+      price: moreConf.price,
+      terminal: moreConf.terminal,
+      age: moreConf.age,
+      city: moreConf.city
+    };
+
+    let payload = {
+      qtnId,
+      ipLimit,
+      ipLimitNum,
+      deviceUniqueness
+    }
+    if (isAnswerLimit) {
+      payload = {
         qtnId,
         ipLimit,
         ipLimitNum,
         deviceUniqueness,
-        moreConf
+        moreConf: newMoreConf
       }
+    }
+
+    this.props.dispatch({
+      type: 'invitation/updateLimitConstraints',
+      payload: payload
     }).then(() => {
       this.showSuccessMsg()
     })
@@ -331,12 +349,12 @@ class Collect extends Component {
                 <AtListItem title='IP地址限制'
                   arrow='right'
                   extraText={ipLimitNumList}
-                  onClick={this.handleIpLimitSetting.bind(this, true)}
+                  onClick={this.handlePanelIpLimitSetting.bind(this, true)}
                 />
                 <AtListItem title='答题设备唯一'
                   isSwitch
                   switchIsCheck={deviceUniqueness}
-                  onClick={this.handleClick}
+                  onSwitchChange={this.handleChangeSetDeviceUniq.bind(this)}
                 />
                 <AtListItem title='每日限答次数'
                   arrow='right'
@@ -350,7 +368,7 @@ class Collect extends Component {
         </View>
 
         <AtFloatLayout isOpened={this.state.isShowTotalNum} title='回收成功样本数量设置'
-          onClose={this.handleIpLimitSetting.bind(this, false)}>
+          onClose={this.handlePanelTotalNumSetting.bind(this, false)}>
           <View className='at-row'>
             <View className='at-col at-col-12'>
               <AtSwitch title='开启设置' checked={limitPanelNum} onChange={this.handleChangeSetTotalNum.bind(this)} />
@@ -393,12 +411,12 @@ class Collect extends Component {
               <AtSwitch title='开启设置' checked={ipLimit} onChange={this.handleChangeSetIpLimit.bind(this)} />
             </View>
           </View>
-          {(limitPanelNum) ? (
+          {(ipLimit) ? (
             <View className='at-row'>
               <View className='at-col at-col-12'>
                 <AtInput
                   name='value'
-                  title='同一IP最多可答题数量'
+                  title='限制数量'
                   type='text'
                   placeholder='请输入数量'
                   value={ipLimit ? ipLimitNum : 0}

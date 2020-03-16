@@ -29,14 +29,15 @@ class Link extends Component {
   render() {
     const { linkData } = this.props
 
-    // console.log(linkData)
+    let weblinkUrl = linkData ? linkData.weblinkUrl : ''
+
     return (
       <View className='link-wrap'>
         <View className='linkInfoRow at-row'>
           <View className='at-col'>
             <AtCard title='问卷链接'>
               <View className='at-row'>
-                <View className='linkText at-col'>{linkData.weblinkUrl}</View>
+                <View className='linkText at-col'>{weblinkUrl}</View>
               </View>
               <View className='at-row at-row__justify--end copyRow'>
                 <View className='at-col at-col-3'>
@@ -57,7 +58,7 @@ class Link extends Component {
               </View>
               <View>
                 <QRCode
-                  text={linkData.weblinkUrl}
+                  text={weblinkUrl}
                   size={150}
                   scale={4}
                   errorCorrectLevel='M'

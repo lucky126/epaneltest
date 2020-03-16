@@ -52,7 +52,7 @@ export const updatePanelDemand = (data, token) => syncAction({
 
 //提交唯一限制信息
 export const updateLimitConstraints = (data, token) => syncAction({
-  method: 'PanelQuota.updateLimitConstraints',
+  method: 'InvitationManager.updateLimitConstraints',
   type: INVITION,
   data,
   token

@@ -15,6 +15,7 @@ export default {
     ipLimitNum: '',
     deviceUniqueness: '',
     isAnswerLimit: '',
+    showTime: '',
     limitNum: '',
     moreConf: ''
   },
@@ -39,15 +40,25 @@ export default {
       const limitConstraints = data.message.data
       const answerLinitInfo = !!limitConstraints.moreConf && JSON.parse(limitConstraints.moreConf);
 
+      let isAnswerLimit = ''
+      let showTime = 'd'
+      let limitNum = ''
+
+      if (!(answerLinitInfo == "{}")) {
+        isAnswerLimit = answerLinitInfo.isSetPeriodLimit,
+          showTime = answerLinitInfo.period,
+          limitNum = answerLinitInfo.limit
+      }
+
       yield put({
         type: 'save',
         payload: {
           ipLimit: limitConstraints.ipLimit,
           ipLimitNum: limitConstraints.ipLimitNum,
           deviceUniqueness: limitConstraints.deviceUniqueness,
-          isAnswerLimit: answerLinitInfo.isAnswerLimit,
-          limitNum: answerLinitInfo.limitNum,
-          moreConf: limitConstraints.moreConf
+          isAnswerLimit: isAnswerLimit,
+          showTime: showTime,
+          limitNum: limitNum
         }
       });
 
@@ -64,7 +75,8 @@ export default {
           limitBeginTime: panelDemand.limitBeginTime,
           beginTime: panelDemand.beginTime,
           limitExpireTime: panelDemand.limitExpireTime,
-          expireTime: panelDemand.expireTime
+          expireTime: panelDemand.expireTime,
+          moreConf: panelDemand.moreConf
         }
       });
 
