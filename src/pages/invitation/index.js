@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import { AtTabs, AtTabsPane, AtNavBar } from 'taro-ui'
 import { BeginToCollect } from '../../components/beginToCollect'
 import { Link } from '../../components/link'
 import './index.scss';
-import { AtTabs, AtTabsPane, AtNavBar } from 'taro-ui'
 
 @connect(({ invitation, common }) => ({
   ...invitation,

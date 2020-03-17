@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import { AtNavBar, AtMessage, AtModal } from 'taro-ui'
 import Questionaires from '../../components/questionaire'
 import './index.scss';
-import { AtNavBar, AtMessage, AtModal } from 'taro-ui'
 
 @connect(({ home, common }) => ({
   ...home,

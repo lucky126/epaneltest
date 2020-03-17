@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import { AtTabs, AtTabsPane } from 'taro-ui'
 import RetrievalProgress from '../../components/RetrievalProgress'
 import './index.scss';
-import { AtTabs, AtTabsPane } from 'taro-ui'
 
 @connect(({ data, common }) => ({
   ...data,
@@ -55,6 +55,7 @@ class Data extends Component {
   render() {
     const { RetrievalProgressData } = this.props
     const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
+    
     return (
       <View className='page'>
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>

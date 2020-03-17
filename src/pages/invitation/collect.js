@@ -1,9 +1,10 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import { AtNavBar, AtList, AtListItem, AtFloatLayout, AtInput, AtSwitch, AtMessage } from 'taro-ui'
+
 import { DateTimePicker } from '../../components/DateTimePicker'
 import './index.scss';
-import { AtNavBar, AtList, AtListItem, AtFloatLayout, AtInput, AtSwitch, AtMessage } from 'taro-ui'
 
 @connect(({ invitation, common }) => ({
   ...invitation,
