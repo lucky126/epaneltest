@@ -40,31 +40,10 @@ class Login extends Component {
     })
   }
   
-  handleWeappLogin = (res) => {
-    if(res.detail.userInfo){ // 返回的信息中包含用户信息则证明用户允许获取信息授权
-      // console.log(res.detail.encryptedData)
-      Taro.login()
-        .then(resLogin => {
-          // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        
-          if (resLogin.code){
-            // 登录
-            console.log(resLogin.code)
-            this.props.dispatch({
-              type: 'login/wxCode2Session',
-              payload: resLogin.code
-            }).then(()=>{
-              console.log('login result')
-            })
-          }
-        })
-    } else {
-      Taro.showToast({
-        title: '微信登录失败',
-        icon: 'error',
-        duration: 1000
-      })
-    }
+  handleWxLogin = () => {
+    Taro.navigateTo({
+      url: '/pages/login/wxlogin'
+    })
   }
 
   render() {
@@ -76,9 +55,7 @@ class Login extends Component {
             <View class='siteurl'>www.epanel.cn</View>
           </View>
           <View class='loginbutton'>
-            <AtButton type='primary' circle 
-            openType='getUserInfo'
-            onGetUserInfo={this.handleWeappLogin}>微信登录</AtButton>
+            <AtButton type='primary' circle onClick={this.handleWxLogin}>微信登录</AtButton>
           </View>
           <View class='loginbutton'>
             <AtButton onClick={this.handleForm} circle>云调查登录</AtButton>
