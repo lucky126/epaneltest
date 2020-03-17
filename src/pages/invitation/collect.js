@@ -241,7 +241,7 @@ class Collect extends Component {
     // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
     return value
   }
-  
+
   // 修改设备唯一设置
   handleChangeSetDeviceUniq = (e) => {
 
@@ -252,6 +252,46 @@ class Collect extends Component {
 
     this.updateLimitConstraints()
   }
+
+  // IP限制设置面板
+  handlePanelAnswerLimitSetting = (value) => {
+    this.setState({
+      isShowAnswerLimit: value
+    })
+  }
+
+
+  // 修改每日限答设置开关
+  handleChangeSetAnswerLimit(value) {
+    if (!value) {
+      this.props.dispatch({
+        type: 'invitation/save',
+        payload: {
+          limitNum: 0
+        }
+      })
+    }
+
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { isAnswerLimit: value }
+    })
+
+    this.updateLimitConstraints()
+  }
+
+  // 修改每日限答数量
+  handleChangeAnswerLimitNum = (value) => {
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { limitNum: value }
+    })
+
+    this.updateLimitConstraints()
+    // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
+    return value
+  }
+
 
   // 保存唯一限制设置
   updateLimitConstraints = () => {
@@ -359,7 +399,7 @@ class Collect extends Component {
                 <AtListItem title='每日限答次数'
                   arrow='right'
                   extraText={answerLimitNum}
-                  onClick={this.handleClick}
+                  onClick={this.handlePanelAnswerLimitSetting.bind(this, true)}
                 />
               </AtList>
 
@@ -426,6 +466,30 @@ class Collect extends Component {
             </View>
           ) : (<View></View>)}
         </AtFloatLayout>
+
+        <AtFloatLayout isOpened={this.state.isShowAnswerLimit} title='每日限制答设置'
+          onClose={this.handlePanelAnswerLimitSetting.bind(this, false)} >
+          <View className='at-row'>
+            <View className='at-col at-col-12'>
+              <AtSwitch title='开启设置' checked={isAnswerLimit} onChange={this.handleChangeSetAnswerLimit.bind(this)} />
+            </View>
+          </View>
+          {(isAnswerLimit) ? (
+            <View className='at-row'>
+              <View className='at-col at-col-12'>
+                <AtInput
+                  name='value'
+                  title='限答数量'
+                  type='text'
+                  placeholder='请输入数量'
+                  value={isAnswerLimit ? limitNum : 0}
+                  onChange={this.handleChangeAnswerLimitNum.bind(this)}
+                />
+              </View>
+            </View>
+          ) : (<View></View>)}
+        </AtFloatLayout>
+
       </View>
     )
   }

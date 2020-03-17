@@ -91,7 +91,7 @@ class Invitation extends Component {
     let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
     if (qtnStatus !== 0) {
-      tabList = [{ title: '开放链接' }, { title: '其他渠道' }]
+      tabList = [{ title: '开放链接' }, { title: '封闭链接' }]
       rightFirstIconType = 'settings'
     }
 
