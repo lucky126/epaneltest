@@ -1,5 +1,4 @@
 import * as Request from '../../utils/request';
-import { WXGETSESSION, APPID, SECRET } from '../../config'
 
 export const login = (data) => Request.syncAction({
   method: 'UserLogin.login',
@@ -7,6 +6,9 @@ export const login = (data) => Request.syncAction({
   data
 });
 
-export const wxCode2Session = (data) => Request.defaultAction({
-  url: WXGETSESSION + `?appid=${APPID}&secret=${SECRET}&js_code=${data}&grant_type=authorization_code`,
+export const wxLogin = (data) => Request.syncAction({
+  url: '/thirdLogin/user/wxLogin',
+  method: 'user.wxLogin',
+  type: 'user',
+  data
 });

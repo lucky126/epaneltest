@@ -10,9 +10,9 @@ export default {
   },
 
   effects: {
-    * wxCode2Session({ payload: values }, { call, put }) {
+    * wxLogin({ payload: values }, { call, put }) {
 
-      const { data } = yield call(loginApi.wxCode2Session, values);
+      const { data } = yield call(loginApi.wxLogin, values);
       console.log(data)
 
     },

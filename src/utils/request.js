@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 import { MAINHOST, noConsole, HTTP_STATUS } from '../config';
 import { commonParame } from '../config/requestConfig'
 
-const url = '/v2/service/apis'
+const defaultUrl = '/v2/service/apis'
 
 let token = Taro.getStorageSync('token')
 
@@ -10,7 +10,7 @@ let token = Taro.getStorageSync('token')
  * 针对外部调用使用
  * @param {*} options 
  */
-export function defaultAction(options){
+export function defaultAction(options) {
   if (!noConsole) {
     console.log(
       `${new Date().toLocaleString()}【 url=${options.url} 】【 method=${options.method} 】data=${JSON.stringify(
@@ -34,7 +34,7 @@ export function defaultAction(options){
             data
           );
         }
-      } 
+      }
     },
     fail: function () {
 
@@ -48,19 +48,20 @@ export function defaultAction(options){
  */
 export function syncAction(options) {
   token = options.token || token
+  let currentUrl = options.url ? options.url : defaultUrl
 
   if (!noConsole) {
     console.log(`${new Date().toLocaleString()} token=${JSON.stringify(
       token
     )}`)
     console.log(
-      `${new Date().toLocaleString()}【 type=${options.type} 】【 method=${options.method} 】data=${JSON.stringify(
+      `${new Date().toLocaleString()}【 url=${currentUrl} 】【 type=${options.type} 】【 method=${options.method} 】data=${JSON.stringify(
         options.data
       )}`
     );
   }
   return Taro.request({
-    url: MAINHOST + url,
+    url: MAINHOST + currentUrl,
     data: {
       "method": options.method,
       "params": options.data,
@@ -73,7 +74,6 @@ export function syncAction(options) {
     },
     method: 'POST',
     success: function (res) {
-      console.log(res)
       const { data } = res;
 
       if (data.status == HTTP_STATUS.SUCCESS) {

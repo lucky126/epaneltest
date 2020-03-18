@@ -4,9 +4,8 @@ import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux';
 import './wxlogin.scss';
 
-@connect(({ login, common }) => ({
+@connect(({ login }) => ({
   ...login,
-  ...common
 }))
 
 class WxLogin extends Component {
@@ -25,46 +24,35 @@ class WxLogin extends Component {
   }
 
   handleWxLogin = () => {
+
     Taro.login()
       .then(r => {
         var code = r.code //登录凭证
         console.log(code)
         if (code) {
           //2 调用获取用户信息接口
+          let params = ''
           Taro.getUserInfo({
             success: function (res) {
-              console.log({ encryptedData: res.encryptedData, iv: res.iv, code: code })
+              params = { encryptedData: res.encryptedData, iv: res.iv, code: code }
             }
-
           })
+
+          console.log(params)
+          if (params) {
+            this.props.dispatch({
+              type: 'login/wxLogin',
+              payload: {}
+            }).then(() => {
+              console.log('wx login')
+            })
+          }else{
+            console.log('wxlogin error')
+          }
         }
       })
 
-    // if (res.detail.userInfo) { // 返回的信息中包含用户信息则证明用户允许获取信息授权
-    //   console.log(res.detail)
-    //   console.log(res.detail.encryptedData)
-    //   Taro.login()
-    //     .then(resLogin => {
-    //       // 发送 res.code 到后台换取 openId, sessionKey, unionId
 
-    //       if (resLogin.code) {
-    //         // 登录
-    //         console.log(resLogin.code)
-    //         this.props.dispatch({
-    //           type: 'login/wxCode2Session',
-    //           payload: resLogin.code
-    //         }).then(() => {
-    //           console.log('login result')
-    //         })
-    //       }
-    //     })
-    // } else {
-    //   Taro.showToast({
-    //     title: '微信登录失败',
-    //     icon: 'error',
-    //     duration: 1000
-    //   })
-    // }
   }
 
   render() {
@@ -80,7 +68,7 @@ class WxLogin extends Component {
             </View>
             <AtButton type='primary' circle openType='getUserInfo' onGetUserInfo={this.handleWxLogin} >确认登录</AtButton>
           </View>
-          
+
         </View>
 
         <View class='logged'>
