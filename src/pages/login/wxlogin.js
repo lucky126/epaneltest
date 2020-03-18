@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
-import { AtButton } from 'taro-ui'
+import { AtButton, AtMessage } from 'taro-ui'
 import { connect } from '@tarojs/redux';
 import './wxlogin.scss';
 
@@ -23,6 +23,13 @@ class WxLogin extends Component {
 
   }
 
+  errorMessage = (msg) => {
+    Taro.atMessage({
+      'message': msg,
+      'type': 'error'
+    })
+  }
+
   handleWxLogin = () => {
 
     Taro.login()
@@ -31,24 +38,30 @@ class WxLogin extends Component {
         console.log(code)
         if (code) {
           //2 调用获取用户信息接口
-          let params = ''
+          let encryptedData = ''
+          let iv = ''
           Taro.getUserInfo({
             success: function (res) {
-              params = { encryptedData: res.encryptedData, iv: res.iv, code: code }
+              encryptedData = res.encryptedData
+              iv = res.iv
             }
           })
 
+          let params = { encryptedData: encryptedData, iv: iv, code: code }
           console.log(params)
-          if (params) {
+
+          if (!!encryptedData && !!iv) {
             this.props.dispatch({
               type: 'login/wxLogin',
-              payload: {}
+              payload: params
             }).then(() => {
               console.log('wx login')
             })
-          }else{
-            console.log('wxlogin error')
+          } else {
+            this.errorMessage('微信获取用户信息失败')
           }
+        } else {
+          this.errorMessage('微信授权登录失败')
         }
       })
 
@@ -59,6 +72,7 @@ class WxLogin extends Component {
 
     return (
       <View className='wxlogin-page'>
+        <AtMessage />
         <View className='login'>
 
           <View class='alert'>
