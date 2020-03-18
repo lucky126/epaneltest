@@ -31,6 +31,8 @@ class WxLogin extends Component {
   }
 
   handleWxLogin = () => {
+    let encryptedData = ''
+    let iv = ''
 
     Taro.login()
       .then(r => {
@@ -38,28 +40,29 @@ class WxLogin extends Component {
         console.log(code)
         if (code) {
           //2 调用获取用户信息接口
-          let encryptedData = ''
-          let iv = ''
+          
           Taro.getUserInfo({
             success: function (res) {
               encryptedData = res.encryptedData
-              iv = res.iv
+              iv = res.iv    
+            }
+          }).then(()=>{
+            let params = { encryptedData: encryptedData, iv: iv, code: code }
+            console.log(params)
+  
+            if (!!encryptedData && !!iv) {
+              this.props.dispatch({
+                type: 'login/wxLogin',
+                payload: params
+              }).then(() => {
+                console.log('wx login')
+              })
+            } else {
+              this.errorMessage('微信获取用户信息失败')
             }
           })
 
-          let params = { encryptedData: encryptedData, iv: iv, code: code }
-          console.log(params)
-
-          if (!!encryptedData && !!iv) {
-            this.props.dispatch({
-              type: 'login/wxLogin',
-              payload: params
-            }).then(() => {
-              console.log('wx login')
-            })
-          } else {
-            this.errorMessage('微信获取用户信息失败')
-          }
+         
         } else {
           this.errorMessage('微信授权登录失败')
         }
