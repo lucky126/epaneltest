@@ -13,7 +13,49 @@ export default {
     * wxLogin({ payload: values }, { call, put }) {
 
       const { data } = yield call(loginApi.wxLogin, values);
-      console.log(data)
+      console.log(data.message.data.wxlogin)
+
+      if (!!data.message.data.wxlogin) {
+        let token = data.message.data.wxlogin.token
+        let now = new Date().valueOf()
+
+        Taro.setStorage({
+          key: "token",
+          data: token
+        })
+
+        Taro.setStorage({
+          key: "logintime",
+          data: now
+        })
+
+        Taro.atMessage({
+          'message': '登录成功',
+          'type': 'success',
+          'duration': 1000
+        })
+
+        yield put({
+          type: 'save',
+          payload: {
+            token: token
+          }
+        });
+
+        yield put({
+          type: 'common/save',
+          payload: {
+            token: token,
+            logintime: now
+          }
+        });
+
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '../home/index'
+          })
+        }, 500);
+      }
 
     },
     * formLogin({ payload: values }, { call, put }) {
@@ -31,10 +73,12 @@ export default {
             data.message.data.token
           );
         }
+
+        let token = data.message.data.token
         let now = new Date().valueOf()
         Taro.setStorage({
           key: "token",
-          data: data.message.data.token
+          data: token
         })
         Taro.setStorage({
           key: "userinfo",
@@ -54,7 +98,7 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            token: data.message.data.token,
+            token: token,
             userinfo: data.message.data.user
           }
         });
@@ -62,7 +106,7 @@ export default {
         yield put({
           type: 'common/save',
           payload: {
-            token: data.message.data.token,
+            token: token,
             userinfo: data.message.data.user,
             logintime: now
           }

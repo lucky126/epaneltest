@@ -54,6 +54,7 @@ class Home extends Component {
 
   componentDidMount() {
     const token = this.props.token || Taro.getStorageSync('token');
+    
     if (!token) {
       Taro.redirectTo({
         url: '../login/index'
