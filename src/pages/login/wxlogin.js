@@ -48,6 +48,7 @@ class WxLogin extends Component {
             }
           }).then(()=>{
             let params = { encryptedData: encryptedData, iv: iv, code: code }
+            console.log(encryptedData)
             console.log(params)
   
             if (!!encryptedData && !!iv) {
@@ -88,11 +89,11 @@ class WxLogin extends Component {
 
         </View>
 
-        <View class='logged'>
-          {/* <Image class='logged-icon' src='../../images/iconfont-weixin.png' /> */}
+        {/* <View class='logged'>
+          <Image class='logged-icon' src='../../images/iconfont-weixin.png' />
           <View class='logged-text'>近期你已经授权登陆过</View>
           <View class='logged-text'>自动登录中</View>
-        </View>
+        </View> */}
       </View >
     )
   }
