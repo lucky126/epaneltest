@@ -4,7 +4,8 @@ import * as homeApi from './service';
 export default {
   namespace: 'home',
   state: {
-    qtnList: '',
+    qtnList: [],
+    page: 1,
     qtnTypes: ''
   },
 
@@ -25,13 +26,15 @@ export default {
         }
       });
     },
-    * getQuestionaires({ payload: values, token }, { call, put }) {
+    * getQuestionaires({ payload: values, token }, { call, put, select }) {
+      const { page, qtnList } = yield select(state => state.home);
       const { data } = yield call(homeApi.getQuestionaires, values, token);
 
       yield put({
         type: 'save',
         payload: {
-          qtnList: data.message.data.list,
+          qtnList:
+            page > 1 ? [...qtnList, ...data.message.data.list] : data.message.data.list,
         }
       });
 

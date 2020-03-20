@@ -20,10 +20,7 @@ class Home extends Component {
     super(props)
     this.state = {
       isModalOpened: false,
-      total: 0,
-      page: 1,
       pageSize: 6,
-      isLoading: false,
       status: '',
       qtnType: '',
       sortOrder: 'desc',
@@ -38,9 +35,7 @@ class Home extends Component {
       isCurrUser: true,
       isOpen: false,
       isShow: false,
-      isOpen2: false,
-      qtnId: 0,
-      index: 0,
+      isOpen2: false,      
       oldStatus: 0,
       newStatus: 0,
       oldQtnType: '',
@@ -54,7 +49,7 @@ class Home extends Component {
 
   componentDidMount() {
     const token = this.props.token || Taro.getStorageSync('token');
-    
+
     if (!token) {
       Taro.redirectTo({
         url: '../login/index'
@@ -65,12 +60,11 @@ class Home extends Component {
   };
 
   componentWillUnmount() {
-   
+
   }
 
   getData() {
     const {
-      page,
       pageSize,
       status,
       createTimeBegin,
@@ -80,6 +74,8 @@ class Home extends Component {
       sortOrder,
       qtnName
     } = this.state
+
+    const { page } = this.props
 
     let params = {
       page,
@@ -119,7 +115,7 @@ class Home extends Component {
   handleClick = () => {
 
   }
-  
+
   handleLogout = () => {
     this.props.dispatch({
       type: 'home/logout',
@@ -134,12 +130,24 @@ class Home extends Component {
     })
   }
 
-  closeModa = () => {
+  closeModal = () => {
     this.setState({
       ['isModalOpened']: false
     })
   }
-  
+
+  // 小程序上拉加载
+  onReachBottom() {
+    this.props.dispatch({
+      type: 'home/save',
+      payload: {
+        page: this.props.page + 1,
+      },
+    });
+    this.getData()
+  }
+
+
   render() {
     const { qtnList, qtnTypes } = this.props
 
