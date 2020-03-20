@@ -3,6 +3,7 @@ import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import RetrievalProgress from '../../components/RetrievalProgress'
+import AnswerData from '../../components/AnswerData'
 import './index.scss';
 
 @connect(({ data, common }) => ({
@@ -18,30 +19,47 @@ class Data extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      qtnId: 0,
       current: 0,
+      pageSize: 15,
+      status: null,
+      startTime: null,
+      endTime: null,
     }
   }
 
   componentDidMount = () => {
-    if (!this.props.token) {
-      Taro.redirectTo({
-        url: '../login/index'
-      })
-    }
+    this.setState({
+      qtnId: this.$router.params.id
+    });
 
-    this.getData()
+    this.getData(this.$router.params.id)
   };
 
-  getData = () => {
-    const { id } = this.$router.params
-
+  getData = (qtnId) => {
     //获得问卷进度数据
     this.props.dispatch({
       type: 'data/getRetrievalProgress',
-      payload: { qtnId: id },
+      payload: { qtnId },
       token: this.props.token
     }).then(() => {
       console.log('get RetrievalProgress')
+    })
+
+    this.getResultData(qtnId)
+  }
+
+  getResultData = (qtnId) => {
+    const { pageSize, status, startTime, endTime } = this.state
+    const { resultPage } = this.props
+
+    //获得问卷进度数据
+    this.props.dispatch({
+      type: 'data/getAnswerStatus',
+      payload: { qtnId, page: resultPage, pageSize, status, startTime, endTime },
+      token: this.props.token
+    }).then(() => {
+      console.log('get AnswerStatus')
     })
   }
 
@@ -51,11 +69,26 @@ class Data extends Component {
     })
   }
 
+  // 小程序上拉加载
+  onReachBottom() {
+    // 只允许样本数据上拉加载
+    if(this.state.current===1)
+    {
+      const { qtnId } = this.state
+      this.props.dispatch({
+        type: 'data/save',
+        payload: {
+          resultPage: this.props.resultPage + 1,
+        },
+      });
+      this.getResultData(qtnId)
+    }
+  }
 
   render() {
     const { RetrievalProgressData } = this.props
     const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
-    
+
     return (
       <View className='page'>
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
@@ -63,11 +96,13 @@ class Data extends Component {
             <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页二的内容</View>
+            <AnswerData data={this.props.resultData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
             <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>
-          </AtTabsPane>
+            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>
+            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>
+           </AtTabsPane>
         </AtTabs>
       </View>
     )

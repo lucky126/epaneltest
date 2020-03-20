@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import { formatOnlyDate } from '../../utils/common'
 
 import u190 from '../../assets/images/u190.png'
 import u192 from '../../assets/images/u192.png'
@@ -52,7 +52,7 @@ class Questionaire extends Component {
         <View className='InfoRow'>
           <View className='titleRow'>（ID: {qtn.id}) {qtn.qtnTitle}</View>
           <View className='dataRow'>
-            <Text>{moment(qtn.createTime).format('YYYY-MM-DD')} </Text>
+            <Text>{formatOnlyDate(qtn.createTime)} </Text>
             <Text className='collect'>收集数据：<Text className='finishNum'>{qtn.finishNum}</Text></Text>
           </View>
           <View className='typeRow'>

@@ -9,3 +9,10 @@ export const getRetrievalProgress = (data, token) => syncAction({
   token
 });
 
+export const getAnswerStatus = (data, token) => syncAction({
+  method: 'PanelData.getAnswerStatus',
+  type: DATAANALYSE,
+  data,
+  token
+});
+
