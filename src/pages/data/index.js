@@ -21,7 +21,7 @@ class Data extends Component {
     this.state = {
       qtnId: 0,
       current: 0,
-      pageSize: 15,
+      pageSize: 20,
       status: null,
       startTime: null,
       endTime: null,
@@ -31,6 +31,13 @@ class Data extends Component {
   componentDidMount = () => {
     this.setState({
       qtnId: this.$router.params.id
+    });
+    this.props.dispatch({
+      type: 'data/save',
+      payload: {
+        resultPage: 1,
+        resultData: []
+      },
     });
 
     this.getData(this.$router.params.id)

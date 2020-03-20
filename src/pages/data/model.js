@@ -9,7 +9,7 @@ export default {
   },
 
   effects: {
-    
+
     * getRetrievalProgress({ payload: values, token }, { call, put }) {
       const { data } = yield call(dataApi.getRetrievalProgress, values, token);
 
@@ -30,7 +30,7 @@ export default {
         type: 'save',
         payload: {
           resultData:
-          resultPage > 1 ? [...resultData, ...data.message.data.list] : data.message.data.list,
+            resultPage > 1 ? [...resultData, ...data.message.data.list] : data.message.data.list,
         }
       });
 
