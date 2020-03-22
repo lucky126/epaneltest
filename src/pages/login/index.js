@@ -54,9 +54,9 @@ class Login extends Component {
             <Image src={Logo} style='width: 158px;height: 20px;'></Image>
             <View class='siteurl'>www.epanel.cn</View>
           </View>
-          <View class='loginbutton'>
+          {process.env.TARO_ENV === 'weapp' && <View class='loginbutton'>
             <AtButton type='primary' circle onClick={this.handleWxLogin}>微信登录</AtButton>
-          </View>
+          </View>}
           <View class='loginbutton'>
             <AtButton onClick={this.handleForm} circle>云调查登录</AtButton>
           </View>
