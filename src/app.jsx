@@ -60,21 +60,33 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/login/index',
       'pages/home/index',
+      'pages/login/index',
       'pages/login/formlogin',
       'pages/login/wxlogin',
-      'pages/data/index',
-      'pages/data/anwserdetail',
-      'pages/invitation/index',
-      'pages/invitation/collect'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    //分包路径
+    subPackages:[
+      {
+        "root": "pages/data/",
+        "pages": [
+          "index",
+          "anwserdetail",
+        ]
+      }, {
+        "root": "pages/invitation/",
+        "pages": [
+          "index",
+          "collect",
+        ]
+      }
+    ]
   }
 
   // 在 App 类中的 render() 函数没有实际作用
