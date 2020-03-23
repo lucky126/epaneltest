@@ -1,4 +1,5 @@
 import * as dataApi from './service';
+import { HTTP_STATUS } from '../../config';
 
 export default {
   namespace: 'data',
@@ -50,6 +51,22 @@ export default {
             data.message.data.panelInfo,
         }
       });
+
+    },
+
+    * deleteAnswerResultById({ payload: values, deleteId, token }, { call, put, select }) {
+      const { resultData } = yield select(state => state.data);
+      const { data } = yield call(dataApi.deleteAnswerResultById, values, token);
+
+      if (data.status == HTTP_STATUS.SUCCESS) {
+        resultData.splice(deleteId, 1)
+        yield put({
+          type: 'save',
+          payload: {
+            resultData: resultData
+          }
+        });
+      }
 
     },
   },

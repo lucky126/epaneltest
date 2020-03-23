@@ -62,6 +62,10 @@ class Home extends Component {
   componentWillUnmount() {
 
   }
+  
+  componentDidShow = () => {
+    this.getData()
+  }
 
   getData() {
     const {

@@ -3,6 +3,9 @@ import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
 import Answeroptlist from '../../components/AnswerOptList';
+import AnswerSubList from '../../components/AnswerSubList';
+import AnswerOpenList from '../../components/AnswerOpenList';
+import { AtButton, AtModal } from 'taro-ui';
 
 @connect(({ data, common }) => ({
   ...data,
@@ -18,7 +21,9 @@ class AnswerDetail extends Component {
     super(props)
     this.state = {
       qtnId: 0,
-      resultId: 0
+      resultId: 0,
+      deleteId: 0,
+      isOpenedDel: false,
     }
   }
 
@@ -26,6 +31,7 @@ class AnswerDetail extends Component {
     this.setState({
       qtnId: this.$router.params.qtnId,
       resultId: this.$router.params.rid,
+      deleteId: this.$router.params.idx,
     });
 
     this.getData(this.$router.params.qtnId, this.$router.params.rid)
@@ -40,7 +46,34 @@ class AnswerDetail extends Component {
     })
   }
 
+  handleShowDelete = () => {
+    this.setState({
+      isOpenedDel: true
+    });
+  }
 
+  handleConfirmDel = () => {
+    const { qtnId, resultId, deleteId } = this.state
+
+    this.props.dispatch({
+      type: 'data/deleteAnswerResultById',
+      payload: { qtnId, resultId },
+      deleteId,
+      token: this.props.token
+    })
+
+    Taro.navigateBack({
+      delta: 1
+    })
+  }
+
+  handleCancelDel = () => {
+    this.setState({
+      isOpenedDel: false
+    });
+  }
+
+  
   render() {
     const { answerInfo, panelInfo } = this.props
     const { resultId } = this.state
@@ -108,17 +141,32 @@ class AnswerDetail extends Component {
                 </View>
                 {
                   doc.subList ? (
-                    <View></View>
+                    <AnswerSubList subList={doc.subList || []} />
                   ) : doc.type === 2 ? (
-                    <View></View>
+                    <AnswerOpenList
+                      selectType={doc.selectType}
+                      optList={doc.optList || []}
+                    />
                   ) : (
-                    <Answeroptlist optList={doc.optList || []} />
-                 )}
+                        <Answeroptlist optList={doc.optList || []} />
+                      )}
               </View>
             ))}
-
+            <View className='delButton'>
+              <AtButton circle className='danger' onClick={this.handleShowDelete}>删除</AtButton>
+            </View>
           </View>
         </View>
+
+        <AtModal
+          isOpened={this.state.isOpenedDel}
+          title = '删除确认'
+          cancelText='取消'
+          confirmText='确认删除'
+          onCancel={this.handleCancelDel}
+          onConfirm={this.handleConfirmDel}
+          content='该样本答题删除后不可恢复，是否确认删除？'
+        />
       </View>
     )
   }

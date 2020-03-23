@@ -39,9 +39,12 @@ class Data extends Component {
         resultData: []
       },
     });
-
-    this.getData(this.$router.params.id)
   };
+
+  // 需要返回刷新，使用该方法获取数据，对应小程序的onShow
+  componentDidShow = () => {
+    this.getData(this.$router.params.id)
+  }
 
   getData = (qtnId) => {
     //获得问卷进度数据
@@ -88,11 +91,11 @@ class Data extends Component {
     }
   }
 
-  onShowResult = (resultId) => {
+  onShowResult = (resultId, index) => {
     const { qtnId } = this.state
     
     Taro.navigateTo({
-      url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId
+      url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId + '&idx=' + index
     })
   }
 

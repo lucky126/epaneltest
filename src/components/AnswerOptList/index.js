@@ -13,6 +13,7 @@ class Answeroptlist extends Component {
 
   render() {
     const { optList } = this.props
+
     return (
       <View className='optlist'>
         {optList.map((opt, key) => (

@@ -37,7 +37,7 @@ class AnswerData extends Component {
                 {item.answerStatusDescn}
               </View>
               <View className='td'>{item.endTime ? formatOnlyDate(item.endTime) : '--'}</View>
-              <View className='td'><Text onClick={onShowResult.bind(this, item.resultId)}>查看</Text></View>
+              <View className='td'><Text onClick={onShowResult.bind(this, item.resultId, index)}>查看</Text></View>
             </View>
           ))}
 
