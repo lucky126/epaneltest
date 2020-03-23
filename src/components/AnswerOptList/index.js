@@ -16,7 +16,7 @@ class Answeroptlist extends Component {
     return (
       <View className='optlist'>
         {optList.map((opt, key) => (
-          <View className='at-row' key={key || 0}>
+          <View className='at-row opt' key={key || 0}>
             <View className='at-col at-col__offset-1' >
               {Utils.strip(opt.label)}
             </View>
