@@ -38,7 +38,7 @@ class Invitation extends Component {
       payload: { qtnId },
       token: this.props.token
     }).then(() => {
-      console.log('get statusCheck')
+      // console.log('get statusCheck')
       if (this.props.qtnStatus !== 0) {
         this.getWebLink(qtnId)
       }
@@ -67,8 +67,6 @@ class Invitation extends Component {
       type: 'invitation/beginRetrieve',
       payload: { qtnId },
       token: this.props.token
-    }).then(() => {
-      console.log('update statusCheck')
     })
   }
 
@@ -79,8 +77,6 @@ class Invitation extends Component {
       type: 'invitation/getWebLink',
       payload: { qtnId: id },
       token: this.props.token
-    }).then(() => {
-      console.log('get WebLink')
     })
 
   }

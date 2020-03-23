@@ -37,8 +37,6 @@ class AnswerDetail extends Component {
       type: 'data/getAnswerResultById',
       payload: { qtnId, resultId },
       token: this.props.token
-    }).then(() => {
-      console.log('get AnswerResultById')
     })
   }
 
@@ -46,9 +44,6 @@ class AnswerDetail extends Component {
   render() {
     const { answerInfo, panelInfo } = this.props
     const { resultId } = this.state
-
-    console.log(answerInfo)
-    console.log(panelInfo)
 
     return (
       <View className='page'>

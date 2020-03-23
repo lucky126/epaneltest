@@ -2,11 +2,8 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import PropTypes from 'prop-types';
 import { formatOnlyDate } from '../../utils/common'
+import { AtIcon } from 'taro-ui';
 
-import u190 from '../../assets/images/u190.png'
-import u192 from '../../assets/images/u192.png'
-import u198 from '../../assets/images/u198.png'
-import u210 from '../../assets/images/u210.png'
 import './index.scss'
 
 class Questionaire extends Component {
@@ -18,11 +15,11 @@ class Questionaire extends Component {
     qtn: '',
   };
 
-  handleEdit= (id) => {
-    console.log('edit ' + id)
+  handleEdit = (id) => {
+    // console.log('edit ' + id)
   }
-  handleShow= (id) => {
-    console.log('show ' + id)
+  handleShow = (id) => {
+    // console.log('show ' + id)
   }
 
   handleData = (id) => {
@@ -31,7 +28,7 @@ class Questionaire extends Component {
     })
   }
 
-  handleInvitation =(id) => {
+  handleInvitation = (id) => {
     Taro.navigateTo({
       url: '/pages/invitation/index?id=' + id
     })
@@ -40,10 +37,8 @@ class Questionaire extends Component {
   render() {
     const { qtn, qtnTypes } = this.props;
 
-    let ftButton = u192
     let ftAction = this.handleShow.bind(this, qtn.id)
-    if(qtn.status===0){
-      ftButton=u190
+    if (qtn.status === 0) {
       ftAction = this.handleEdit.bind(this, qtn.id)
     }
 
@@ -62,13 +57,15 @@ class Questionaire extends Component {
         <View className='optRow at-row'>
           <View className='at-col at-col-6'>{qtn.statusDescn}</View>
           <View className='at-col at-col-2'>
-            <Image src={ftButton} style='width:25px;height:25px;' onClick={ftAction} />
+            {qtn.status == 0 ?
+              (<AtIcon value='edit' size='20' onClick={ftAction} ></AtIcon>)
+              : (<AtIcon value='eye' size='20' onClick={ftAction} ></AtIcon>)}
           </View>
           <View className='at-col at-col-2'>
-            <Image src={u210} style='width:25px;height:25px;' onClick={this.handleInvitation.bind(this, qtn.id)} />
+            <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id)} ></AtIcon>
           </View>
           <View className='at-col at-col-2'>
-            <Image src={u198} style='width:25px;height:25px;' onClick={this.handleData.bind(this, qtn.id)} />
+            <AtIcon value='analytics' size='20' onClick={this.handleData.bind(this, qtn.id)}></AtIcon>
           </View>
         </View>
       </View>

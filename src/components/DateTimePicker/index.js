@@ -100,7 +100,7 @@ export default class DateTimePicker extends Component {
             minute,
             current
         })
-        console.log('current change = ' + current)
+        // console.log('current change = ' + current)
     }
 
     componentWillMount() {

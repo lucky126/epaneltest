@@ -25,8 +25,6 @@ class Login extends Component {
     const logintime = Taro.getStorageSync('logintime')
     let now =  new Date().valueOf()
     let duration = now - logintime
-
-    console.log('duration=' + duration)
     
     if (!!token && duration < 1000*60*60) {
       Taro.redirectTo({ url: '/pages/home/index' })

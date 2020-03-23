@@ -49,8 +49,6 @@ class Data extends Component {
       type: 'data/getRetrievalProgress',
       payload: { qtnId },
       token: this.props.token
-    }).then(() => {
-      console.log('get RetrievalProgress')
     })
 
     this.getResultData(qtnId)
@@ -65,8 +63,6 @@ class Data extends Component {
       type: 'data/getAnswerStatus',
       payload: { qtnId, page: resultPage, pageSize, status, startTime, endTime },
       token: this.props.token
-    }).then(() => {
-      console.log('get AnswerStatus')
     })
   }
 
@@ -94,7 +90,6 @@ class Data extends Component {
 
   onShowResult = (resultId) => {
     const { qtnId } = this.state
-    console.log('show result:' + resultId)
     
     Taro.navigateTo({
       url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId

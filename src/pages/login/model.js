@@ -80,7 +80,6 @@ export default {
     * wxLogin({ payload: values }, { call, put }) {
 
       const { data } = yield call(loginApi.wxLogin, values);
-      console.log(data.message.data)
 
       yield put({
         type: 'commonLogin',

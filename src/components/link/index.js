@@ -18,8 +18,7 @@ class Link extends Component {
       data: this.props.linkData.weblinkUrl,
       success: function () {
         Taro.getClipboardData({
-          success: function (res) {
-            console.log(res.data) // data
+          success: function () {
           }
         })
       }

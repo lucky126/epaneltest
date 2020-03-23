@@ -98,8 +98,6 @@ class Home extends Component {
       type: 'home/getQuestionaireTypes',
       payload: {},
       token: this.props.token
-    }).then(() => {
-      console.log('get questionaireType')
     })
 
     //获得问卷列表
@@ -107,8 +105,6 @@ class Home extends Component {
       type: 'home/getQuestionaires',
       payload: params,
       token: this.props.token
-    }).then(() => {
-      console.log('get questionaires')
     })
   }
 
@@ -119,8 +115,6 @@ class Home extends Component {
   handleLogout = () => {
     this.props.dispatch({
       type: 'home/logout',
-    }).then(() => {
-      console.log('logout')
     })
   }
 

@@ -22,8 +22,7 @@ export default {
 
   effects: {
     * statusCheck({ payload: values, token }, { call, put }) {
-      console.log('values')
-      console.log(values)
+
       const { data } = yield call(invitationApi.statusCheck, values, token);
 
       yield put({
