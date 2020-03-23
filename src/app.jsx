@@ -65,6 +65,7 @@ class App extends Component {
       'pages/login/formlogin',
       'pages/login/wxlogin',
       'pages/data/index',
+      'pages/data/anwserdetail',
       'pages/invitation/index',
       'pages/invitation/collect'
     ],

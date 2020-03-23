@@ -92,6 +92,15 @@ class Data extends Component {
     }
   }
 
+  onShowResult = (resultId) => {
+    const { qtnId } = this.state
+    console.log('show result:' + resultId)
+    
+    Taro.navigateTo({
+      url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId
+    })
+  }
+
   render() {
     const { RetrievalProgressData } = this.props
     const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
@@ -103,7 +112,7 @@ class Data extends Component {
             <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <AnswerData data={this.props.resultData} />
+            <AnswerData data={this.props.resultData}  onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
             <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>

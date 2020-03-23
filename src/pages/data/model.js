@@ -5,7 +5,9 @@ export default {
   state: {
     RetrievalProgressData: '',
     resultData: [],
-    resultPage: 1
+    resultPage: 1,
+    answerInfo: [],
+    panelInfo: {}
   },
 
   effects: {
@@ -31,6 +33,21 @@ export default {
         payload: {
           resultData:
             resultPage > 1 ? [...resultData, ...data.message.data.list] : data.message.data.list,
+        }
+      });
+
+    },
+
+    * getAnswerResultById({ payload: values, token }, { call, put }) {
+      const { data } = yield call(dataApi.getAnswerResultById, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          answerInfo:
+            data.message.data.answerInfo,
+          panelInfo:
+            data.message.data.panelInfo,
         }
       });
 

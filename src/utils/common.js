@@ -15,6 +15,13 @@ export const formatOnlyDate = date => {
 export var globalData = {} // 全局公共变量
 
 
+export function strip(html) {
+  return html === undefined
+    ? ''
+    : html.replace(/<\/?[^>]+(>|$)/g, '').replace(/&nbsp;/g, '')
+}
+
+
 // 截取字符串
 
 export const sliceStr = (str, sliceLen) => {

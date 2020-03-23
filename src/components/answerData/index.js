@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import PropTypes from 'prop-types';
 import cx from 'classnames'
 import { formatOnlyDate } from '../../utils/common'
@@ -13,7 +13,7 @@ class AnswerData extends Component {
   };
 
   render() {
-    const { data } = this.props
+    const { data, onShowResult } = this.props
 
     return (
       <View className='answerData-wrap'>
@@ -37,7 +37,7 @@ class AnswerData extends Component {
                 {item.answerStatusDescn}
               </View>
               <View className='td'>{item.endTime ? formatOnlyDate(item.endTime) : '--'}</View>
-              <View className='td'>查看</View>
+              <View className='td'><Text onClick={onShowResult.bind(this, item.resultId)}>查看</Text></View>
             </View>
           ))}
 

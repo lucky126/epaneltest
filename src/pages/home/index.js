@@ -35,7 +35,7 @@ class Home extends Component {
       isCurrUser: true,
       isOpen: false,
       isShow: false,
-      isOpen2: false,      
+      isOpen2: false,
       oldStatus: 0,
       newStatus: 0,
       oldQtnType: '',
@@ -179,9 +179,12 @@ class Home extends Component {
           <View>我的问卷</View>
         </AtNavBar>
         <View className='questionaires'>
-          {qtnList && qtnList.map((item, index) => (
+          {qtnList && qtnList.map((item) => (
             // <View>({item.id}){item.qtnTitle}</View>
-            <Questionaires qtn={item} {...qtProps} />
+            <View key={item.id}>
+              <Questionaires qtn={item} {...qtProps} />
+            </View>
+
           ))}
         </View>
       </View>
