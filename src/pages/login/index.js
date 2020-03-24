@@ -20,7 +20,7 @@ class Login extends Component {
     this.state = {}
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const token = this.props.token || Taro.getStorageSync('token')
     const logintime = Taro.getStorageSync('logintime')
     let now =  new Date().valueOf()

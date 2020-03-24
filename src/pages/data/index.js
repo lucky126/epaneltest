@@ -28,7 +28,7 @@ class Data extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.setState({
       qtnId: this.$router.params.id
     });

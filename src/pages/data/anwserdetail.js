@@ -27,11 +27,18 @@ class AnswerDetail extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.setState({
       qtnId: this.$router.params.qtnId,
       resultId: this.$router.params.rid,
       deleteId: this.$router.params.idx,
+    });
+    this.props.dispatch({
+      type: 'data/save',
+      payload: {
+        answerInfo: [],
+        panelInfo: {}
+      },
     });
 
     this.getData(this.$router.params.qtnId, this.$router.params.rid)

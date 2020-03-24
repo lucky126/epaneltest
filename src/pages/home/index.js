@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtMessage, AtModal } from 'taro-ui'
+import { AtNavBar, AtMessage, AtModal, AtSearchBar } from 'taro-ui'
 import Questionaires from '../../components/questionaire'
 import './index.scss';
 
@@ -62,7 +62,7 @@ class Home extends Component {
   componentWillUnmount() {
 
   }
-  
+
   componentDidShow = () => {
     this.getData()
   }
@@ -145,6 +145,24 @@ class Home extends Component {
     this.getData()
   }
 
+  onChangeSearch = (value) => {
+    this.setState({
+      qtnName: value
+    })
+  }
+
+  onActionClick = () => {
+    console.log(this.state.qtnName)
+    this.props.dispatch({
+      type: 'home/save',
+      payload: {
+        page: 1,
+        qtnList: []
+      },
+    });
+    this.getData()
+  }
+
 
   render() {
     const { qtnList, qtnTypes } = this.props
@@ -176,6 +194,13 @@ class Home extends Component {
         >
           <View>我的问卷</View>
         </AtNavBar>
+
+        <AtSearchBar
+          value={this.state.qtnName}
+          onChange={this.onChangeSearch.bind(this)}
+          onActionClick={this.onActionClick.bind(this)}
+        />
+        
         <View className='questionaires'>
           {qtnList && qtnList.map((item) => (
             // <View>({item.id}){item.qtnTitle}</View>
