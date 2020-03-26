@@ -1,8 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import PropTypes from 'prop-types';
-import { formatOnlyDate } from '../../utils/common'
 import { AtIcon } from 'taro-ui';
+import PropTypes from 'prop-types';
+import cx from 'classnames'
+import { formatOnlyDate } from '../../utils/common'
 
 import './index.scss'
 
@@ -55,16 +56,28 @@ class Questionaire extends Component {
           </View>
         </View>
         <View className='optRow at-row'>
-          <View className='at-col at-col-6'>{qtn.statusDescn}</View>
-          <View className='at-col at-col-2'>
-            {qtn.status == 0 ?
-              (<AtIcon value='edit' size='20' onClick={ftAction} ></AtIcon>)
-              : (<AtIcon value='eye' size='20' onClick={ftAction} ></AtIcon>)}
+          <View className='at-col at-col-6'>
+            <Text className="statusDesc">{qtn.statusDescn}</Text>
+            <Text className={cx({
+              statusDescDot_default: qtn.status === 0,
+              statusDescDot_run: qtn.status === 2,
+              statusDescDot_stop: qtn.status == 5
+            })}>●</Text>
+            <Text className="seperator"> </Text>
+            {/* 开启操作，只有0，5状态才可以，目标状态2 */}
+            {(qtn.status == 0 || qtn.status == 5) && (<AtIcon value='play' size='20' onClick={ftAction} ></AtIcon>)}
+            <Text className="seperator"> </Text>
+            {/* 暂停操作，执行中2才可以，目标状态0 */}
+            {qtn.status == 2 && (<AtIcon value='pause' size='20' onClick={ftAction} ></AtIcon>)}
+            <Text className="seperator"> </Text>
+            {/* 停止操作，执行中2才可以，目标状态5 */}
+            {qtn.status == 2 && (<AtIcon value='stop' size='20' onClick={ftAction} ></AtIcon>)}
           </View>
+          <View className='at-col at-col-3'></View>
           <View className='at-col at-col-2'>
             <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id)} ></AtIcon>
           </View>
-          <View className='at-col at-col-2'>
+          <View className='at-col at-col-1'>
             <AtIcon value='analytics' size='20' onClick={this.handleData.bind(this, qtn.id)}></AtIcon>
           </View>
         </View>

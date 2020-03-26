@@ -15,7 +15,7 @@ class AnswerSubList extends Component {
 
     return (
       <View className='AnswerSubList-wrap'>
-        {subList.map((sub, key) => (
+        {subList && subList.map((sub, key) => (
           <View key={key || 0}>
             <View className='at-row'>
               <View className='at-col at-col__offset-1 subDesc'>{Utils.strip(sub.subDescn)}</View>

@@ -15,7 +15,7 @@ class AnswerOpenList extends Component {
 
     return (
       <View className='AnswerOpenList-wrap'>
-        {optList.map((opt, key) => (
+        {optList && optList.map((opt, key) => (
           <View key={key || 0}>
             {selectType === 2 && (
               <View className='at-row'>

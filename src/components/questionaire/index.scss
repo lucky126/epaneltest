@@ -48,6 +48,23 @@
   .optRow{
     padding: 10PX;
   }
+
+  .statusDesc{
+    padding: 0;
+  }
+
+  .statusDescDot_stop{
+    color: red;
+  }
+  .statusDescDot_run{
+    color: green;
+  }
+  .statusDescDot_default{
+    color: black;
+  }
+  .seperator{
+    padding: 0 10PX 0 0
+  }
 }
 
 
