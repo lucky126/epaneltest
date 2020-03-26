@@ -2,9 +2,9 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
-import Answeroptlist from '../../components/AnswerOptList';
-import AnswerSubList from '../../components/AnswerSubList';
-import AnswerOpenList from '../../components/AnswerOpenList';
+import Answeroptlist from '../../components/answerOptList';
+import AnswerSubList from '../../components/answerSubList';
+import AnswerOpenList from '../../components/answerOpenList';
 import { AtButton, AtModal } from 'taro-ui';
 
 @connect(({ data, common }) => ({

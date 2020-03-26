@@ -113,10 +113,8 @@ class Data extends Component {
             <AnswerData data={this.props.resultData}  onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页三的内容</View>
-           </AtTabsPane>
+            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>尽请期待</View>
+          </AtTabsPane>
         </AtTabs>
       </View>
     )

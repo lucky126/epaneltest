@@ -170,7 +170,7 @@ class Home extends Component {
     const qtProps = {
       qtnTypes
     }
-
+//leftText='+新建问卷'
     return (
       <View className='page'>
         <AtMessage />
@@ -189,7 +189,7 @@ class Home extends Component {
           onClickRgIconNd={this.handleClick}
           onClickLeftIcon={this.handleClick}
           color='#000'
-          leftText='+新建问卷'
+          
           rightFirstIconType='user'
         >
           <View>我的问卷</View>

@@ -108,7 +108,7 @@ class Invitation extends Component {
               )}
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页二的内容</View>
+            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>尽请期待</View>
           </AtTabsPane>
         </AtTabs>
 

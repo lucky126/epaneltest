@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import * as Utils from '../../utils/common'
-import PropTypes from 'prop-types';
 import './index.scss'
 
 class AnswerOpenList extends Component {
