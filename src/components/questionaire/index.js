@@ -36,12 +36,12 @@ class Questionaire extends Component {
   }
 
   render() {
-    const { qtn, qtnTypes } = this.props;
+    const { qtn, index, qtnTypes, onChangeStatus } = this.props;
 
-    let ftAction = this.handleShow.bind(this, qtn.id)
-    if (qtn.status === 0) {
-      ftAction = this.handleEdit.bind(this, qtn.id)
-    }
+    // let ftAction = this.handleShow.bind(this, qtn.id)
+    // if (qtn.status === 0) {
+    //   ftAction = this.handleEdit.bind(this, qtn.id)
+    // }
 
     return (
       <View className='questionaire-wrap'>
@@ -57,21 +57,22 @@ class Questionaire extends Component {
         </View>
         <View className='optRow at-row'>
           <View className='at-col at-col-6'>
-            <Text className="statusDesc">{qtn.statusDescn}</Text>
+            <Text className='statusDesc'>{qtn.statusDescn}</Text>
             <Text className={cx({
               statusDescDot_default: qtn.status === 0,
               statusDescDot_run: qtn.status === 2,
               statusDescDot_stop: qtn.status == 5
             })}>●</Text>
-            <Text className="seperator"> </Text>
+            <Text className='seperator'> </Text>
             {/* 开启操作，只有0，5状态才可以，目标状态2 */}
-            {(qtn.status == 0 || qtn.status == 5) && (<AtIcon value='play' size='20' onClick={ftAction} ></AtIcon>)}
-            <Text className="seperator"> </Text>
+            {(qtn.status == 0 || qtn.status == 5) && (
+              <AtIcon value='play' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 2)} ></AtIcon>)}
+            <Text className='seperator'> </Text>
             {/* 暂停操作，执行中2才可以，目标状态0 */}
-            {qtn.status == 2 && (<AtIcon value='pause' size='20' onClick={ftAction} ></AtIcon>)}
-            <Text className="seperator"> </Text>
+            {qtn.status == 2 && (<AtIcon value='pause' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 0)} ></AtIcon>)}
+            <Text className='seperator'> </Text>
             {/* 停止操作，执行中2才可以，目标状态5 */}
-            {qtn.status == 2 && (<AtIcon value='stop' size='20' onClick={ftAction} ></AtIcon>)}
+            {qtn.status == 2 && (<AtIcon value='stop' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 5)} ></AtIcon>)}
           </View>
           <View className='at-col at-col-3'></View>
           <View className='at-col at-col-2'>

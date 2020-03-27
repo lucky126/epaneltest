@@ -19,7 +19,9 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isModalOpened: false,
+      isModalExitOpened: false,
+      isModalChangeOpened: false,
+      changeText: '',
       pageSize: 6,
       status: '',
       qtnType: '',
@@ -27,23 +29,12 @@ class Home extends Component {
       qtnName: '',
       createTimeBegin: '',
       createTimeEnd: '',
-      startTime: null,
-      endTime: null,
-      limitBeginTime: false,
-      limitExpireTime: false,
       userId: 0,
       isCurrUser: true,
-      isOpen: false,
-      isShow: false,
-      isOpen2: false,
+      qtnId: 0,
+      index: 0,
       oldStatus: 0,
       newStatus: 0,
-      oldQtnType: '',
-      newQtnType: '',
-      oldQtnName: '',
-      newQtnName: '',
-      isTop: true,
-      value: ''
     }
   }
 
@@ -122,15 +113,15 @@ class Home extends Component {
     })
   }
 
-  handleModalShow = () => {
+  handleModalExitShow = () => {
     this.setState({
-      ['isModalOpened']: true
+      ['isModalExitOpened']: true
     })
   }
 
-  closeModal = () => {
+  closeModalExit = () => {
     this.setState({
-      ['isModalOpened']: false
+      ['isModalExitOpened']: false
     })
   }
 
@@ -163,33 +154,103 @@ class Home extends Component {
     this.getData()
   }
 
+  handleChangeStatus = (id, index, oldStatus, newStatus) => {
+
+    let context = ''
+    if (oldStatus == 0 && newStatus == 2) {
+      context = '请确认您要将问卷状态改为“回收中”吗？如果确认，该问卷所有数据收集将被开启，答题链接支持回答。'
+    }
+    if (oldStatus == 0 && newStatus == 5) {
+      context = '请确认您要将问卷状态改为“已结束”吗？如果确认，该问卷所有数据收集将被停止，问卷链接关闭回答。'
+    }
+    if (oldStatus == 2 && newStatus == 0) {
+      context = '请确认您要将问卷状态改为“编辑中”吗？如果确认，该问卷所有数据收集将被停止，问卷链接关闭回答。'
+    }
+    if (oldStatus == 2 && newStatus === 5) {
+      context = '请确认您要将问卷状态改为“已结束”吗？如果确认，该问卷所有数据收集将被停止，问卷链接关闭回答。'
+    }
+    if (oldStatus == 5 && newStatus == 2) {
+      context = '请确认您要将问卷状态改为“回收中”吗？如果确认，该问卷所有数据收集将被开启，问卷链接支持回答。'
+    }
+    if (oldStatus == 5 && newStatus == 0) {
+      context = '请确认您要将问卷状态改为“编辑中”吗？'
+    }
+
+    this.setState({
+      changeText: context,
+      isModalChangeOpened: true,
+      qtnId: id,
+      index: index,
+      oldStatus: oldStatus,
+      newStatus: newStatus
+    })
+  }
+
+  closeModalChangeChange = () => {
+    this.setState({
+      ['isModalChangeOpened']: false
+    })
+  }
+
+  handleConfirmChange = () => {
+    const { qtnId, index, newStatus } = this.state
+    console.log('id = ' + this.state.qtnId)
+    console.log('index = ' + this.state.index)
+    console.log('oldStatus = ' + this.state.oldStatus)
+    console.log('newStatus = ' + this.state.newStatus)
+
+    this.props.dispatch({
+      type: 'home/updateQtnStatus',
+      payload: {
+        qtnId,
+        qtnStatus: newStatus
+      },
+      index,
+      token:  this.props.token
+    });
+    
+    this.setState({
+      ['isModalChangeOpened']: false
+    })
+  }
 
   render() {
     const { qtnList, qtnTypes } = this.props
 
     const qtProps = {
-      qtnTypes
+      qtnTypes,
+      onChangeStatus: this.handleChangeStatus
     }
-//leftText='+新建问卷'
+    //leftText='+新建问卷'
     return (
       <View className='page'>
         <AtMessage />
         <AtModal
-          isOpened={this.state.isModalOpened}
+          isOpened={this.state.isModalExitOpened}
           title='确认退出？'
           cancelText='取消'
           confirmText='确认'
           content='您确认要退出云调查系统？'
-          onClose={this.closeModal}
-          onCancel={this.closeModal}
+          onClose={this.closeModalExit}
+          onCancel={this.closeModalExit}
           onConfirm={this.handleLogout}
         />
+        <AtModal
+          isOpened={this.state.isModalChangeOpened}
+          title='确认提示'
+          cancelText='取消'
+          confirmText='确认'
+          content={this.state.changeText}
+          onClose={this.closeModalChangeChange}
+          onCancel={this.closeModalChangeChange}
+          onConfirm={this.handleConfirmChange}
+        />
         <AtNavBar
-          onClickRgIconSt={this.handleModalShow}
+          onClickRgIconSt={this.handleModalExitShow}
           onClickRgIconNd={this.handleClick}
           onClickLeftIcon={this.handleClick}
           color='#000'
-          
+
           rightFirstIconType='user'
         >
           <View>我的问卷</View>
@@ -200,12 +261,12 @@ class Home extends Component {
           onChange={this.onChangeSearch.bind(this)}
           onActionClick={this.onActionClick.bind(this)}
         />
-        
+
         <View className='questionaires'>
-          {qtnList && qtnList.map((item) => (
+          {qtnList && qtnList.map((item, key) => (
             // <View>({item.id}){item.qtnTitle}</View>
             <View key={item.id}>
-              <Questionaires qtn={item} {...qtProps} />
+              <Questionaires qtn={item} index={key} {...qtProps} />
             </View>
 
           ))}

@@ -39,6 +39,18 @@ export default {
       });
 
     },
+    * updateQtnStatus({ payload: values, index, token }, { call, put, select }) {
+      const { qtnList } = yield select(state => state.home);
+      yield call(homeApi.updateQtnStatus, values, token);
+
+      qtnList[index].status = values.qtnStatus
+      yield put({
+        type: 'save',
+        payload: {
+          qtnList: qtnList ,
+        }
+      });
+    },
     * logout(_, { put }) {
 
       yield put({
