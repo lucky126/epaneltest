@@ -44,6 +44,7 @@ export default {
       yield call(homeApi.updateQtnStatus, values, token);
 
       qtnList[index].status = values.qtnStatus
+      
       yield put({
         type: 'save',
         payload: {

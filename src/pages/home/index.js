@@ -38,7 +38,7 @@ class Home extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const token = this.props.token || Taro.getStorageSync('token');
 
     if (!token) {
@@ -194,10 +194,6 @@ class Home extends Component {
 
   handleConfirmChange = () => {
     const { qtnId, index, newStatus } = this.state
-    console.log('id = ' + this.state.qtnId)
-    console.log('index = ' + this.state.index)
-    console.log('oldStatus = ' + this.state.oldStatus)
-    console.log('newStatus = ' + this.state.newStatus)
 
     this.props.dispatch({
       type: 'home/updateQtnStatus',
@@ -212,6 +208,7 @@ class Home extends Component {
     this.setState({
       ['isModalChangeOpened']: false
     })
+    this.getData()
   }
 
   render() {
