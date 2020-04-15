@@ -17,7 +17,8 @@ export default {
     isAnswerLimit: '',
     showTime: '',
     limitNum: '',
-    moreConf: ''
+    moreConf: '',
+    codeurl: ''
   },
 
   effects: {
@@ -102,6 +103,7 @@ export default {
       });
 
     },
+   
     * updatePanelDemand({ payload: values, token }, { call }) {
       yield call(invitationApi.updatePanelDemand, values, token);
     },

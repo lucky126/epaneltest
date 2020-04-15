@@ -104,7 +104,7 @@ class Invitation extends Component {
             {(qtnStatus === 0) ? (
               <BeginToCollect beginRetrieveData={this.beginRetrieveData} />
             ) : (
-                <Link linkData={linkData} />
+                <Link linkData={linkData}/>
               )}
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
