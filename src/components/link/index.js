@@ -32,7 +32,7 @@ class Link extends Component {
       success: function (res){
         Taro.saveImageToPhotosAlbum({
           filePath: res.tempFilePath, //返回的临时文件路径，下载后的文件会存储到一个临时文件
-          success: res => {
+          success: () => {
             Taro.showToast({
               title: '成功保存到相册',
               icon: 'success'
