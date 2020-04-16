@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux';
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import RetrievalProgress from '../../components/RetrievalProgress'
 import AnswerData from '../../components/AnswerData'
+import ChartData from '../../components/ChartData'
 import './index.scss';
 
 @connect(({ data, common }) => ({
@@ -55,6 +56,7 @@ class Data extends Component {
     })
 
     this.getResultData(qtnId)
+    this.getChartData(qtnId)
   }
 
   getResultData = (qtnId) => {
@@ -65,6 +67,17 @@ class Data extends Component {
     this.props.dispatch({
       type: 'data/getAnswerStatus',
       payload: { qtnId, page: resultPage, pageSize, status, startTime, endTime },
+      token: this.props.token
+    })
+  }
+
+  getChartData = (qtnId) => {    
+    const {  status, startTime, endTime } = this.state
+
+    //获取答题分析数据
+    this.props.dispatch({
+      type: 'data/getChartStatistics',
+      payload: { qtnId, status, startTime, endTime },
       token: this.props.token
     })
   }
@@ -113,7 +126,7 @@ class Data extends Component {
             <AnswerData data={this.props.resultData}  onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>尽请期待</View>
+            <ChartData data={this.props.chartList} />
           </AtTabsPane>
         </AtTabs>
       </View>

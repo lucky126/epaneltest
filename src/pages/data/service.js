@@ -33,3 +33,11 @@ export const deleteAnswerResultById = (data, token) => syncAction({
   data,
   token
 });
+
+//获取答题分析数据
+export const getChartStatistics = (data, token) => syncAction({
+  method: 'Charting.getChartStatistics',
+  type: DATAANALYSE,
+  data,
+  token
+});

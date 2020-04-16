@@ -8,7 +8,8 @@ export default {
     resultData: [],
     resultPage: 1,
     answerInfo: [],
-    panelInfo: {}
+    panelInfo: {},
+    chartList: []
   },
 
   effects: {
@@ -67,6 +68,19 @@ export default {
           }
         });
       }
+
+    },
+
+    * getChartStatistics({ payload: values, token }, { call, put }) {
+      const { data } = yield call(dataApi.getChartStatistics, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          chartList:
+            data.message.data.list
+        }
+      });
 
     },
   },
