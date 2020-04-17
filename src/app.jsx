@@ -61,6 +61,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/home/index',
+      'pages/home/show',
       'pages/login/index',
       'pages/login/formlogin',
       'pages/login/wxlogin',

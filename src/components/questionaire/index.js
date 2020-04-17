@@ -35,6 +35,12 @@ class Questionaire extends Component {
     })
   }
 
+  handleShow = (id) => {
+    Taro.navigateTo({
+      url: '/pages/home/show?id=' + id
+    })
+  }
+
   render() {
     const { qtn, index, qtnTypes, onChangeStatus } = this.props;
 
@@ -74,7 +80,10 @@ class Questionaire extends Component {
             {/* 停止操作，执行中2才可以，目标状态5 */}
             {qtn.status == 2 && (<AtIcon value='stop' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 5)} ></AtIcon>)}
           </View>
-          <View className='at-col at-col-3'></View>
+          <View className='at-col at-col-1'></View>
+          <View className='at-col at-col-2'>
+            <AtIcon value='file-generic' size='20' onClick={this.handleShow.bind(this, qtn.id)} ></AtIcon>
+          </View>
           <View className='at-col at-col-2'>
             <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id)} ></AtIcon>
           </View>
