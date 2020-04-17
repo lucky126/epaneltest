@@ -4,7 +4,7 @@ import cx from 'classnames'
 import PropTypes from 'prop-types';
 import './index.scss'
 
-class Chartopttable extends Component {
+class ChartOptTable extends Component {
   static propTypes = {
   };
 
@@ -12,7 +12,7 @@ class Chartopttable extends Component {
   };
 
   render() {
-    const { qt, items, isEmpty } = this.props
+    const { qt, isEmpty } = this.props
 
     return (
       <View className='ChartOptTable-wrap'>
@@ -27,7 +27,7 @@ class Chartopttable extends Component {
                 <View className='th'>百分比</View>
               </View>
 
-              {qt.items.map((opt, key) => (
+              {qt && qt.items && qt.items.map((opt, key) => (
                 <View className={cx({
                   alter: key % 2 != 0,
                   tr: true
@@ -54,4 +54,4 @@ class Chartopttable extends Component {
   }
 }
 
-export default Chartopttable
+export default ChartOptTable

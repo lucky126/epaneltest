@@ -15,8 +15,8 @@ class Questionchart extends Component {
 
   render() {
     const { qt, isEmpty } = this.props
-    const hasSub =
-    qt.type === 3 || qt.type === 4 || (qt.type === 8 && qt.selectType === 4) //如果是矩阵题或排序题或多项打分题
+    const hasSub = qt && (
+    qt.type === 3 || qt.type === 4 || (qt.type === 8 && qt.selectType === 4) )//如果是矩阵题或排序题或多项打分题
 
     const textProps = {
       qt,
@@ -24,7 +24,7 @@ class Questionchart extends Component {
     }
     const optProps = {
       qt,
-      items: qt.items || [],
+      items: (qt && qt.items) || [],
       isEmpty
     }
     const subProps = {

@@ -4,7 +4,7 @@ import { ChartOptTable } from '../ChartOptTable'
 import PropTypes from 'prop-types';
 import './index.scss'
 
-class Chartsubtable extends Component {
+class ChartSubTable extends Component {
   static propTypes = {
   };
 
@@ -25,8 +25,8 @@ class Chartsubtable extends Component {
 
     return (
       <View className='ChartSubTable-wrap'>
-        {qt.subModels.map((sub, key) => (
-          <View key={key}>
+        {qt && qt.subModels.map((sub, key) => (
+          <View key={qt.qtMySeq}>
             <View className='subText'>
               {sub.qtText}
             </View>
@@ -38,4 +38,4 @@ class Chartsubtable extends Component {
   }
 }
 
-export default Chartsubtable
+export default ChartSubTable

@@ -72,7 +72,7 @@ export default {
         Taro.atMessage({
           'message': data.message.text || '登录失败',
           'type': 'error',
-          'duration': 1000
+          'duration': 5000
         })
       }
 

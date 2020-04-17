@@ -16,7 +16,7 @@ class Chartdata extends Component {
 
     return (
       <View className='chartData-wrap'>
-        {data.map((qt, key) => {
+        {data && data.map((qt, key) => {
           const isEmpty =
             (!qt.items || qt.items.length === 0) &&
             (!qt.subModels || qt.subModels.length === 0)
