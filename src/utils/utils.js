@@ -13,3 +13,9 @@ export function isMail(str) {
     const mail = /^([a-zA-Z0-9_\.-]+)@([\da-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/
     return mail.test(str)
 }
+
+export function strip(html) {
+    return html === undefined
+      ? ''
+      : html.replace(/<\/?[^>]+(>|$)/g, '').replace(/&nbsp;/g, '')
+  }

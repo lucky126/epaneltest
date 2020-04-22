@@ -143,7 +143,7 @@ class Home extends Component {
   }
 
   onActionClick = () => {
-    console.log(this.state.qtnName)
+    // console.log(this.state.qtnName)
     this.props.dispatch({
       type: 'home/save',
       payload: {

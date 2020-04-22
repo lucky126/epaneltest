@@ -26,7 +26,7 @@ class Link extends Component {
   }
 
   onQrCodeImage = () => {
-    console.log(this.props.linkData.tcodeUrl)
+    // console.log(this.props.linkData.tcodeUrl)
     Taro.downloadFile({
       url: this.props.linkData.tcodeUrl,
       success: function (res){

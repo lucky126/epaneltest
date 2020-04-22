@@ -1,18 +1,147 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import cx from 'classnames'
-import PropTypes from 'prop-types';
+import * as utils from '../../utils/utils'
+import * as echarts from '../ec-canvas/echarts'
 import './index.scss'
 
-class ChartOptTable extends Component {
-  static propTypes = {
-  };
+// function initChart(canvas, width, height) {
+//   const chart = echarts.init(canvas, null, {
+//     width: width,
+//     height: height
+//   })
+//   canvas.setChart(chart)
 
-  static defaultProps = {
-  };
+//   const option = {
+//     tooltip: {},
+//     legend: {
+//       data: ['销量']
+//     },
+//     xAxis: {
+//       data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+//     },
+//     yAxis: {},
+//     series: [{
+//       name: '销量',
+//       type: 'bar',
+//       data: [5, 20, 36, 10, 10, 20]
+//     }]
+//   }
+
+//   chart.setOption(option)
+//   return chart
+// }
+
+class ChartOptTable extends Component {
+
+  config = {
+    usingComponents: {
+      'ec-canvas': '../ec-canvas/ec-canvas' // 书写第三方组件的相对路径
+    }
+  }
+
+  state = {
+    ec: {
+      // onInit: initChart
+      lazyLoad: true
+    }
+  }
+
+  componentWillMount = () => {
+    this.getData()
+  }
+
+  getData = () => {
+    this.setState({
+      ec: {
+        onInit: this.initEchart
+      }
+    })
+    
+  }
+
+  initEchart = (canvas,width,height) => {
+    const {qt, isEmpty} = this.props
+    const data1 = []
+    const data4 = []
+    const data2 = []
+    const data3 = []
+
+    !isEmpty &&
+      qt.items.map((opt, index) => {
+        data1.push(utils.strip(opt.label))
+        if (index % 2 == 0) {
+          data4.push(utils.strip(opt.label))
+        } else {
+          data4.push('\n' + utils.strip(opt.label))
+        }
+        data2.push(opt.count)
+        data3.push({
+          value: opt.count,
+          name:
+            utils.strip(opt.label) +
+            '[' +
+            opt.count +
+            '个(' +
+            opt.percent +
+            ')]'
+        })
+      })
+
+      const Chart = echarts.init(canvas, null, {
+        width: width,
+        height: height
+      });
+      canvas.setChart(Chart);
+      
+      Chart.clear()
+      Chart.setOption(this.getOption(data4, data2));
+      // 注意这里一定要返回 chart 实例，否则会影响事件处理等
+      return Chart;
+   
+  }
+
+  getOption = (data1, data2) => {
+    var option = {
+      color: ['#3398DB'],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: data1,
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          type: 'bar',        
+          data: data2
+        }
+      ]
+    }
+
+    return option
+  }
 
   render() {
     const { qt, isEmpty } = this.props
+    const isSelect = qt.type !== 2 && qt.type !== 7 && qt.type !== 11//如果是填空题或图片上传题
 
     return (
       <View className='ChartOptTable-wrap'>
@@ -43,12 +172,17 @@ class ChartOptTable extends Component {
 
             </View>
           )}
-          
+
         </View>
         <View className='num'>
-            答题人数：
+          答题人数：
           {qt.count}
-          </View>
+        </View>
+        {isSelect && (
+        <View className='echarts'>
+          <ec-canvas id='mychart-dom-area' canvas-id='mychart-area' ec={this.state.ec}></ec-canvas>
+        </View>
+        )}
       </View>
     )
   }

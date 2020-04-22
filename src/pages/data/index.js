@@ -37,7 +37,10 @@ class Data extends Component {
       type: 'data/save',
       payload: {
         resultPage: 1,
-        resultData: []
+        resultData: [],
+        answerInfo: [],
+        panelInfo: {},
+        chartList: []
       },
     });
   };
