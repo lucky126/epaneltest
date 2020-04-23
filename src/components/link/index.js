@@ -29,7 +29,7 @@ class Link extends Component {
     // console.log(this.props.linkData.tcodeUrl)
     Taro.downloadFile({
       url: this.props.linkData.tcodeUrl,
-      success: function (res){
+      success: function (res) {
         Taro.saveImageToPhotosAlbum({
           filePath: res.tempFilePath, //返回的临时文件路径，下载后的文件会存储到一个临时文件
           success: () => {
@@ -38,14 +38,13 @@ class Link extends Component {
               icon: 'success'
             })
           },
-          fail: function(){
-           console.log('error')
+          fail: function () {
+            console.log('error')
           }
         })
       }
     })
   }
-
 
   render() {
     const { linkData } = this.props
@@ -62,6 +61,9 @@ class Link extends Component {
               </View>
               <View className='at-row at-row__justify--end copyRow'>
                 <View className='at-col at-col-3'>
+                  <AtButton circle type='primary' size='small' openType='share'>分享</AtButton>
+                </View>
+                <View className='at-col at-col__offset-1 at-col-3'>
                   <AtButton circle type='primary' size='small' onClick={this.copyUrl}>复制</AtButton>
                 </View>
               </View>

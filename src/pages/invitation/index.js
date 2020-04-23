@@ -6,8 +6,9 @@ import { BeginToCollect } from '../../components/beginToCollect'
 import { Link } from '../../components/link'
 import './index.scss';
 
-@connect(({ invitation, common }) => ({
+@connect(({ invitation, home, common }) => ({
   ...invitation,
+  ...home,
   ...common
 }))
 
@@ -32,6 +33,11 @@ class Invitation extends Component {
   };
 
   getData(qtnId) {
+    this.props.dispatch({
+      type: 'home/getQuestionnaireName',
+      payload: { qtnId },
+      token: this.props.token
+    })
     //获得问卷发布状态
     this.props.dispatch({
       type: 'invitation/statusCheck',
@@ -81,22 +87,41 @@ class Invitation extends Component {
 
   }
 
+  onShareAppMessage (res) {
+    const { qtnName, linkData } = this.props
+
+    let weblinkUrl = linkData ? linkData.weblinkUrl : ''
+
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+
+    return {
+      title: qtnName + '--云调查',
+      path: '/pages/invitation/answer?url=' + encodeURI(weblinkUrl),
+      imageUrl: 'https://www.epanel.cn/images/answer.jpg'
+    }
+  }
+
   render() {
-    const { qtnStatus, linkData } = this.props
+    const { qtnStatus, linkData, qtnName } = this.props
 
     let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
     if (qtnStatus !== 0) {
-      tabList = [{ title: '开放链接' }, { title: '封闭链接' }]
+      tabList = [{ title: '开放链接' }, { title: '配额管理' }]
       rightFirstIconType = 'settings'
     }
+
+    let title = '收集数据--' + qtnName
 
     return (
       <View className='page'>
         <AtNavBar
           onClickRgIconSt={this.handleSetting}
           color='#000'
-          title='收集数据'
+          title={title}
           rightFirstIconType={rightFirstIconType}
         />
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
@@ -104,7 +129,7 @@ class Invitation extends Component {
             {(qtnStatus === 0) ? (
               <BeginToCollect beginRetrieveData={this.beginRetrieveData} />
             ) : (
-                <Link linkData={linkData}/>
+                <Link linkData={linkData} />
               )}
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>

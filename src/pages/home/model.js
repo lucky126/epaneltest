@@ -6,10 +6,22 @@ export default {
   state: {
     qtnList: [],
     page: 1,
-    qtnTypes: ''
+    qtnTypes: '',
+    qtnName: ''
   },
 
   effects: {
+    * getQuestionnaireName({ payload: values, token }, { call, put }) {
+      const { data } = yield call(homeApi.getQuestionnaireName, values, token);
+
+      yield put({
+        type: 'save',
+        payload: {
+          qtnName:data.message.data.qtnName,
+        }
+      });
+
+    },
     * getQuestionaireTypes({ token }, { call, put }) {
       const { data } = yield call(homeApi.getQuestionaireType, {}, token);
 

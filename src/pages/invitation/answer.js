@@ -4,28 +4,29 @@ import { connect } from '@tarojs/redux';
 import { MAINHOST } from '../../config/index'
 import './index.scss';
 
-@connect(({ home, common }) => ({
-  ...home,
+@connect(({ invitation, common }) => ({
+  ...invitation,
   ...common
 }))
 
 
-class Show extends Component {
+class Answer extends Component {
   config = {
-    navigationBarTitleText: '问卷预览',
+    navigationBarTitleText: '问卷答题',
   };
 
   constructor(props) {
     super(props)
     this.state = {
-      qtnId: 0,
+      
     }
   }
 
   componentWillMount() {
     this.setState({
-      qtnId: this.$router.params.id
+      url: this.$router.params.url
     });
+    
   };
 
   componentWillUnmount() {
@@ -39,16 +40,17 @@ class Show extends Component {
   handleMessage = () => {
 
   }
+  
 
   render() {
-    const { qtnId } = this.state
+    const { url } = this.state
 
-    const url = MAINHOST + '/works/' + qtnId + '/preview?'
-  
+    let src = decodeURI(url)
+
     return (
-      <WebView src={url} onMessage={this.handleMessage} />
+      <WebView src={src} onMessage={this.handleMessage} />
     )
   }
 }
 
-export default Show;
+export default Answer;

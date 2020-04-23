@@ -27,3 +27,10 @@ export const updateQtnStatus = (data, token) => syncAction({
   token
 });
 
+//获取问卷名称
+export const getQuestionnaireName = (data, token) => syncAction({
+  method: 'QuestionnaireService.getQuestionnaireName',
+  type: QUESTIONNAIRE,
+  data,
+  token
+});
