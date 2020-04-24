@@ -421,7 +421,7 @@ class Collect extends Component {
                 <AtInput
                   name='value'
                   title='样本数量'
-                  type='text'
+                  type='number'
                   placeholder='请输入样本数量'
                   value={limitPanelNum ? panelTotalNum : 0}
                   onChange={this.handleChangeTotalNum.bind(this)}
@@ -458,7 +458,7 @@ class Collect extends Component {
                 <AtInput
                   name='value'
                   title='限制数量'
-                  type='text'
+                  type='number'
                   placeholder='请输入数量'
                   value={ipLimit ? ipLimitNum : 0}
                   onChange={this.handleChangeIpLimitNum.bind(this)}
@@ -481,7 +481,7 @@ class Collect extends Component {
                 <AtInput
                   name='value'
                   title='限答数量'
-                  type='text'
+                  type='number'
                   placeholder='请输入数量'
                   value={isAnswerLimit ? limitNum : 0}
                   onChange={this.handleChangeAnswerLimitNum.bind(this)}
