@@ -3,6 +3,7 @@ import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtTabs, AtTabsPane, AtNavBar } from 'taro-ui'
 import { BeginToCollect } from '../../components/beginToCollect'
+import { Quota } from '../../components/Quota'
 import { Link } from '../../components/link'
 import './index.scss';
 
@@ -48,6 +49,12 @@ class Invitation extends Component {
       if (this.props.qtnStatus !== 0) {
         this.getWebLink(qtnId)
       }
+    })
+    //获取配额列表信息
+    this.props.dispatch({
+      type:'PanelQuota/getQtnQuota',
+      payload: { qtnId },
+      token: this.props.token
     })
   }
 
@@ -105,8 +112,8 @@ class Invitation extends Component {
   }
 
   render() {
-    const { qtnStatus, linkData, qtnName } = this.props
-
+    const { qtnStatus, linkData, qtnName, QuotaList } = this.props
+  
     let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
     if (qtnStatus !== 0) {
@@ -133,6 +140,7 @@ class Invitation extends Component {
               )}
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
+              <Quota QuotaList={QuotaList} />
             <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>尽请期待</View>
           </AtTabsPane>
         </AtTabs>

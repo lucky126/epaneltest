@@ -5,6 +5,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import RetrievalProgress from '../../components/RetrievalProgress'
 import AnswerData from '../../components/AnswerData'
 import ChartData from '../../components/ChartData'
+import QuotaProgress from '../../components/QuotaProgress'
 import './index.scss';
 
 @connect(({ data, common }) => ({
@@ -60,6 +61,7 @@ class Data extends Component {
 
     this.getResultData(qtnId)
     this.getChartData(qtnId)
+    this.getQuotaProgress(qtnId)
   }
 
   getResultData = (qtnId) => {
@@ -81,6 +83,15 @@ class Data extends Component {
     this.props.dispatch({
       type: 'data/getChartStatistics',
       payload: { qtnId, status, startTime, endTime },
+      token: this.props.token
+    })
+  }
+
+  getQuotaProgress = (qtnId) => {
+    //获取配额进度
+    this.props.dispatch({
+      type: 'data/getQuotaProgress',
+      payload: { qtnId},
       token: this.props.token
     })
   }
@@ -117,7 +128,7 @@ class Data extends Component {
 
   render() {
     const { RetrievalProgressData } = this.props
-    const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
+    const tabList = [{ title: '回收进度' }, { title: '配额进度' },{ title: '样本数据' }, { title: '图表分析' }]
 
     return (
       <View className='page'>
@@ -126,9 +137,12 @@ class Data extends Component {
             <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <AnswerData data={this.props.resultData}  onShowResult={this.onShowResult} />
+            <QuotaProgress data={this.props.QuotaList}  onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
+            <AnswerData data={this.props.resultData}  onShowResult={this.onShowResult} />
+          </AtTabsPane>
+          <AtTabsPane current={this.state.current} index={3}>
             <ChartData data={this.props.chartList} />
           </AtTabsPane>
         </AtTabs>

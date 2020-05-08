@@ -110,6 +110,19 @@ export default {
     * updateLimitConstraints({ payload: values, token }, { call }) {
       yield call(invitationApi.updateLimitConstraints, values, token);
     },
+   * getQtnQuota({ payload: values, token }, { call, put }) {
+    const { data } = yield call(invitationApi.getQtnQuota, values, token);
+    let Quota = []
+    for(var i in data.quotaMaps){
+      Quota.push( data.quotaMaps[i])
+     }
+    yield put({
+      type: 'save',
+      payload: {
+        QuotaList: Quota
+      }
+    });
+  },
   },
 
   reducers: {
