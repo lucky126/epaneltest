@@ -1,10 +1,20 @@
 import {syncAction} from '../../utils/request';
 
-const TYPE = 'type'
+const PROJECT = 'project'
+const QUESTIONNAIRE = 'questionnaire'
 
-export const demo = (data, token) => syncAction({
-  method: '',
-  type: TYPE,
+//查询我的项目
+export const queryProject = (data, token) => syncAction({
+  method: 'ProjectManager.queryProject',
+  type: PROJECT,
+  data,
+  token
+});
+
+//查询问卷类型
+export const getQuestionaireType = (data, token) => syncAction({
+  method: 'QuestionnaireService.queryQuestionnaireType',
+  type: QUESTIONNAIRE,
   data,
   token
 });
