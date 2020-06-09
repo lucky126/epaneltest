@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtMessage, AtModal, AtSearchBar } from 'taro-ui'
+import { AtNavBar, AtMessage, AtModal, AtSearchBar, AtDrawer } from 'taro-ui'
 import Questionaires from '../../components/questionaire'
 import './index.scss';
 
@@ -35,6 +35,7 @@ class Home extends Component {
       index: 0,
       oldStatus: 0,
       newStatus: 0,
+      drawerShow: false
     }
   }
 
@@ -99,6 +100,13 @@ class Home extends Component {
     this.props.dispatch({
       type: 'home/getQuestionaires',
       payload: params,
+      token: this.props.token
+    })
+
+    //验证用户是否有项目权限
+    this.props.dispatch({
+      type: 'home/verifyUserExistProjects',
+      payload: {},
       token: this.props.token
     })
   }
@@ -202,17 +210,37 @@ class Home extends Component {
         qtnStatus: newStatus
       },
       index,
-      token:  this.props.token
+      token: this.props.token
     });
-    
+
     this.setState({
       ['isModalChangeOpened']: false
     })
     this.getData()
   }
 
+  handleDrawerShow = () => {
+    this.setState({
+      drawerShow: true
+    })
+  }
+
+  onCloseDrawer = () => {
+    this.setState({
+      drawerShow: false
+    })
+  }
+
+  onDrawerItemClick = (index) => {
+    if (index === 1) {
+      Taro.navigateTo({
+        url: '/pages/project/index'
+      })
+    }
+  }
+
   render() {
-    const { qtnList, qtnTypes } = this.props
+    const { qtnList, qtnTypes, projectExist } = this.props
 
     const qtProps = {
       qtnTypes,
@@ -242,12 +270,19 @@ class Home extends Component {
           onCancel={this.closeModalChangeChange}
           onConfirm={this.handleConfirmChange}
         />
+        <AtDrawer
+          show={this.state.drawerShow}
+          mask
+          onClose={this.onCloseDrawer.bind(this)}
+          onItemClick={this.onDrawerItemClick.bind(this)}
+          items={['我的问卷', '我的项目']}
+        ></AtDrawer>
         <AtNavBar
           onClickRgIconSt={this.handleModalExitShow}
           onClickRgIconNd={this.handleClick}
-          onClickLeftIcon={this.handleClick}
+          onClickLeftIcon={projectExist ? this.handleDrawerShow : this.handleClick}
           color='#000'
-
+          leftIconType={projectExist ? 'list' : ''}
           rightFirstIconType='user'
         >
           <View>我的问卷</View>

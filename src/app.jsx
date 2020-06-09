@@ -69,7 +69,8 @@ class App extends Component {
       'pages/data/anwserdetail',
       'pages/invitation/index',
       'pages/invitation/collect',
-      'pages/invitation/answer'
+      'pages/invitation/answer',
+      'pages/project/index'
     ],
     window: {
       backgroundTextStyle: 'light',

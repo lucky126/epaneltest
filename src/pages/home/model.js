@@ -7,7 +7,8 @@ export default {
     qtnList: [],
     page: 1,
     qtnTypes: '',
-    qtnName: ''
+    qtnName: '',
+    projectExist: false,
   },
 
   effects: {
@@ -50,6 +51,15 @@ export default {
         }
       });
 
+    },
+    * verifyUserExistProjects({ token }, { call, put }) {
+      const { data } = yield call(homeApi.verifyUserExistProjects, {}, token);
+      yield put({
+        type: 'save',
+        payload: {
+          projectExist: data.message.data.exist,
+        }
+      });
     },
     * updateQtnStatus({ payload: values, index, token }, { call, put, select }) {
       const { qtnList } = yield select(state => state.home);
