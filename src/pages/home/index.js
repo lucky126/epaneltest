@@ -244,6 +244,7 @@ class Home extends Component {
 
     const qtProps = {
       qtnTypes,
+      view: false,
       onChangeStatus: this.handleChangeStatus
     }
     //leftText='+新建问卷'

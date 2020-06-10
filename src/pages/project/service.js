@@ -18,3 +18,11 @@ export const getQuestionaireType = (data, token) => syncAction({
   data,
   token
 });
+
+//查询项目问卷
+export const queryQuestionnaire = (data, token) => syncAction({
+  method: 'ProjectQuestionnaireManager.queryQuestionnaire',
+  type: PROJECT,
+  data,
+  token
+});

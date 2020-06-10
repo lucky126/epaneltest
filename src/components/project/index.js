@@ -14,8 +14,16 @@ class Project extends Component {
     prj: '',
   };
 
+  handleManage = (id, view) => {
+    Taro.navigateTo({
+      url: '/pages/project/manage?id=' + id + '&view=' + view
+    })
+  }
+
   render() {
-    const { prj, qtnTypes } = this.props;
+    const { prj, qtnTypes, userId } = this.props;
+
+    const view = userId !== prj.creatorId;
 
     return (
       <View className='Project-wrap'>
@@ -32,6 +40,10 @@ class Project extends Component {
         <View className='optRow at-row'>
           <View className='at-col at-col-6'>
             <Text className='statusDesc'>{prj.statusDescn}</Text>
+          </View>
+          <View className='at-col at-col-4'></View>
+          <View className='at-col at-col-2'>
+            <AtIcon value='settings' size='20' onClick={this.handleManage.bind(this, prj.id, view)} ></AtIcon>
           </View>
         </View>
       </View>

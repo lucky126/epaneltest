@@ -21,13 +21,15 @@ class Invitation extends Component {
     super(props)
     this.state = {
       current: 0,
-      qtnId: 0
+      qtnId: 0,
+      view: false,
     }
   }
 
   componentWillMount() {
     this.setState({
       qtnId: this.$router.params.id,
+      view: this.$router.params.view
     });
     this.getData(this.$router.params.id)
   };

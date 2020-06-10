@@ -24,6 +24,7 @@ class AnswerDetail extends Component {
       resultId: 0,
       deleteId: 0,
       isOpenedDel: false,
+      view: false,
     }
   }
 
@@ -32,6 +33,7 @@ class AnswerDetail extends Component {
       qtnId: this.$router.params.qtnId,
       resultId: this.$router.params.rid,
       deleteId: this.$router.params.idx,
+      view: this.$router.params.view == 'true'
     });
     this.props.dispatch({
       type: 'data/save',
@@ -80,11 +82,12 @@ class AnswerDetail extends Component {
     });
   }
 
-  
+
   render() {
     const { answerInfo, panelInfo } = this.props
-    const { resultId } = this.state
-
+    const { resultId, view } = this.state
+    console.log(Boolean(view))
+    console.log(view)
     return (
       <View className='page'>
         <View className='at-panel answerInfo'>
@@ -159,15 +162,18 @@ class AnswerDetail extends Component {
                       )}
               </View>
             ))}
-            <View className='delButton'>
-              <AtButton circle className='danger' onClick={this.handleShowDelete}>删除</AtButton>
-            </View>
+
+            {!view && (
+              <View className='delButton'>
+                <AtButton circle className='danger' onClick={this.handleShowDelete}>删除</AtButton>
+              </View>
+            )}
           </View>
         </View>
 
         <AtModal
           isOpened={this.state.isOpenedDel}
-          title = '删除确认'
+          title='删除确认'
           cancelText='取消'
           confirmText='确认删除'
           onCancel={this.handleCancelDel}

@@ -23,15 +23,26 @@ class Questionaire extends Component {
     // console.log('show ' + id)
   }
 
-  handleData = (id) => {
+  handleData = (id, canData) => {
+    const { prjId, view } = this.props;
+
+    let extQuery = ''
+    if (prjId && canData) {
+      extQuery = '&current=1'
+    }
+    let newView = view
+    if (prjId && !canData) {
+      newView = true
+    }
+
     Taro.navigateTo({
-      url: '/pages/data/index?id=' + id
+      url: '/pages/data/index?id=' + id + '&view=' + newView + extQuery
     })
   }
 
-  handleInvitation = (id) => {
+  handleInvitation = (id, view) => {
     Taro.navigateTo({
-      url: '/pages/invitation/index?id=' + id
+      url: '/pages/invitation/index?id=' + id + '&view=' + view
     })
   }
 
@@ -42,12 +53,43 @@ class Questionaire extends Component {
   }
 
   render() {
-    const { qtn, index, qtnTypes, onChangeStatus } = this.props;
+    const { qtn, index, qtnTypes, onChangeStatus, prjFlag, prjId, view } = this.props;
 
     // let ftAction = this.handleShow.bind(this, qtn.id)
     // if (qtn.status === 0) {
     //   ftAction = this.handleEdit.bind(this, qtn.id)
     // }
+    //非项目问卷默认可以显示预览
+    let canShow = !prjId
+    let canSetInt = !prjId
+    let canLink = !prjId
+    let canData = !prjId
+    let canProgress = !prjId
+
+    if (prjId) {
+      qtn.tasks.map((task) => {
+        //项目问卷type=1 题目制作有权限则可以预览
+        if (task.taskType === 1 && task.operates && task.activated) {
+          canShow = true
+        }
+        //项目问卷type=5 数据权限有则可以获得分析权限
+        if ((task.taskType === 5) && task.operates && task.activated) {
+          canData = true
+        }
+        //项目问卷type=6 进度权限有则可以获得分析权限
+        if ((task.taskType === 6) && task.operates && task.activated) {
+          canProgress = true
+        }
+        //项目问卷type=2 收集设置有则可以获得收集设置
+        if ((task.taskType === 2) && task.operates && task.activated) {
+          canSetInt = true
+        }
+        //项目问卷type=4 问卷收集有则可以获得开放链接
+        if ((task.taskType === 4) && task.operates && task.activated) {
+          canLink = true
+        }
+      })
+    }
 
     return (
       <View className='questionaire-wrap'>
@@ -59,6 +101,11 @@ class Questionaire extends Component {
           </View>
           <View className='typeRow'>
             <Text className='typeName'>{qtnTypes[qtn.qtnType]}</Text>
+            {prjFlag === 1 && (<Text className='type'>类型：<Text>{qtn.whatQtn === 2
+              ? "前置"
+              : qtn.whatQtn === 4
+                ? "后置"
+                : "外部"}</Text></Text>)}
           </View>
         </View>
         <View className='optRow at-row'>
@@ -69,26 +116,26 @@ class Questionaire extends Component {
               statusDescDot_run: qtn.status === 2,
               statusDescDot_stop: qtn.status == 5
             })}>●</Text>
-            <Text className='seperator'> </Text>
+            {!!!prjId && (<Text className='seperator'> </Text>)}
             {/* 开启操作，只有0，5状态才可以，目标状态2 */}
-            {(qtn.status == 0 || qtn.status == 5) && (
+            {!!!prjId && (qtn.status == 0 || qtn.status == 5) && (
               <AtIcon value='play' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 2)} ></AtIcon>)}
-            <Text className='seperator'> </Text>
+            {!!!prjId && (<Text className='seperator'> </Text>)}
             {/* 暂停操作，执行中2才可以，目标状态0 */}
-            {qtn.status == 2 && (<AtIcon value='pause' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 0)} ></AtIcon>)}
-            <Text className='seperator'> </Text>
+            {!!!prjId && qtn.status == 2 && (<AtIcon value='pause' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 0)} ></AtIcon>)}
+            {!!!prjId && (<Text className='seperator'> </Text>)}
             {/* 停止操作，执行中2才可以，目标状态5 */}
-            {qtn.status == 2 && (<AtIcon value='stop' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 5)} ></AtIcon>)}
+            {!!!prjId && qtn.status == 2 && (<AtIcon value='stop' size='20' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 5)} ></AtIcon>)}
           </View>
           <View className='at-col at-col-1'></View>
           <View className='at-col at-col-2'>
-            <AtIcon value='file-generic' size='20' onClick={this.handleShow.bind(this, qtn.id)} ></AtIcon>
+            {canShow && <AtIcon value='file-generic' size='20' onClick={this.handleShow.bind(this, qtn.id)} ></AtIcon>}
           </View>
           <View className='at-col at-col-2'>
-            <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id)} ></AtIcon>
+            {(canLink || canSetInt) && <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id, view)} ></AtIcon>}
           </View>
           <View className='at-col at-col-1'>
-            <AtIcon value='analytics' size='20' onClick={this.handleData.bind(this, qtn.id)}></AtIcon>
+            {(canData || canProgress) && <AtIcon value='analytics' size='20' onClick={this.handleData.bind(this, qtn.id, canData)}></AtIcon>}
           </View>
         </View>
       </View>

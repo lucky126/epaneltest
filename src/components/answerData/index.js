@@ -13,7 +13,7 @@ class AnswerData extends Component {
   };
 
   render() {
-    const { data, onShowResult } = this.props
+    const { data, onShowResult, view } = this.props
 
     return (
       <View className='answerData-wrap'>
@@ -37,7 +37,7 @@ class AnswerData extends Component {
                 {item.answerStatusDescn}
               </View>
               <View className='td'>{item.endTime ? formatOnlyDate(item.endTime) : '--'}</View>
-              <View className='td'><Text onClick={onShowResult.bind(this, item.resultId, index)}>查看</Text></View>
+              <View className='td'><Text onClick={onShowResult.bind(this, item.resultId, index, view)}>查看</Text></View>
             </View>
           ))}
 

@@ -26,12 +26,16 @@ class Data extends Component {
       status: null,
       startTime: null,
       endTime: null,
+      view: false,
     }
   }
 
   componentWillMount = () => {
+    console.log(this.$router.params.current)
     this.setState({
-      qtnId: this.$router.params.id
+      qtnId: this.$router.params.id,      
+      view: this.$router.params.view,
+      current : this.$router.params.current ? Number(this.$router.params.current) : 0
     });
     this.props.dispatch({
       type: 'data/save',
@@ -107,16 +111,17 @@ class Data extends Component {
     }
   }
 
-  onShowResult = (resultId, index) => {
+  onShowResult = (resultId, index, view) => {
     const { qtnId } = this.state
     
     Taro.navigateTo({
-      url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId + '&idx=' + index
+      url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId + '&idx=' + index + '&view=' + view
     })
   }
 
   render() {
     const { RetrievalProgressData } = this.props
+    const { view } = this.state
     const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
 
     return (
@@ -126,7 +131,7 @@ class Data extends Component {
             <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <AnswerData data={this.props.resultData}  onShowResult={this.onShowResult} />
+            <AnswerData data={this.props.resultData} view={view} onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
             <ChartData data={this.props.chartList} />

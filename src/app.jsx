@@ -70,7 +70,8 @@ class App extends Component {
       'pages/invitation/index',
       'pages/invitation/collect',
       'pages/invitation/answer',
-      'pages/project/index'
+      'pages/project/index',
+      'pages/project/manage'
     ],
     window: {
       backgroundTextStyle: 'light',

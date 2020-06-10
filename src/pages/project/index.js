@@ -86,9 +86,10 @@ class Index extends Component {
 
   render() {
     const { prjList, qtnTypes } = this.props
-
+    
     const qtProps = {
       qtnTypes,
+      userId: this.props.userinfo.id
     }
 
     return (
