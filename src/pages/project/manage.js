@@ -30,13 +30,23 @@ class Index extends Component {
   componentWillMount() {
     this.setState({
       prjId: this.$router.params.id,
-      view: this.$router.params.view
+      view: this.$router.params.view === 'true'
     });
     this.getData(this.$router.params.id)
   }
 
   componentDidMount = () => {
   };
+
+  componentWillUnmount = ()=>{
+    this.props.dispatch({
+      type: 'project/save',
+      payload: {
+        qtnPage: 1,
+        prjQtnList: []
+      },
+    });
+  }
 
   componentDidShow = () => {
     this.getData(this.state.prjId)
@@ -51,10 +61,10 @@ class Index extends Component {
       view
     } = this.state
 
-    const { page } = this.props
+    const { qtnPage } = this.props
 
     let params = {
-      page,
+      page: qtnPage,
       pageSize,
       prjId: Number(prjId),
       sortOrder,
@@ -62,7 +72,7 @@ class Index extends Component {
       status,
       qtnName
     }
-console.log(params)
+
     //获得问卷
     this.props.dispatch({
       type: 'project/queryQuestionnaire',
@@ -70,6 +80,17 @@ console.log(params)
       token: this.props.token
     })
 
+  }
+
+  // 小程序上拉加载
+  onReachBottom() {
+    this.props.dispatch({
+      type: 'project/save',
+      payload: {
+        qtnPage: this.props.qtnPage + 1,
+      },
+    });
+    this.getData(this.state.prjId)
   }
 
   handleChangeStatus = (id, index, oldStatus, newStatus) => {

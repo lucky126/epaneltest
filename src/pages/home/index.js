@@ -54,6 +54,16 @@ class Home extends Component {
   componentWillUnmount() {
 
   }
+  
+  componentWillUnmount = ()=>{
+    this.props.dispatch({
+      type: 'home/save',
+      payload: {
+        page: 1,
+        qtnList: []
+      },
+    });
+  }
 
   componentDidShow = () => {
     this.getData()

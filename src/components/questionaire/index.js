@@ -27,10 +27,12 @@ class Questionaire extends Component {
     const { prjId, view } = this.props;
 
     let extQuery = ''
+    //项目内如果可以访问数据，则默认进入数据tab
     if (prjId && canData) {
       extQuery = '&current=1'
     }
     let newView = view
+    //如果项目不能访问数据，则说明不能删除，即只读
     if (prjId && !canData) {
       newView = true
     }
@@ -40,9 +42,13 @@ class Questionaire extends Component {
     })
   }
 
-  handleInvitation = (id, view) => {
+  handleInvitation = (id, canLink, canSetInv) => {
+    const { prjId, view } = this.props;
+    //设定开放连接查看权限
+    let extQuery = '&canLink=' + canLink + '&canSetInv=' + canSetInv
+    
     Taro.navigateTo({
-      url: '/pages/invitation/index?id=' + id + '&view=' + view
+      url: '/pages/invitation/index?id=' + id + '&view=' + view + extQuery
     })
   }
 
@@ -53,7 +59,7 @@ class Questionaire extends Component {
   }
 
   render() {
-    const { qtn, index, qtnTypes, onChangeStatus, prjFlag, prjId, view } = this.props;
+    const { qtn, index, qtnTypes, onChangeStatus, prjFlag, prjId } = this.props;
 
     // let ftAction = this.handleShow.bind(this, qtn.id)
     // if (qtn.status === 0) {
@@ -61,7 +67,7 @@ class Questionaire extends Component {
     // }
     //非项目问卷默认可以显示预览
     let canShow = !prjId
-    let canSetInt = !prjId
+    let canSetInv = !prjId
     let canLink = !prjId
     let canData = !prjId
     let canProgress = !prjId
@@ -82,7 +88,7 @@ class Questionaire extends Component {
         }
         //项目问卷type=2 收集设置有则可以获得收集设置
         if ((task.taskType === 2) && task.operates && task.activated) {
-          canSetInt = true
+          canSetInv = true
         }
         //项目问卷type=4 问卷收集有则可以获得开放链接
         if ((task.taskType === 4) && task.operates && task.activated) {
@@ -132,7 +138,7 @@ class Questionaire extends Component {
             {canShow && <AtIcon value='file-generic' size='20' onClick={this.handleShow.bind(this, qtn.id)} ></AtIcon>}
           </View>
           <View className='at-col at-col-2'>
-            {(canLink || canSetInt) && <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id, view)} ></AtIcon>}
+            {(canLink || canSetInv) && <AtIcon value='share' size='20' onClick={this.handleInvitation.bind(this, qtn.id, canLink, canSetInv)} ></AtIcon>}
           </View>
           <View className='at-col at-col-1'>
             {(canData || canProgress) && <AtIcon value='analytics' size='20' onClick={this.handleData.bind(this, qtn.id, canData)}></AtIcon>}

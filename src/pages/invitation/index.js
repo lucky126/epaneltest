@@ -23,13 +23,17 @@ class Invitation extends Component {
       current: 0,
       qtnId: 0,
       view: false,
+      canLink: true,
+      canSetInv: true
     }
   }
 
   componentWillMount() {
     this.setState({
       qtnId: this.$router.params.id,
-      view: this.$router.params.view
+      view: this.$router.params.view === 'true',
+      canLink: this.$router.params.canLink === 'true',
+      canSetInv: this.$router.params.canSetInv === 'true'
     });
     this.getData(this.$router.params.id)
   };
@@ -61,11 +65,13 @@ class Invitation extends Component {
 
   handleSetting = () => {
     const { qtnId } = this.state
-    
+
     Taro.navigateTo({
       url: '/pages/invitation/collect?id=' + qtnId
     })
   }
+
+  handleNothing = () => { }
 
   beginRetrieveData = () => {
     const { qtnId } = this.state
@@ -89,7 +95,7 @@ class Invitation extends Component {
 
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { qtnName, linkData } = this.props
 
     let weblinkUrl = linkData ? linkData.weblinkUrl : ''
@@ -108,12 +114,13 @@ class Invitation extends Component {
 
   render() {
     const { qtnStatus, linkData, qtnName } = this.props
+    const { canLink, canSetInv } = this.state
 
     let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
     if (qtnStatus !== 0) {
       tabList = [{ title: '开放链接' }, { title: '配额管理' }]
-      rightFirstIconType = 'settings'
+      rightFirstIconType = canSetInv ? 'settings' : ''
     }
 
     let title = '收集数据--' + qtnName
@@ -121,17 +128,19 @@ class Invitation extends Component {
     return (
       <View className='page'>
         <AtNavBar
-          onClickRgIconSt={this.handleSetting}
+          onClickRgIconSt={canSetInv ? this.handleSetting : this.handleNothing}
           color='#000'
           title={title}
           rightFirstIconType={rightFirstIconType}
         />
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={this.state.current} index={0} >
-            {(qtnStatus === 0) ? (
+            {canLink ? ((qtnStatus === 0) ? (
               <BeginToCollect beginRetrieveData={this.beginRetrieveData} />
             ) : (
                 <Link linkData={linkData} />
+              )) : (
+                <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>无权查看数据</View>
               )}
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>

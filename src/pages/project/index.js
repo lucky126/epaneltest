@@ -33,6 +33,16 @@ class Index extends Component {
 
   componentDidMount = () => {
   };
+  
+  componentWillUnmount = ()=>{
+    this.props.dispatch({
+      type: 'project/save',
+      payload: {
+        page: 1,
+        prjList: []
+      },
+    });
+  }
 
   componentDidShow = () => {
     this.getData()
@@ -83,6 +93,18 @@ class Index extends Component {
     })   
 
   }
+ 
+  // 小程序上拉加载
+  onReachBottom() {
+    this.props.dispatch({
+      type: 'project/save',
+      payload: {
+        page: this.props.page + 1,
+      },
+    });
+    this.getData()
+  }
+
 
   render() {
     const { prjList, qtnTypes } = this.props
