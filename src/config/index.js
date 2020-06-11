@@ -35,7 +35,7 @@ export const APPID = 'wx7c2fb36925f527c0'
 export const SECRET = '0218f83ffe2a60bbd3b4788eba1beab9'
 
 // 输出日志信息
-export const noConsole = false;
+export const noConsole = true;
 
 export const HTTP_STATUS = {
   SUCCESS: 200,
