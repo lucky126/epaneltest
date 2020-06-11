@@ -64,10 +64,10 @@ class Invitation extends Component {
   }
 
   handleSetting = () => {
-    const { qtnId } = this.state
+    const { qtnId, view } = this.state
 
     Taro.navigateTo({
-      url: '/pages/invitation/collect?id=' + qtnId
+      url: '/pages/invitation/collect?id=' + qtnId + '&view=' + view
     })
   }
 

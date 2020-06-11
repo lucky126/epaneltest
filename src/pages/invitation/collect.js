@@ -20,6 +20,7 @@ class Collect extends Component {
     super(props)
     this.state = {
       qtnId: 0,
+      view: false,
       isShowTotalNum: false,
       isShowBeginTime: false,
       isShowExpireTime: false,
@@ -30,7 +31,8 @@ class Collect extends Component {
 
   componentWillMount() {
     this.setState({
-      qtnId: this.$router.params.id
+      qtnId: this.$router.params.id,
+      view: this.$router.params.view === 'true',
     });
     this.getData(this.$router.params.id)
   };
@@ -338,6 +340,7 @@ class Collect extends Component {
   render() {
     const { limitPanelNum, panelTotalNum, limitBeginTime, beginTime, limitExpireTime, expireTime } = this.props
     const { ipLimit, ipLimitNum, deviceUniqueness, isAnswerLimit, limitNum } = this.props
+    const { view } = this.state
 
     let beginTimeList = limitBeginTime ? beginTime : '未设置'
     let expireTimeList = limitExpireTime ? expireTime : '未设置'
@@ -362,19 +365,19 @@ class Collect extends Component {
             <View className='example-item'>
               <AtList>
                 <AtListItem title='目标数量'
-                  arrow='right'
+                  arrow={view ? '' : 'right'}
                   extraText={limitPanelNum ? panelTotalNum : '未设置'}
-                  onClick={this.handlePanelTotalNumSetting.bind(this, true)}
+                  onClick={view ? null : this.handlePanelTotalNumSetting.bind(this, true)}
                 />
                 <AtListItem title='开始时间'
-                  arrow='right'
+                  arrow={view ? '' : 'right'}
                   extraText={beginTimeList}
-                  onClick={this.handleBeginTimeSetting.bind(this, true)}
+                  onClick={view ? null : this.handleBeginTimeSetting.bind(this, true)}
                 />
                 <AtListItem title='结束时间'
-                  arrow='right'
+                  arrow={view ? '' : 'right'}
                   extraText={expireTimeList}
-                  onClick={this.handleExpireTimeSetting.bind(this, true)}
+                  onClick={view ? null : this.handleExpireTimeSetting.bind(this, true)}
                 />
               </AtList>
 
@@ -388,19 +391,20 @@ class Collect extends Component {
             <View className='example-item'>
               <AtList>
                 <AtListItem title='IP地址限制'
-                  arrow='right'
+                  arrow={view ? '' : 'right'}
                   extraText={ipLimitNumList}
-                  onClick={this.handlePanelIpLimitSetting.bind(this, true)}
+                  onClick={view ? null : this.handlePanelIpLimitSetting.bind(this, true)}
                 />
                 <AtListItem title='答题设备唯一'
                   isSwitch
+                  disabled={view}
                   switchIsCheck={deviceUniqueness}
-                  onSwitchChange={this.handleChangeSetDeviceUniq.bind(this)}
+                  onSwitchChange={view ? null : this.handleChangeSetDeviceUniq.bind(this)}
                 />
                 <AtListItem title='每日限答次数'
-                  arrow='right'
+                  arrow={view ? '' : 'right'}
                   extraText={answerLimitNum}
-                  onClick={this.handlePanelAnswerLimitSetting.bind(this, true)}
+                  onClick={view ? null : this.handlePanelAnswerLimitSetting.bind(this, true)}
                 />
               </AtList>
 
