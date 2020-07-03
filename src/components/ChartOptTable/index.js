@@ -136,7 +136,7 @@ class ChartOptTable extends Component {
                 })} key={opt.optMySeq}>
                   <View className='td right'>{key + 1}</View>
                   <View className='td right'>
-                    {opt.label}
+                    {opt.label.replace(/<[^>]+>/g,"")}
                   </View>
                   <View className='td right'>{opt.count}</View>
                   <View className='td right'>{opt.percent}</View>

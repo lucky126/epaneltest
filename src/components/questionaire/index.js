@@ -100,7 +100,7 @@ class Questionaire extends Component {
     return (
       <View className='questionaire-wrap'>
         <View className='InfoRow'>
-          <View className='titleRow'>（ID: {qtn.id}) {qtn.qtnTitle}</View>
+          <View className='titleRow'>（ID: {qtn.id}) {qtn.qtnTitle.replace(/<[^>]+>/g,"")}</View>
           <View className='dataRow'>
             <Text>{formatOnlyDate(qtn.createTime)} </Text>
             <Text className='collect'>收集数据：<Text className='finishNum'>{qtn.finishNum}</Text></Text>
