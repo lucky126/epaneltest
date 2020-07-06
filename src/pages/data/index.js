@@ -5,6 +5,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import RetrievalProgress from '../../components/RetrievalProgress'
 import AnswerData from '../../components/AnswerData'
 import ChartData from '../../components/ChartData'
+import QuotaProgress from '../../components/QuotaProgress'
 import './index.scss';
 
 @connect(({ data, common }) => ({
@@ -33,7 +34,7 @@ class Data extends Component {
   componentWillMount = () => {
     console.log(this.$router.params.current)
     this.setState({
-      qtnId: this.$router.params.id,      
+      qtnId: this.$router.params.id,
       view: this.$router.params.view,
       current : this.$router.params.current ? Number(this.$router.params.current) : 0
     });
@@ -64,6 +65,7 @@ class Data extends Component {
 
     this.getResultData(qtnId)
     this.getChartData(qtnId)
+    this.getQuotaProgress(qtnId)
   }
 
   getResultData = (qtnId) => {
@@ -78,13 +80,22 @@ class Data extends Component {
     })
   }
 
-  getChartData = (qtnId) => {    
+  getChartData = (qtnId) => {
     const {  status, startTime, endTime } = this.state
 
     //获取答题分析数据
     this.props.dispatch({
       type: 'data/getChartStatistics',
       payload: { qtnId, status, startTime, endTime },
+      token: this.props.token
+    })
+  }
+
+  getQuotaProgress = (qtnId) => {
+    //获取配额进度
+    this.props.dispatch({
+      type: 'data/getQuotaProgress',
+      payload: { qtnId},
       token: this.props.token
     })
   }
@@ -113,7 +124,7 @@ class Data extends Component {
 
   onShowResult = (resultId, index, view) => {
     const { qtnId } = this.state
-    
+
     Taro.navigateTo({
       url: '/pages/data/anwserdetail?qtnId='+ qtnId + '&rid=' + resultId + '&idx=' + index + '&view=' + view
     })
@@ -122,7 +133,7 @@ class Data extends Component {
   render() {
     const { RetrievalProgressData } = this.props
     const { view } = this.state
-    const tabList = [{ title: '回收进度' }, { title: '样本数据' }, { title: '图表分析' }]
+    const tabList = [{ title: '回收进度' }, { title: '配额进度' },{ title: '样本数据' }, { title: '图表分析' }]
 
     return (
       <View className='page'>
@@ -131,9 +142,12 @@ class Data extends Component {
             <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <AnswerData data={this.props.resultData} view={view} onShowResult={this.onShowResult} />
+            <QuotaProgress data={this.props.QuotaList}  onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
+            <AnswerData data={this.props.resultData} view={view} onShowResult={this.onShowResult} />
+          </AtTabsPane>
+          <AtTabsPane current={this.state.current} index={3}>
             <ChartData data={this.props.chartList} />
           </AtTabsPane>
         </AtTabs>

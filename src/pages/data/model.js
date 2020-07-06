@@ -9,7 +9,8 @@ export default {
     resultPage: 1,
     answerInfo: [],
     panelInfo: {},
-    chartList: []
+    chartList: [],
+    QuotaList: []
   },
 
   effects: {
@@ -83,6 +84,26 @@ export default {
       });
 
     },
+    * getQuotaProgress({ payload: values, token }, { call, put }) {
+    const { data } = yield call(dataApi.getQuotaProgress, values, token);
+    let Quota = []
+    data.message.data.quotaList.map((val)=>{
+      Quota.push({
+        achieve: val.achieve,
+        clazz: val.clazz,
+        quotaCondition: val.quotaCondition.replace(/<.*?>/ig,""),
+        target: val.target,
+        type: val.type
+      })
+    })
+    yield put({
+      type: 'save',
+      payload: {
+        QuotaList:Quota
+      }
+    });
+
+  },
   },
 
   reducers: {

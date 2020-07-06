@@ -41,3 +41,11 @@ export const getChartStatistics = (data, token) => syncAction({
   data,
   token
 });
+
+//获取配额进度
+export const getQuotaProgress = (data, token) => syncAction({
+  method: 'RetrievalProgress.getQuotaProgress',
+  type: DATAANALYSE,
+  data,
+  token
+});
