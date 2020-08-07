@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { AtTabs, AtTabsPane,AtNavBar, } from 'taro-ui'
 import RetrievalProgress from '../../components/RetrievalProgress'
 import AnswerData from '../../components/AnswerData'
 import ChartData from '../../components/ChartData'
@@ -130,6 +130,12 @@ class Data extends Component {
     })
   }
 
+  handleBack() {
+    Taro.navigateBack({
+      delta: 1
+    })
+  }
+
   render() {
     const { RetrievalProgressData } = this.props
     const { view } = this.state
@@ -137,6 +143,12 @@ class Data extends Component {
 
     return (
       <View className='page'>
+          <AtNavBar
+            onClickLeftIcon={this.handleBack}
+            color='#000'
+            title='分析下载'
+            leftText='返回'
+          />
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={this.state.current} index={0} >
             <RetrievalProgress RetrievalProgressData={RetrievalProgressData} />

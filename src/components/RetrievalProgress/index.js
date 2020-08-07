@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { Card } from '../card'
+import  Card  from '../card'
 import './index.scss'
 
 class RetrievalProgress extends Component {

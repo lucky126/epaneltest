@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import PropTypes from 'prop-types';
-import { QuestionChart } from '../QuestionChart'
+import  QuestionChart  from '../QuestionChart'
 import './index.scss'
 
 class Chartdata extends Component {

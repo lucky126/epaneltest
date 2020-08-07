@@ -2,9 +2,9 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtTabs, AtTabsPane, AtNavBar } from 'taro-ui'
-import { BeginToCollect } from '../../components/beginToCollect'
+import  BeginToCollect  from '../../components/beginToCollect'
 import { Quota } from '../../components/Quota'
-import { Link } from '../../components/link'
+import  Link  from '../../components/link'
 import './index.scss';
 
 @connect(({ invitation, home, common }) => ({
@@ -119,6 +119,12 @@ class Invitation extends Component {
     }
   }
 
+  handleBack() {
+    Taro.navigateBack({
+      delta: 1
+    })
+  }
+
   render() {
     const { canLink, canSetInv } = this.state
     const { qtnStatus, linkData, qtnName, QuotaList } = this.props
@@ -138,6 +144,8 @@ class Invitation extends Component {
           onClickRgIconSt={canSetInv ? this.handleSetting : this.handleNothing}
           color='#000'
           title={title}
+          leftText='返回'
+          onClickLeftIcon={this.handleBack}
           rightFirstIconType={rightFirstIconType}
         />
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>

@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { ChartOptTable } from '../ChartOptTable'
+import  ChartOptTable  from '../ChartOptTable'
 import PropTypes from 'prop-types';
 import './index.scss'
 
