@@ -61,7 +61,7 @@ const config = {
     }
   },
   h5: {
-    publicPath: '/',
+    publicPath: '/h5',
     staticDirectory: 'static',
     esnextModules: ['taro-ui'],
     postcss: {
