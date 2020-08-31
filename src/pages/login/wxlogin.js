@@ -16,8 +16,17 @@ class WxLogin extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      id: '',
+      wx_code: ''
     }
   }
+
+  componentWillMount() {
+    this.setState({
+      id: this.$router.params.userId,
+    });
+    this.bindwx()
+  };
 
   componentDidMount = () => {
 
@@ -30,60 +39,50 @@ class WxLogin extends Component {
     })
   }
 
-  handleWxLogin = () => {
-    let encryptedData = ''
-    let iv = ''
+  getPhoneNumber = (e) => {
+    console.log(e)
+    // encryptedData: encryptedData, iv: iv, code: code
+    if(e.detail.errMsg.split(':')[1] == 'ok') {
+      let params = {userId: this.state.id, encryptedData: e.detail.encryptedData, iv: e.detail.iv, code: this.state.wx_code}
+      this.props.dispatch({
+        type: 'login/bindPhone',
+        payload: params
+      })
+    } else {
+      console.log(e.detail.errMsg.split(':'))
+    }
+  }
 
+  bindwx = () => {
+    console.log('1111111111111111111111111ackokcidvjdiv')
     Taro.login()
       .then(r => {
-        var code = r.code //登录凭证
-
+        var code = r.code // 登录凭证
+        console.log(r)
         if (code) {
-          //2 调用获取用户信息接口
-          
-          Taro.getUserInfo({
-            success: function (res) {
-              encryptedData = res.encryptedData
-              iv = res.iv    
-            }
-          }).then(()=>{
-            let params = { encryptedData: encryptedData, iv: iv, code: code }
-
-            if (!!encryptedData && !!iv) {
-              this.props.dispatch({
-                type: 'login/wxLogin',
-                payload: params
-              })
-              
-            } else {
-              this.errorMessage('微信获取用户信息失败')
-            }
-          })
-
-         
+          this.setState({
+            wx_code: code
+          });
         } else {
-          this.errorMessage('微信授权登录失败')
+          this.setState({
+            wx_code: ''
+          });
         }
       })
-
-
   }
 
   render() {
-
     return (
       <View className='wxlogin-page'>
         <AtMessage />
         <View className='login'>
-
           <View class='alert'>
             <View class='alert-title'>尊敬的用户，请确认授权以下信息</View>
             <View class='alert-desc'>
               <View class='alert-text'>获得你的公开信息（昵称、头像等）</View>
             </View>
-            <AtButton type='primary' circle openType='getUserInfo' onGetUserInfo={this.handleWxLogin} >确认登录</AtButton>
+            <AtButton type='primary' circle openType='getPhoneNumber' onGetPhoneNumber={this.getPhoneNumber}>授 权</AtButton>
           </View>
-
         </View>
 
         {/* <View class='logged'>

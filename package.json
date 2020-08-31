@@ -33,6 +33,7 @@
 	"dependencies": {
 		"@antv/f2": "^3.6.3",
 		"@tarojs/async-await": "2.1.5",
+		"@tarojs/cli": "^2.1.5",
 		"@tarojs/components": "2.1.5",
 		"@tarojs/components-qa": "2.1.5",
 		"@tarojs/redux": "2.1.5",

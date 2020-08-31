@@ -12,3 +12,10 @@ export const wxLogin = (data) => Request.syncAction({
   type: 'user',
   data
 });
+
+export const bindPhoneNum = (data) => Request.syncAction({
+  url: '/thirdLogin/user/wxBind',
+  method: 'user.wxBind',
+  type: 'user',
+  data
+})

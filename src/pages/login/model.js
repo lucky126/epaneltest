@@ -11,19 +11,9 @@ export default {
 
   effects: {
     * commonLogin({ payload: data }, { put }) {
-
-      if (data.status == HTTP_STATUS.SUCCESS) {
-        if (!noConsole) {
-          console.log(
-            `${new Date().toLocaleString()} 【response】`,
-            data
-          );
-          console.log(
-            `${new Date().toLocaleString()} [token]`,
-            data.message.data.token
-          );
-        }
-
+      console.log('--------* commonLogin')
+      console.log(data)
+      if (data.status == HTTP_STATUS.SUCCESS && data.message.data.token) {
         let token = data.message.data.token
         let user = data.message.data.user
         let now = new Date().valueOf()
@@ -39,7 +29,6 @@ export default {
           key: "logintime",
           data: now
         })
-
         Taro.atMessage({
           'message': '登录成功',
           'type': 'success',
@@ -68,6 +57,12 @@ export default {
             url: '../home/index'
           })
         }, 500);
+      } else if(!data.message.data.token) {
+        // 没绑手机号, userid传上
+        Taro.navigateTo({
+          url: '/pages/login/wxlogin?userId=' + data.message.data.userId + '&wxcode=' + data.values.code
+        })
+        console.log('没绑手机没绑手机没绑手机没绑手机没绑手机')
       } else {
         Taro.atMessage({
           'message': data.message.text || '登录失败',
@@ -75,27 +70,45 @@ export default {
           'duration': 5000
         })
       }
-
     },
+
     * wxLogin({ payload: values }, { call, put }) {
-
       const { data } = yield call(loginApi.wxLogin, values);
-
       yield put({
         type: 'commonLogin',
-        payload: data
+        payload: {...data, values}
       })
-
     },
+
     * formLogin({ payload: values }, { call, put }) {
-
       const { data } = yield call(loginApi.login, values);
-
       yield put({
         type: 'commonLogin',
         payload: data
       })
     },
+
+    * bindPhone({ payload: values }, { call, put }) {
+      const { data } = yield call(loginApi.bindPhoneNum, values);
+      yield put({
+        type: 'commonLogin',
+        payload: data
+      })
+
+      // yield put({type: 'save', payload: {}})
+      // if(data.status == HTTP_STATUS.SUCCESS) {
+      //   Taro.redirectTo({
+      //     url: '../home/index'
+      //   })
+      // } else {
+      //   Taro.atMessage({
+      //     'message': data.message.text || '登录失败',
+      //     'type': 'error',
+      //     'duration': 5000
+      //   })
+      // }
+    },
+
   },
 
   reducers: {

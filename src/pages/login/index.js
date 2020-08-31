@@ -39,9 +39,35 @@ class Login extends Component {
   }
   
   handleWxLogin = () => {
-    Taro.navigateTo({
-      url: '/pages/login/wxlogin'
-    })
+    let encryptedData = ''
+    let iv = ''
+    Taro.login()
+      .then(r => {
+        var code = r.code // 登录凭证
+        console.log(r)
+        if (code) {
+          // 调用获取用户信息接口
+          Taro.getUserInfo({
+            success: function (res) {
+              console.log(res)
+              encryptedData = res.encryptedData
+              iv = res.iv    
+            }
+          }).then(()=>{
+            let params = { encryptedData: encryptedData, iv: iv, code: code }
+            if (!!encryptedData && !!iv) {
+              this.props.dispatch({
+                type: 'login/wxLogin',
+                payload: params
+              })
+            } else {
+              this.errorMessage('微信获取用户信息失败')
+            }
+          }) 
+        } else {
+          this.errorMessage('微信授权登录失败')
+        }
+      })
   }
 
   render() {
@@ -53,7 +79,7 @@ class Login extends Component {
             <View class='siteurl'>www.epanel.cn</View>
           </View>
           {process.env.TARO_ENV === 'weapp' && <View class='loginbutton'>
-            <AtButton type='primary' circle onClick={this.handleWxLogin}>微信登录</AtButton>
+            <AtButton type='primary' circle openType='getUserInfo' onGetUserInfo={this.handleWxLogin}>微信注册/登录</AtButton>
           </View>}
           <View class='loginbutton'>
             <AtButton onClick={this.handleForm} circle>云调查登录</AtButton>
