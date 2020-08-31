@@ -11,8 +11,6 @@ export default {
 
   effects: {
     * commonLogin({ payload: data }, { put }) {
-      console.log('--------* commonLogin')
-      console.log(data)
       if (data.status == HTTP_STATUS.SUCCESS && data.message.data.token) {
         let token = data.message.data.token
         let user = data.message.data.user
@@ -57,12 +55,10 @@ export default {
             url: '../home/index'
           })
         }, 500);
-      } else if(!data.message.data.token) {
-        // 没绑手机号, userid传上
+      } else if(data.status == HTTP_STATUS.SUCCESS && !data.message.data.token) {
         Taro.navigateTo({
-          url: '/pages/login/wxlogin?userId=' + data.message.data.userId + '&wxcode=' + data.values.code
+          url: '/pages/login/wxlogin?userId=' + data.message.data.userId
         })
-        console.log('没绑手机没绑手机没绑手机没绑手机没绑手机')
       } else {
         Taro.atMessage({
           'message': data.message.text || '登录失败',
@@ -76,7 +72,7 @@ export default {
       const { data } = yield call(loginApi.wxLogin, values);
       yield put({
         type: 'commonLogin',
-        payload: {...data, values}
+        payload: data
       })
     },
 

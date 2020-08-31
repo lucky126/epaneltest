@@ -37,6 +37,13 @@ class Login extends Component {
       url: '/pages/login/formlogin'
     })
   }
+
+  errorMessage = (msg) => {
+    Taro.atMessage({
+      'message': msg,
+      'type': 'error'
+    })
+  }
   
   handleWxLogin = () => {
     let encryptedData = ''
@@ -44,12 +51,10 @@ class Login extends Component {
     Taro.login()
       .then(r => {
         var code = r.code // 登录凭证
-        console.log(r)
         if (code) {
           // 调用获取用户信息接口
           Taro.getUserInfo({
             success: function (res) {
-              console.log(res)
               encryptedData = res.encryptedData
               iv = res.iv    
             }

@@ -22,10 +22,8 @@ class WxLogin extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      id: this.$router.params.userId,
-    });
-    this.bindwx()
+    this.setState({id: this.$router.params.userId});
+    this.getCode()
   };
 
   componentDidMount = () => {
@@ -40,8 +38,6 @@ class WxLogin extends Component {
   }
 
   getPhoneNumber = (e) => {
-    console.log(e)
-    // encryptedData: encryptedData, iv: iv, code: code
     if(e.detail.errMsg.split(':')[1] == 'ok') {
       let params = {userId: this.state.id, encryptedData: e.detail.encryptedData, iv: e.detail.iv, code: this.state.wx_code}
       this.props.dispatch({
@@ -49,24 +45,18 @@ class WxLogin extends Component {
         payload: params
       })
     } else {
-      console.log(e.detail.errMsg.split(':'))
+      this.errorMessage('微信授权登录失败')
     }
   }
 
-  bindwx = () => {
-    console.log('1111111111111111111111111ackokcidvjdiv')
+  getCode = () => {
     Taro.login()
       .then(r => {
         var code = r.code // 登录凭证
-        console.log(r)
         if (code) {
-          this.setState({
-            wx_code: code
-          });
+          this.setState({wx_code: code});
         } else {
-          this.setState({
-            wx_code: ''
-          });
+          this.setState({wx_code: ''});
         }
       })
   }
