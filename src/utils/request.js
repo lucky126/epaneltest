@@ -26,7 +26,7 @@ export function syncAction(options) {
   }
   return Taro.request({
     url: MAINHOST + currentUrl,
-    data: {
+    data: options.formatData ? {...options.data} : {
       "method": options.method,
       "params": options.data,
       "type": options.type,

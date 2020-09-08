@@ -7,15 +7,17 @@ export const login = (data) => Request.syncAction({
 });
 
 export const wxLogin = (data) => Request.syncAction({
-  url: '/thirdLogin/user/wxLogin',
+  url: '/v3/login/wxLogin',
   method: 'user.wxLogin',
   type: 'user',
-  data
+  data,
+  formatData: true
 });
 
 export const bindPhoneNum = (data) => Request.syncAction({
-  url: '/thirdLogin/user/wxBind',
+  url: '/v3/login/wxBind',
   method: 'user.wxBind',
   type: 'user',
-  data
+  data,
+  formatData: true
 })
