@@ -143,7 +143,7 @@ export default {
         })
       } else {
         Taro.atMessage({
-          'message': data.message.text || '登录失败',
+          'message': data.message || '登录失败',
           'type': 'error',
           'duration': 5000
         })
