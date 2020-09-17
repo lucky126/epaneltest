@@ -59,7 +59,7 @@ class Login extends Component {
               iv = res.iv    
             }
           }).then(()=>{
-            let params = { encryptedData: encryptedData, iv: iv, code: code, userId: '0' }
+            let params = { encryptedData: encryptedData, iv: iv, code: code, userId: '0',oid:'gh_6c5ec0632c0c' }
             if (!!encryptedData && !!iv) {
               this.props.dispatch({
                 type: 'login/wxLogin',

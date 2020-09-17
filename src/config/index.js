@@ -25,7 +25,7 @@ export const ISMOCK = false
 /**
  * 当前的host  ONLINEHOST | QAHOST | MOCKHOST
  */
-export const MAINHOST = ONLINEHOST
+export const MAINHOST = QAHOST
 
 /**
  * wx 根据 code 获取session地址
