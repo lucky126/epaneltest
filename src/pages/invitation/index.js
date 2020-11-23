@@ -122,12 +122,13 @@ class Invitation extends Component {
   render() {
     const { canLink, canSetInv } = this.state
     const { qtnStatus, linkData, qtnName, QuotaList } = this.props
+    const qtnType = this.$router.params.qtnType
 
     let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
     if (qtnStatus !== 0) {
       tabList = [{ title: '开放链接' }, { title: '配额管理' }]
-      rightFirstIconType = canSetInv ? 'settings' : ''
+      rightFirstIconType = canSetInv && qtnType != 80 && qtnType != 90 ? 'settings' : ''
     }
 
     let title = '收集数据--' + qtnName
@@ -135,7 +136,7 @@ class Invitation extends Component {
     return (
       <View className='page'>
         <AtNavBar
-          onClickRgIconSt={canSetInv ? this.handleSetting : this.handleNothing}
+          onClickRgIconSt={canSetInv && qtnType != 80 && qtnType != 90 ? this.handleSetting : this.handleNothing}
           color='#000'
           title={title}
           rightFirstIconType={rightFirstIconType}
