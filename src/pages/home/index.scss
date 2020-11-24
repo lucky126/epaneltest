@@ -8,4 +8,19 @@
 .at-nav-bar__text {
     font-size: 12PX;
 }
-
+.create-question{
+    display: flex;
+    justify-content: space-between;
+    .search{
+        width: 80%;
+    }
+    .create{
+        line-height: 88px;
+        width: 142px;
+    }
+}
+.select_type{
+    line-height: 65px;
+    margin-left: 15px;
+    font-size: 30px;
+}

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View,Button,Text,Radio } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtMessage, AtModal, AtSearchBar, AtDrawer } from 'taro-ui'
+import { AtNavBar, AtMessage, AtInput,AtModal, AtSearchBar, AtDrawer,AtModalHeader,AtModalContent,AtModalAction } from 'taro-ui'
 import Questionaires from '../../components/questionaire'
 import './index.scss';
 
@@ -35,8 +35,12 @@ class Home extends Component {
       index: 0,
       oldStatus: 0,
       newStatus: 0,
-      drawerShow: false
+      drawerShow: false,
+      isCreate:false,
+      qtnName:''
     }
+    this.handleCreate = this.handleCreate.bind(this)
+    this.handleName = this.handleName.bind(this)
   }
 
   componentWillMount() {
@@ -249,14 +253,25 @@ class Home extends Component {
     }
   }
 
+  handleCreate(){
+    this.setState({
+      isCreate:true
+    })
+  }
+
+  handleName(val){
+
+  }
+
   render() {
     const { qtnList, qtnTypes, projectExist } = this.props
-
+    const {isCreate,qtnName} = this.state
     const qtProps = {
       qtnTypes,
       view: false,
       onChangeStatus: this.handleChangeStatus
     }
+    console.log(qtnTypes)
     //leftText='+新建问卷'
     return (
       <View className='page'>
@@ -298,13 +313,17 @@ class Home extends Component {
         >
           <View>我的问卷</View>
         </AtNavBar>
-
-        <AtSearchBar
-          value={this.state.qtnName}
-          onChange={this.onChangeSearch.bind(this)}
-          onActionClick={this.onActionClick.bind(this)}
-        />
-
+        <View className='create-question'>
+          <View className='search'>
+            <AtSearchBar
+              value={this.state.qtnName}
+              onChange={this.onChangeSearch.bind(this)}
+              onActionClick={this.onActionClick.bind(this)}
+            />
+          </View>  
+          <View className='create' onClick={this.handleCreate}>新建问卷</View>
+        </View>
+        
         <View className='questionaires'>
           {qtnList && qtnList.map((item, key) => (
             // <View>({item.id}){item.qtnTitle}</View>
@@ -314,6 +333,31 @@ class Home extends Component {
 
           ))}
         </View>
+        <AtModal isOpened={isCreate}>
+          <AtModalHeader>问卷创建</AtModalHeader>
+          <AtModalContent>
+            <View>
+            <AtInput
+              name='value'
+              title='问卷名称'
+              type='text'
+              placeholder='请填写问卷名称'
+              value={qtnName}
+              onChange={this.handleName}
+            />
+            </View>
+            <View>
+              <View className='select_type'>选择类型</View>
+              {qtnTypes.map((val,key)=>(
+                !!val && <View>
+                  <Radio name='list' value='选中'></Radio>
+                  <Text>{val}</Text>
+                </View>
+              ))}
+            </View>
+          </AtModalContent>
+          <AtModalAction> <Button>取消</Button> <Button>确定</Button> </AtModalAction>
+        </AtModal>
       </View>
     )
   }

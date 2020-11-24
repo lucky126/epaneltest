@@ -1,0 +1,25 @@
+.qtnheader{
+    text-align: center;
+}
+.pagelist{
+    .qtlist{
+        width: 100%;
+        background-color: #FFF;
+        color: #333;
+        border-radius: 10rpx;
+        //box-shadow: 2rpx 2rpx 5rpx #333333;
+        margin-bottom: 20rpx;
+    }
+    .pages{
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    .page{
+        width: 96%;
+        margin:auto;
+    }
+}
+.question{
+    width: 94%;
+    margin:auto;
+}
