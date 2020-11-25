@@ -2,7 +2,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtTabBar } from 'taro-ui'
+import { AtTabBar,AtFloatLayout,AtGrid } from 'taro-ui'
 import './index.scss';
 import {QtnHeader} from '../../components/Qtncavas/QtnHeader'
 import {PageList} from '../../components/Qtncavas/PageList'
@@ -21,10 +21,14 @@ class Edit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-        currentBar:null
+        currentBar:null,
+        isOpened:false
+        
     }
     this.handleClickBar = this.handleClickBar.bind(this)
     this.getQuestionnaire = this.getQuestionnaire.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.addQuestion = this.addQuestion.bind(this)
   }
 
   componentWillMount(){
@@ -45,10 +49,109 @@ class Edit extends Component {
   }
 
   handleClickBar(val){
-    console.log(val)
+    if(val === 0){
+      this.setState({
+        isOpened:true
+      })
+    }
+  }
+
+  handleClose(){
+    this.setState({
+      isOpened:false
+    })
+  }
+
+  addQuestion(e,value){
+    const {isChange} = this.props
+    let questionnaire = this.props.qtn
+    const pages = questionnaire.pageList.length
+    const qtListIndex = questionnaire.pageList[pages-1].qtList.length
+    const disSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].disSeq
+    const index = parseInt(disSeq == 'D1'? 0 :disSeq.replace(/[^0-9]/ig,""))
+    let optlist = []
+    const choiceOpt = [{
+      "fixSeq":"A1",
+      "position":0,
+      "val":1,
+      "mySeq":"A1",
+      "input":false,
+      "fmt":"text",
+      "seq":1,
+      "img":"",
+      "label":"新选项",
+      "conf":{},
+      "required":true,
+      "optQuote":false
+    },
+    {
+      "fixSeq":"A2",
+      "position":0,
+      "val":1,
+      "mySeq":"A2",
+      "input":false,
+      "fmt":"text",
+      "seq":1,
+      "img":"",
+      "label":"新选项",
+      "conf":{},
+      "required":true,
+      "optQuote":false
+    }
+    ]
+    
+    const openOpt = [{
+      "fixSeq":"A1",
+      "position":0,
+      "val":1,
+      "mySeq":"A1",
+      "input":false,
+      "fmt":"text",
+      "seq":1,
+      "img":"",
+      "label":"填空题",
+      "conf":{},
+      "required":true,
+      "optQuote":false
+    }
+    ]
+    if(value == 0 || value == 1){
+      optlist = choiceOpt
+    }else{
+      optlist = openOpt
+    }
+    const fixSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].fixSeq.replace(/[^0-9]/ig,"")
+    const qtList = [{
+        "type": value == 0 || value == 1 ? 1 : 2,
+        "selectType": value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :'',
+        "disSeq": `Q${index+1}`,
+        "fixSeq": `Q${parseInt(fixSeq)+1}`,
+        "mySeq": `Q${index+1}`,
+        "cols": 1,
+        "img": "",
+        "smax": 4,
+        "smin": 1,
+        "opts": optlist,
+        "seq": "1",
+        "required": true,
+        "text": value == 0 ? '单选题' :value == 1 ? '多选题' :value == 2 ? '填空题' :'',
+    }]
+    const newQtList = questionnaire.pageList[pages-1].qtList.concat(qtList)
+    questionnaire.pageList[pages-1].qtList = newQtList
+    this.props.dispatch({
+        type: 'edit/save',
+        payload: {
+          qtn:questionnaire,
+          isChange:!isChange
+        }
+      })
+      this.setState({
+        isOpened:false
+      })
   }
 
   render() {
+    const {isOpened} = this.state
     return (
       <View className='edit'>
          <View className='editor__main'>
@@ -66,6 +169,27 @@ class Edit extends Component {
            onClick={this.handleClickBar}
            current={this.state.currentBar}
          />
+         <AtFloatLayout isOpened={isOpened} title='选择题目' onClose={this.handleClose}>
+         <View>
+         <AtGrid mode='rect' hasBorder={false} onClick={this.addQuestion} data={
+            [
+                {
+                  image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
+                  value: '单选题'
+                },
+                {
+                  image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
+                  value: '多选题'
+                },
+                {
+                  image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
+                  value: '填空题'
+                } 
+              ]
+            }
+         />
+        </View>
+        </AtFloatLayout>
       </View>
     )
   }

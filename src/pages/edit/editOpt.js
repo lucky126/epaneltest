@@ -1,10 +1,12 @@
 /* eslint-disable react/no-unused-state */
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View, Checkbox } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
 import { QuestionChoice } from "../../components/Question/QuestionChoice";
 import { QuestionOpen } from "../../components/Question/QuestionOpen";
+// eslint-disable-next-line import/first
+import { AtButton } from 'taro-ui'
 
 @connect(({ edit, home, common }) => ({
   ...edit,
@@ -40,10 +42,16 @@ class EditOpt extends Component {
          </View>
          <View>
              <View className='editOpt-type'>属性修改</View>
+             <View className='edit-select'>
+             <Checkbox value='选中' ></Checkbox>
              <View>必答</View>
+             </View>
+             <View className='edit-select'>
+             <Checkbox value='选中' ></Checkbox>
              <View>增加分页</View>
+             </View>
          </View>
-         <View>保存修改</View>
+         <View className='opt-save'><AtButton type='primary'>保存修改</AtButton></View>
       </View>
     )
   }

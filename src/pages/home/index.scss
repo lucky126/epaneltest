@@ -19,8 +19,13 @@
         width: 142px;
     }
 }
-.select_type{
-    line-height: 65px;
-    margin-left: 15px;
-    font-size: 30px;
+.typelist{
+    width: 92%;
+    margin: auto;
+    .select_type{
+        line-height: 65px;
+        margin-left: 15px;
+        font-size: 30px;
+    }
 }
+

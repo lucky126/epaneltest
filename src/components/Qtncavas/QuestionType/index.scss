@@ -6,9 +6,31 @@
     .choice-edit{
         display: flex;
         justify-content: space-between;
+        .choice-text{
+            padding-top:20px;
+        }
     }
 }
 .describe{
     font-size: 28px;
     line-height: 52px;
+}
+.open{
+    .open-text{
+        padding-top:20px;
+    }
+    .open-height{
+        height: 112px;
+        display: flex;
+        line-height: 112px;
+        .open-label{
+            margin-right: 20px;
+        }
+        .open-input{
+        height: 76px;
+        border: 1px solid #ccc;
+        margin: 20px 0 20px 0;
+    }
+    }
+    
 }

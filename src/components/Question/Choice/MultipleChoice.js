@@ -130,7 +130,10 @@ class MultipleChoice extends Component {
                   value={item.label}
                   onChange={(val)=>this.handleChange(val,item)}
                 />
-              </View>     
+              </View>  
+              <View className='multi-icon' onClick={(val)=>this.handleDeleteOpt(item,key)}>
+                  <AtIcon value='subtract-circle' size='20' color='red'></AtIcon>
+              </View>    
             </View>
           ))}
         </View>

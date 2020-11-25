@@ -37,10 +37,14 @@ class Home extends Component {
       newStatus: 0,
       drawerShow: false,
       isCreate:false,
-      qtnName:''
+      qtnName:'',
+      type:''
     }
     this.handleCreate = this.handleCreate.bind(this)
     this.handleName = this.handleName.bind(this)
+    this.HandleQtnType = this.HandleQtnType.bind(this)
+    this.handleConfirm = this.handleConfirm.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   componentWillMount() {
@@ -260,18 +264,63 @@ class Home extends Component {
   }
 
   handleName(val){
+    this.setState({
+      qtnName:val
+    })
+  }
 
+  HandleQtnType(val){
+    this.setState({
+      type:val
+    })
+  }
+
+  handleConfirm(){
+    const {qtnName,type} = this.state
+    if(qtnName.length === 0){
+      Taro.atMessage({
+        'message': '问卷名称不能为空',
+        'type': 'error',
+      })
+      return
+    }
+    if(type.length === 0){
+      Taro.atMessage({
+        'message': '请选择问卷类型',
+        'type': 'error',
+      })
+      return
+    }
+    const params = {
+      qtnName,
+      qtnType:type 
+  }
+  this.props.dispatch({
+      type: 'home/createQuestionnaire',
+      payload: params,
+      token: this.props.token
+  }).then(()=>{
+    this.setState({
+      isCreate:false
+    })
+    this.getData()
+  })
+  }
+
+  handleClose(){
+    this.setState({
+      isCreate:false
+    })
   }
 
   render() {
     const { qtnList, qtnTypes, projectExist } = this.props
-    const {isCreate,qtnName} = this.state
+    const {isCreate,qtnName,type} = this.state
     const qtProps = {
       qtnTypes,
       view: false,
       onChangeStatus: this.handleChangeStatus
     }
-    console.log(qtnTypes)
     //leftText='+新建问卷'
     return (
       <View className='page'>
@@ -333,7 +382,7 @@ class Home extends Component {
 
           ))}
         </View>
-        <AtModal isOpened={isCreate}>
+        <AtModal isOpened={isCreate} closeOnClickOverlay={false}>
           <AtModalHeader>问卷创建</AtModalHeader>
           <AtModalContent>
             <View>
@@ -346,17 +395,17 @@ class Home extends Component {
               onChange={this.handleName}
             />
             </View>
-            <View>
+            <View className='typelist'>
               <View className='select_type'>选择类型</View>
               {qtnTypes.map((val,key)=>(
-                !!val && <View>
-                  <Radio name='list' value='选中'></Radio>
+                !!val && (key != 80 && key != 90) && <View>
+                  <Radio name='list' style={{transform: 'scale(0.8)'}} value='选中' checked={key == type ? true :false} onClick={()=>this.HandleQtnType(key)}></Radio>
                   <Text>{val}</Text>
                 </View>
               ))}
             </View>
           </AtModalContent>
-          <AtModalAction> <Button>取消</Button> <Button>确定</Button> </AtModalAction>
+          <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.handleConfirm}>确定</Button> </AtModalAction>
         </AtModal>
       </View>
     )

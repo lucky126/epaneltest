@@ -44,7 +44,7 @@ class QuestionChoice extends Component {
     return (
       <View className='choice'>
           <View className='choice-edit'>
-            <View>
+            <View className='choice-text'>
               {opts.disSeq + '.' + opts.text}
             </View>
             <View onClick={this.handelEditOpt}><AtIcon value='edit' size='18' color='#2d8cf0'></AtIcon></View>
@@ -54,6 +54,7 @@ class QuestionChoice extends Component {
                 {opts.opts.map((opt,index)=>(
                     <View className='choice-single'>
                     <Radio 
+                        style={{transform: 'scale(0.8)'}}
                         value='选中' 
                     ></Radio>
                     <Text>{opt.label}</Text>
@@ -66,6 +67,7 @@ class QuestionChoice extends Component {
                {opts.opts.map((opt,index)=>(
                    <View className='choice-single'>
                      <Checkbox 
+                          style={{transform: 'scale(0.8,0.8)'}}
                          value='选中' 
                      ></Checkbox>
                      <Text>{opt.label}</Text>

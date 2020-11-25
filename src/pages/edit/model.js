@@ -5,7 +5,8 @@ export default {
   namespace: 'edit',
   state: {
     qtn:{},
-    optsList:{}
+    optsList:{},
+    isChange:true
   },
 
   effects: {

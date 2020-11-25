@@ -43,3 +43,10 @@ export const verifyUserExistProjects = (data, token) => syncAction({
   data,
   token
 });
+
+export const createQuestionnaire = (data, token) => syncAction({
+  method: 'QuestionnaireCreater.createQuestionnaire',
+  type: QUESTIONNAIRE,
+  data,
+  token
+});

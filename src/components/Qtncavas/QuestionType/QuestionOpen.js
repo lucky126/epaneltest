@@ -28,10 +28,20 @@ class QuestionOpen extends Component {
   }
 
   render() {
-      const {qtn} = this.props
+      const {opts} = this.props
+      console.log(opts)
     return (
-      <View className='qtnheader'>
-       填空
+      <View className='open'>
+          <View className='open-text'>
+              {opts.disSeq + '.' + opts.text}
+          </View>
+          {opts.opts.map((item)=>(
+            <View className='open-height'>
+              <Text className='open-label'>{item.label}</Text>
+              <Input className='open-input'></Input>
+          </View>
+          ))}
+          
       </View>
     )
   }
