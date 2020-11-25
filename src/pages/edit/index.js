@@ -6,6 +6,7 @@ import { AtTabBar,AtFloatLayout,AtGrid } from 'taro-ui'
 import './index.scss';
 import {QtnHeader} from '../../components/Qtncavas/QtnHeader'
 import {PageList} from '../../components/Qtncavas/PageList'
+import { choiceOpt,openOpt } from "../../config";
 
 @connect(({ edit, home, common }) => ({
   ...edit,
@@ -29,10 +30,12 @@ class Edit extends Component {
     this.getQuestionnaire = this.getQuestionnaire.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.addQuestion = this.addQuestion.bind(this)
+    this.handleSave = this.handleSave.bind(this)
   }
 
   componentWillMount(){
       this.getQuestionnaire()
+      this.getQuestionnaireVersion()
   }
 
   //获得问卷信息
@@ -48,12 +51,45 @@ class Edit extends Component {
     })
   }
 
+  //获取版本信息
+  getQuestionnaireVersion(){
+    const id = this.$router.params.id
+    const params = {
+        qtnId:id 
+    }
+    this.props.dispatch({
+      type: 'edit/getQuestionnaireVersion',
+      payload: params,
+      token: this.props.token
+  })
+  }
+
   handleClickBar(val){
+    //0添加题目，1保存问卷，2发布问卷
     if(val === 0){
       this.setState({
         isOpened:true
       })
     }
+    if(val === 1){
+      this.handleSave()
+    }
+  }
+
+  //保存问卷
+  handleSave(){
+    const {qtn,logicVersion} = this.props
+    const params = {
+      qtn,
+      logicVersion
+    }
+    this.props.dispatch({
+      type: 'edit/saveQuestionnaire',
+      payload: params,
+      token: this.props.token
+  }).then(()=>{
+    this.getQuestionnaireVersion()
+  })
   }
 
   handleClose(){
@@ -62,6 +98,7 @@ class Edit extends Component {
     })
   }
 
+  //添加题目
   addQuestion(e,value){
     const {isChange} = this.props
     let questionnaire = this.props.qtn
@@ -70,51 +107,7 @@ class Edit extends Component {
     const disSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].disSeq
     const index = parseInt(disSeq == 'D1'? 0 :disSeq.replace(/[^0-9]/ig,""))
     let optlist = []
-    const choiceOpt = [{
-      "fixSeq":"A1",
-      "position":0,
-      "val":1,
-      "mySeq":"A1",
-      "input":false,
-      "fmt":"text",
-      "seq":1,
-      "img":"",
-      "label":"新选项",
-      "conf":{},
-      "required":true,
-      "optQuote":false
-    },
-    {
-      "fixSeq":"A2",
-      "position":0,
-      "val":1,
-      "mySeq":"A2",
-      "input":false,
-      "fmt":"text",
-      "seq":1,
-      "img":"",
-      "label":"新选项",
-      "conf":{},
-      "required":true,
-      "optQuote":false
-    }
-    ]
     
-    const openOpt = [{
-      "fixSeq":"A1",
-      "position":0,
-      "val":1,
-      "mySeq":"A1",
-      "input":false,
-      "fmt":"text",
-      "seq":1,
-      "img":"",
-      "label":"填空题",
-      "conf":{},
-      "required":true,
-      "optQuote":false
-    }
-    ]
     if(value == 0 || value == 1){
       optlist = choiceOpt
     }else{

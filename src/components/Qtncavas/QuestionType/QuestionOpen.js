@@ -29,7 +29,6 @@ class QuestionOpen extends Component {
 
   render() {
       const {opts} = this.props
-      console.log(opts)
     return (
       <View className='open'>
           <View className='open-text'>
@@ -37,8 +36,8 @@ class QuestionOpen extends Component {
           </View>
           {opts.opts.map((item)=>(
             <View className='open-height'>
-              <Text className='open-label'>{item.label}</Text>
-              <Input className='open-input'></Input>
+              <Text className='open-label' style={{width: !!item.label ?'20%':'' }}>{item.label}</Text>
+              <Input className='open-input' style={{width: !!item.label ?'80%':'100%' }}></Input>
           </View>
           ))}
           

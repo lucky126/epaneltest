@@ -6,7 +6,8 @@ export default {
   state: {
     qtn:{},
     optsList:{},
-    isChange:true
+    isChange:true,
+    logicVersion:''
   },
 
   effects: {
@@ -15,8 +16,24 @@ export default {
       yield put({
         type: 'save',
         payload: {
-            qtn: data.message.data.qtn,
+            qtn: data.message.data.qtn
         }
+      });
+    },
+    * getQuestionnaireVersion({payload: values, token  }, { call, put }) {
+      const { data } = yield call(editApi.getQuestionnaireVersion, values, token);
+      yield put({
+        type: 'save',
+        payload: {
+          logicVersion: data.message.data.logicVersion.version
+        }
+      });
+    },
+    * saveQuestionnaire({payload: values, token  }, { call, put }) {
+      const { data } = yield call(editApi.saveQuestionnaire, values, token);
+      console.log(data)
+      yield put({
+        type: 'save',
       });
     },
   },
