@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View,Checkbox } from '@tarojs/components'
+import { View,Checkbox,Button } from '@tarojs/components'
 import PropTypes from 'prop-types';
 import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction }  from 'taro-ui'
 import './style/setting.scss'
@@ -25,9 +25,10 @@ class QtnSet extends Component {
   handleDelete(){
     const {opts,isChange} = this.props
    
-    let questionnaire = this.props.questionnaire
-    let newQtlist = questionnaire.pageList[0].qtList.filter((val)=> val.disSeq != opts.disSeq)
-    console.log(newQtlist)
+    let questionnaire = this.props.qtn
+    let newQtlist = questionnaire.pageList.map((pg)=>{
+      pg.qtList.filter((val)=> val.disSeq != opts.disSeq)
+    })
     newQtlist.map((item,key)=>{
       item.disSeq = `Q${key+1}`
       item.mySeq = `Q${key+1}`
@@ -51,10 +52,12 @@ class QtnSet extends Component {
   //必答设置
   handleRequired(required){
     const {questionnaire,opts,isChange} = this.props
-    questionnaire.pageList[0].qtList.map((val)=>{
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((val)=>{
       if(val.disSeq === opts.disSeq){
         val.required = !required
       }
+    })
     })
     this.props.dispatch({
       type: 'edit/save',
@@ -66,18 +69,14 @@ class QtnSet extends Component {
   }
   
   render() {
-    const {opts,isModify} = this.props
+    const {opts} = this.props
     const {qtnset_isopen} = this.state
     return (
       <View className="qtset-con">
         <View className='qt-set'>
-          <View><Checkbox value='选中' checked={opts.required} disabled={!isModify} onClick={() => this.handleRequired(opts.required)}></Checkbox> 必填</View>
-          {isModify && (
-            <View onClick={() => this.setState({qtnset_isopen: true})}><AtIcon value='trash' size='25' color='#ccc'></AtIcon></View>
-          )}
-          {!isModify && (
-            <View><AtIcon value='trash' size='25' color='#ccc'></AtIcon></View>
-          )}
+          <View><Checkbox value='选中' checked={opts.required} onClick={() => this.handleRequired(opts.required)}></Checkbox> 必填</View>
+          <View onClick={() => this.setState({qtnset_isopen: true})}><AtIcon value='trash' size='25' color='#ccc'></AtIcon></View>
+          
         </View>
         {qtnset_isopen && (
           <AtModal isOpened={qtnset_isopen} closeOnClickOverlay={false}>

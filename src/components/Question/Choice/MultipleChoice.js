@@ -26,12 +26,14 @@ class MultipleChoice extends Component {
     if(value === ''){
       return
     }
-    let newOptList = opts.optlist.filter((val)=> val.mySeq === item.mySeq ? val.label = value :val)
-    let questionnaire = this.props.questionnaire
-    questionnaire.pageList[0].qtList.map((item,key)=>{
-      if(item.disSeq === opts.disSeq){
-         item.optlist = newOptList
-      } 
+    let newOptList = opts.opts.filter((val)=> val.mySeq === item.mySeq ? val.label = value :val)
+    let questionnaire = this.props.qtn
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((item,key)=>{
+        if(item.disSeq === opts.disSeq){
+           item.opts = newOptList
+        } 
+      })
     })
     this.props.dispatch({
         type: 'edit/save',
@@ -44,11 +46,13 @@ class MultipleChoice extends Component {
 
   handleText(value){
     const {opts,isChange} = this.props
-    let questionnaire = this.props.questionnaire
-    questionnaire.pageList[0].qtList.map((item,key)=>{
-      if(item.disSeq === opts.disSeq){
-         item.text = value
-      } 
+    let questionnaire = this.props.qtn
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((item,key)=>{
+        if(item.disSeq === opts.disSeq){
+           item.text = value
+        } 
+      })
     })
     this.props.dispatch({
         type: 'edit/save',
@@ -63,10 +67,12 @@ class MultipleChoice extends Component {
   //删除选项
   handleDeleteOpt(item,key){
     const {opts,isChange} = this.props
-    if (opts.optlist.length == 1) {
+    if (opts.opts.length == 1) {
       const { opts, isChange } = this.props
-      let questionnaire = this.props.questionnaire
-      let newQtlist = questionnaire.pageList[0].qtList.filter((val) => val.disSeq != opts.disSeq)
+      let questionnaire = this.props.qtn
+      let newQtlist = questionnaire.pageList.map((pg)=>{
+        pg.qtList.filter((val) => val.disSeq != opts.disSeq)
+      })
       newQtlist.map((item, key) => {
         item.disSeq = `Q${key + 1}`
         item.mySeq = `Q${key + 1}`
@@ -83,15 +89,17 @@ class MultipleChoice extends Component {
       })
       return
     }
-    let newOptList = opts.optlist.filter((val)=> val.mySeq !== item.mySeq)
-    let questionnaire = this.props.questionnaire
+    let newOptList = opts.opts.filter((val)=> val.mySeq !== item.mySeq)
+    let questionnaire = this.props.qtn
     newOptList.map((val,key1)=>{
       val.mySeq = `A${key1+1}`
     })
-    questionnaire.pageList[0].qtList.map((item,key)=>{
-      if(item.disSeq === opts.disSeq){
-         item.optlist = newOptList
-      } 
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((item,key)=>{
+        if(item.disSeq === opts.disSeq){
+           item.opts = newOptList
+        } 
+      })
     })
     
     this.props.dispatch({

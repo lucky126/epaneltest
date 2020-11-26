@@ -37,7 +37,7 @@ class Home extends Component {
       newStatus: 0,
       drawerShow: false,
       isCreate:false,
-      qtnName:'',
+      qtnName1:'',
       type:''
     }
     this.handleCreate = this.handleCreate.bind(this)
@@ -265,7 +265,7 @@ class Home extends Component {
 
   handleName(val){
     this.setState({
-      qtnName:val
+      qtnName1:val
     })
   }
 
@@ -276,8 +276,8 @@ class Home extends Component {
   }
 
   handleConfirm(){
-    const {qtnName,type} = this.state
-    if(qtnName.length === 0){
+    const {qtnName1,type} = this.state
+    if(qtnName1.length === 0){
       Taro.atMessage({
         'message': '问卷名称不能为空',
         'type': 'error',
@@ -292,7 +292,7 @@ class Home extends Component {
       return
     }
     const params = {
-      qtnName,
+      qtnName:qtnName1,
       qtnType:type 
   }
   this.props.dispatch({
@@ -315,7 +315,7 @@ class Home extends Component {
 
   render() {
     const { qtnList, qtnTypes, projectExist } = this.props
-    const {isCreate,qtnName,type} = this.state
+    const {isCreate,qtnName1,type} = this.state
     const qtProps = {
       qtnTypes,
       view: false,
@@ -391,7 +391,7 @@ class Home extends Component {
               title='问卷名称'
               type='text'
               placeholder='请填写问卷名称'
-              value={qtnName}
+              value={qtnName1}
               onChange={this.handleName}
             />
             </View>

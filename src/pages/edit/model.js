@@ -7,7 +7,8 @@ export default {
     qtn:{},
     optsList:{},
     isChange:true,
-    logicVersion:''
+    logicVersion:'',
+    questionnaire:{}
   },
 
   effects: {

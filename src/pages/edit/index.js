@@ -6,7 +6,6 @@ import { AtTabBar,AtFloatLayout,AtGrid } from 'taro-ui'
 import './index.scss';
 import {QtnHeader} from '../../components/Qtncavas/QtnHeader'
 import {PageList} from '../../components/Qtncavas/PageList'
-import { choiceOpt,openOpt } from "../../config";
 
 @connect(({ edit, home, common }) => ({
   ...edit,
@@ -107,7 +106,60 @@ class Edit extends Component {
     const disSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].disSeq
     const index = parseInt(disSeq == 'D1'? 0 :disSeq.replace(/[^0-9]/ig,""))
     let optlist = []
+    const choiceOpt = [{
+      "fixSeq":"A1",
+      "position":0,
+      "val":1,
+      "mySeq":"A1",
+      "input":false,
+      "fmt":"text",
+      "seq":1,
+      "img":"",
+      "label":"新选项",
+      "conf":{},
+      "required":true,
+      "optQuote":false,
+      "seq": 1,
+      "val": 1,
+      "value": 1
+    },
+    {
+      "fixSeq":"A2",
+      "position":0,
+      "val":1,
+      "mySeq":"A2",
+      "input":false,
+      "fmt":"text",
+      "seq":1,
+      "img":"",
+      "label":"新选项",
+      "conf":{},
+      "required":true,
+      "optQuote":false,
+      "seq": 2,
+      "val": 2,
+      "value": 1
+    }
+    ]
     
+     const openOpt = [{
+      "fixSeq":"A1",
+      "position":0,
+      "val":1,
+      "mySeq":"A1",
+      "input":false,
+      "fmt":"text",
+      "seq":1,
+      "img":"",
+      "label":"填空题",
+      "conf":{},
+      "required":true,
+      "optQuote":false,
+      "seq": 2,
+      "val": 2,
+      "value": 1    
+    }
+    ]
     if(value == 0 || value == 1){
       optlist = choiceOpt
     }else{
@@ -115,6 +167,9 @@ class Edit extends Component {
     }
     const fixSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].fixSeq.replace(/[^0-9]/ig,"")
     const qtList = [{
+        "conf": "{}",
+        "confJson": {},
+        "logic":{},
         "type": value == 0 || value == 1 ? 1 : 2,
         "selectType": value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :'',
         "disSeq": `Q${index+1}`,
@@ -125,6 +180,7 @@ class Edit extends Component {
         "smax": 4,
         "smin": 1,
         "opts": optlist,
+        "subs": [],
         "seq": "1",
         "required": true,
         "text": value == 0 ? '单选题' :value == 1 ? '多选题' :value == 2 ? '填空题' :'',

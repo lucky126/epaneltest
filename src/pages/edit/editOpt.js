@@ -23,16 +23,29 @@ class EditOpt extends Component {
     super(props)
     this.state = {currentBar:null
     }
-    
+    this.HandleSave = this.HandleSave.bind(this)
   }
 
   componentDidMount(){
   
   }
 
+  HandleSave(){
+    const {questionnaire,isChange} = this.props
+    this.props.dispatch({
+      type: 'edit/save',
+      payload: {
+        qtn:questionnaire,
+        isChange:!isChange
+      }
+    })
+    Taro.navigateBack({
+      delta: 1 // 返回上一级页面。
+      });   
+  }
+
   render() {
       const {optsList} = this.props
-      console.log(optsList)
     return (
       <View className='editOpt'>
          <View>
@@ -51,7 +64,7 @@ class EditOpt extends Component {
              <View>增加分页</View>
              </View>
          </View>
-         <View className='opt-save'><AtButton type='primary'>保存修改</AtButton></View>
+         <View className='opt-save'><AtButton type='primary' onClick={this.HandleSave}>保存修改</AtButton></View>
       </View>
     )
   }

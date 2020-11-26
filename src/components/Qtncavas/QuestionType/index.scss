@@ -16,9 +16,14 @@
     line-height: 52px;
 }
 .open{
-    .open-text{
+    .open-edit{
+        display: flex;
+        justify-content: space-between;
+        .open-text{
         padding-top:20px;
     }
+    }
+    
     .open-height{
         height: 112px;
         display: flex;

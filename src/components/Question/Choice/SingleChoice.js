@@ -26,12 +26,14 @@ class SingleChoice extends Component {
       return
     }
     const {opts,isChange} = this.props
-    let newOptList = opts.optlist.filter((val)=> val.mySeq === item.mySeq ? val.label = value :val)
-    let questionnaire = this.props.questionnaire
-    questionnaire.pageList[0].qtList.map((item,key)=>{
-      if(item.disSeq === opts.disSeq){
-         item.optlist = newOptList
-      } 
+    let newOptList = opts.opts.filter((val)=> val.mySeq === item.mySeq ? val.label = value :val)
+    let questionnaire = this.props.qtn
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((item,key)=>{
+        if(item.disSeq === opts.disSeq){
+           item.optlist = newOptList
+        } 
+      })
     })
     this.props.dispatch({
         type: 'edit/save',
@@ -44,12 +46,13 @@ class SingleChoice extends Component {
 
   handleText(value){
     const {opts,isChange} = this.props
-    let questionnaire = this.props.questionnaire
-    questionnaire.pageList[0].qtList.map((item,key)=>{
-      if(item.disSeq === opts.disSeq){
-        console.log(item)
-         item.text = value
-      } 
+    let questionnaire = this.props.qtn
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((item,key)=>{
+        if(item.disSeq === opts.disSeq){
+           item.text = value
+        } 
+      })
     })
     this.props.dispatch({
         type: 'edit/save',
@@ -64,10 +67,13 @@ class SingleChoice extends Component {
   //删除选项
   handleDeleteOpt(item,key){
     const { opts, isChange } = this.props
-    if (opts.optlist.length == 1) {
+    if (opts.opts.length == 1) {
       const { opts, isChange } = this.props
-      let questionnaire = this.props.questionnaire
-      let newQtlist = questionnaire.pageList[0].qtList.filter((val) => val.disSeq != opts.disSeq)
+      let questionnaire = this.props.qtn
+      const pages = questionnaire.pageList.length
+      let newQtlist = questionnaire.pageList.map((pg)=>{
+        pg.qtList.filter((val) => val.disSeq != opts.disSeq)
+      })
       newQtlist.map((item, key) => {
         item.disSeq = `Q${key + 1}`
         item.mySeq = `Q${key + 1}`
@@ -84,17 +90,19 @@ class SingleChoice extends Component {
       })
       return
     }
-    let newOptList = opts.optlist.filter((val)=> val.mySeq !== item.mySeq)
+    let newOptList = opts.opts.filter((val)=> val.mySeq !== item.mySeq)
     newOptList.map((val,key1)=>{
       val.mySeq = `A${key1+1}`
     })
-    let questionnaire = this.props.questionnaire
-    questionnaire.pageList[0].qtList.map((qt,key)=>{
-      if(qt.disSeq === opts.disSeq){
-         qt.optlist = newOptList
-      } 
+    let questionnaire = this.props.qtn
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((qt,key)=>{
+        if(qt.disSeq === opts.disSeq){
+           qt.opts = newOptList
+        } 
+      })
     })
-    
+    console.log(questionnaire)
     this.props.dispatch({
         type: 'edit/save',
         payload: {

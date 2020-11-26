@@ -21,12 +21,11 @@ class QuestionBottom extends Component {
   }
 
   handleChange () {
-    const {opts,isChange,isModify} = this.props
-    const index = opts.optlist.length
-    if(isModify){
-    let questionnaire = this.props.questionnaire
+    const {opts,isChange} = this.props
+    const index = opts.opts.length
+    let questionnaire = this.props.qtn
         //Object.assign(newObj,user,page)
-        const isHaveFixsew = opts.optlist[opts.optlist.length-1]
+        const isHaveFixsew = opts.opts[opts.opts.length-1]
         const fixSeq = isHaveFixsew  ? isHaveFixsew.fixSeq .replace(/[^0-9]/ig,"") : 0
         const opt = [{
           "fixSeq":`A${parseInt(fixSeq)+1 }`,
@@ -37,26 +36,27 @@ class QuestionBottom extends Component {
           "fmt":"text",
           "seq":1,
           "img":"",
-          "label":'',
+          "label":'新选项',
           "conf":{},
           "required":true,
           "optQuote":false
         }]
-        const newOptList = opts.optlist.concat(opt)
-        questionnaire.pageList[0].qtList.map((item,key)=>{
-          if(item.disSeq === opts.disSeq){
-            item.optlist = newOptList
-          } 
-        })
-        
+        const newOptList = opts.opts.concat(opt)
+        questionnaire.pageList.map((pageList)=>{
+          pageList.qtList.map((item,key)=>{
+            if(item.disSeq === opts.disSeq){
+              item.opts = newOptList
+            } 
+          })
+        })       
         this.props.dispatch({
             type: 'edit/save',
             payload: {
-              questionnaire,
+              qtn:questionnaire,
               isChange:!isChange
             }
           })
-    }
+    
     
   }
   

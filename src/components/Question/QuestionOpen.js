@@ -29,12 +29,13 @@ class QuestionOpen extends Component {
 
   handleText(value){
     const {opts,isChange} = this.props
-    let questionnaire = this.props.questionnaire
-    questionnaire.pageList[0].qtList.map((item,key)=>{
-      if(item.disSeq === opts.disSeq){
-        console.log(item)
-         item.text = value
-      } 
+    let questionnaire = this.props.qtn
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((item,key)=>{
+        if(item.disSeq === opts.disSeq){
+           item.text = value
+        } 
+      })
     })
     this.props.dispatch({
         type: 'edit/save',
