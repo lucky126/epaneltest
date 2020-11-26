@@ -42,7 +42,9 @@ export default {
       const { data } = yield call(editApi.addQuestion, values, token);
       yield put({
         type: 'save',
-        qt: data.message.data.qt
+        payload: {
+          qt: data.message.data.qt
+        }
       });
     },
   },

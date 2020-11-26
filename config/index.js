@@ -25,7 +25,6 @@ const config = {
       'transform-decorators-legacy',
       'transform-class-properties',
       'transform-object-rest-spread',
-      '@tarojs/plugin-sass',
       ['transform-runtime', {
         "helpers": false,
         "polyfill": false,
@@ -35,7 +34,7 @@ const config = {
     ]
   },
    // 编译插件配置
-  plugins: [],
+  plugins: ['@tarojs/plugin-sass'],
    // 全局变量设置
   defineConstants: {
   },

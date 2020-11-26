@@ -214,8 +214,9 @@ class Edit extends Component {
           payload: params,
           token: this.props.token
         }).then(()=>{
-    const newQtList = questionnaire.pageList[pages-1].qtList.concat(qtList)
-    questionnaire.pageList[pages-1].qtList = this.props.qt
+          console.log(this.props)
+    const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
+    questionnaire.pageList[pages-1].qtList = newQtList
     this.props.dispatch({
         type: 'edit/save',
         payload: {
