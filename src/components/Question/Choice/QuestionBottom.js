@@ -18,30 +18,33 @@ class QuestionBottom extends Component {
           vaule:''
       }
       this.handleChange = this.handleChange.bind(this)
+      this.addOpt = this.addOpt.bind(this)
   }
 
-  handleChange () {
+  addOpt() {
     const {opts,isChange} = this.props
-    const index = opts.opts.length
+    const type = opts.type
     let questionnaire = this.props.qtn
-        //Object.assign(newObj,user,page)
-        const isHaveFixsew = opts.opts[opts.opts.length-1]
-        const fixSeq = isHaveFixsew  ? isHaveFixsew.fixSeq .replace(/[^0-9]/ig,"") : 0
-        const opt = [{
-          "fixSeq":`A${parseInt(fixSeq)+1 }`,
-          "position":0,
-          "val":1,
-          "mySeq":`A${index+1 }`,
-          "input":false,
-          "fmt":"text",
-          "seq":1,
-          "img":"",
-          "label":'新选项',
-          "conf":{},
-          "required":true,
-          "optQuote":false
-        }]
-        const newOptList = opts.opts.concat(opt)
+    let conf = type === 2 ? {width: 20, height: 1} : {}
+    const required = type === 2
+    // fixSeq and mySeq will be modified in updater.addOpt
+    let opt = {
+      fixSeq: '',
+      fmt: 'text',
+      img: '',
+      input: false,
+      label:"新选项",
+      mySeq: '',
+      optQuote: false,
+      position: 0,
+      required,
+      seq: opts.opts.length + 1,
+      val: opts.opts.length + 1,
+      value:opts.opts.length + 1,
+      conf
+    }
+
+    const newOptList = opts.opts.concat(opt)
         questionnaire.pageList.map((pageList)=>{
           pageList.qtList.map((item,key)=>{
             if(item.disSeq === opts.disSeq){
@@ -56,14 +59,11 @@ class QuestionBottom extends Component {
               isChange:!isChange
             }
           })
-    
-    
   }
   
   render() {
-    const {opts} = this.props
     return (
-      <View className='opt-add' onClick={this.handleChange}>
+      <View className='opt-add' onClick={this.addOpt}>
          <AtIcon value='add-circle' size='30' color='#71a0f7'></AtIcon>
          <View className='add'>添加选项</View>
       </View>

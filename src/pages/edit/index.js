@@ -35,7 +35,7 @@ class Edit extends Component {
     this.handleSave = this.handleSave.bind(this)
   }
 
-  componentWillMount(){
+  componentDidMount(){
       this.getQuestionnaire()
       this.getQuestionnaireVersion()
   }
@@ -105,107 +105,6 @@ class Edit extends Component {
     const {isChange} = this.props
     let questionnaire = this.props.qtn
     const pages = questionnaire.pageList.length
-    const qtListIndex = questionnaire.pageList[pages-1].qtList.length
-    const disSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].disSeq
-    const index = parseInt(disSeq == 'D1'? 0 :disSeq.replace(/[^0-9]/ig,""))
-    let optlist = []
-    const choiceOpt = [{
-      "fixSeq":"A1",
-      "position":0,
-      "val":1,
-      "mySeq":"A1",
-      "input":false,
-      "fmt":"text",
-      "seq":1,
-      "img":"",
-      "label":"新选项",
-      "conf":{},
-      "required":true,
-      "optQuote":false,
-      "seq": 1,
-      "val": 1,
-      "value": 1
-    },
-    {
-      "fixSeq":"A2",
-      "position":0,
-      "val":1,
-      "mySeq":"A2",
-      "input":false,
-      "fmt":"text",
-      "seq":1,
-      "img":"",
-      "label":"新选项",
-      "conf":{},
-      "required":true,
-      "optQuote":false,
-      "seq": 2,
-      "val": 2,
-      "value": 1
-    }
-    ]
-    
-     const openOpt = [{
-      "fixSeq":"A1",
-      "position":0,
-      "val":1,
-      "mySeq":"A1",
-      "input":false,
-      "fmt":"text",
-      "seq":1,
-      "img":"",
-      "label":"填空题",
-      "conf":{},
-      "required":true,
-      "optQuote":false,
-      "seq": 2,
-      "val": 2,
-      "value": 1    
-    }
-    ]
-    if(value == 0 || value == 1){
-      optlist = choiceOpt
-    }else{
-      optlist = openOpt
-    }
-    const fixSeq = questionnaire.pageList[pages-1].qtList[qtListIndex-1].fixSeq.replace(/[^0-9]/ig,"")
-    const qtList = [{
-        "conf": "{}",
-        "confJson": {},
-        "logic":{},
-        "type": value == 0 || value == 1 ? 1 : 2,
-        "selectType": value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :'',
-        "disSeq": `Q${index+1}`,
-        "fixSeq": `Q${parseInt(fixSeq)+1}`,
-        "mySeq": `Q${index+1}`,
-        "cols": 1,
-        "img": "",
-        "smax": 4,
-        "smin": 1,
-        "opts": optlist,
-        "subs": [],
-        "seq": "1",
-        "required": true,
-        "text": value == 0 ? '单选题' :value == 1 ? '多选题' :value == 2 ? '填空题' :'',
-    }]
-    // const params = {
-    //     "conf": "{}",
-    //     "type": value == 0 || value == 1 ? 1 : 2,
-    //     "selectType": value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :'',
-    //     "disSeq": `Q${index+1}`,
-    //     "fixSeq": `Q${parseInt(fixSeq)+1}`,
-    //     "mySeq": `Q${index+1}`,
-    //     "cols": 1,
-    //     "img": "",
-    //     "smax": 4,
-    //     "smin": 1,
-    //     "opts": optlist,
-    //     "subs": [],
-    //     "seq": "1",
-    //     "required": true,
-    //     "rank": false,
-    //     "text": value == 0 ? '单选题' :value == 1 ? '多选题' :value == 2 ? '填空题' :'',
-    // }
     const type = value == 0 || value == 1 ? 1 : 2
     const selectType = value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :''
     const params = utils.getInitialData(type, selectType, fromJS(this.props.qtn));
@@ -214,7 +113,6 @@ class Edit extends Component {
           payload: params,
           token: this.props.token
         }).then(()=>{
-          console.log(this.props)
     const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
     questionnaire.pageList[pages-1].qtList = newQtList
     this.props.dispatch({

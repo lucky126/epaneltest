@@ -33,7 +33,6 @@ export default {
     },
     * saveQuestionnaire({payload: values, token  }, { call, put }) {
       const { data } = yield call(editApi.saveQuestionnaire, values, token);
-      console.log(data)
       yield put({
         type: 'save',
       });
