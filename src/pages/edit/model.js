@@ -8,7 +8,8 @@ export default {
     optsList:{},
     isChange:true,
     logicVersion:'',
-    questionnaire:{}
+    questionnaire:{},
+    qt:{}
   },
 
   effects: {
@@ -35,6 +36,13 @@ export default {
       console.log(data)
       yield put({
         type: 'save',
+      });
+    },
+    * addQuestion({payload: values, token  }, { call, put }) {
+      const { data } = yield call(editApi.addQuestion, values, token);
+      yield put({
+        type: 'save',
+        qt: data.message.data.qt
       });
     },
   },

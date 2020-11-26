@@ -25,6 +25,7 @@ const config = {
       'transform-decorators-legacy',
       'transform-class-properties',
       'transform-object-rest-spread',
+      '@tarojs/plugin-sass',
       ['transform-runtime', {
         "helpers": false,
         "polyfill": false,

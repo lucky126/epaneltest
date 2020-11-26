@@ -27,3 +27,11 @@ export const saveQuestionnaire = (data, token) => syncAction({
   data,
   token
 });
+
+//添加题目addQuestion
+export const addQuestion = (data, token) => syncAction({
+  method: 'QuestionnaireEditor.addQuestion',
+  type: QUESTIONNAIRE,
+  data,
+  token
+});

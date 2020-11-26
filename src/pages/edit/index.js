@@ -1,11 +1,14 @@
 /* eslint-disable react/no-unused-state */
 import Taro, { Component } from '@tarojs/taro';
+import {fromJS} from 'immutable'
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtTabBar,AtFloatLayout,AtGrid } from 'taro-ui'
 import './index.scss';
 import {QtnHeader} from '../../components/Qtncavas/QtnHeader'
 import {PageList} from '../../components/Qtncavas/PageList'
+import * as utils from "./utils/index";
+
 
 @connect(({ edit, home, common }) => ({
   ...edit,
@@ -185,8 +188,34 @@ class Edit extends Component {
         "required": true,
         "text": value == 0 ? '单选题' :value == 1 ? '多选题' :value == 2 ? '填空题' :'',
     }]
+    // const params = {
+    //     "conf": "{}",
+    //     "type": value == 0 || value == 1 ? 1 : 2,
+    //     "selectType": value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :'',
+    //     "disSeq": `Q${index+1}`,
+    //     "fixSeq": `Q${parseInt(fixSeq)+1}`,
+    //     "mySeq": `Q${index+1}`,
+    //     "cols": 1,
+    //     "img": "",
+    //     "smax": 4,
+    //     "smin": 1,
+    //     "opts": optlist,
+    //     "subs": [],
+    //     "seq": "1",
+    //     "required": true,
+    //     "rank": false,
+    //     "text": value == 0 ? '单选题' :value == 1 ? '多选题' :value == 2 ? '填空题' :'',
+    // }
+    const type = value == 0 || value == 1 ? 1 : 2
+    const selectType = value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :''
+    const params = utils.getInitialData(type, selectType, fromJS(this.props.qtn));
+    this.props.dispatch({
+          type: 'edit/addQuestion',
+          payload: params,
+          token: this.props.token
+        }).then(()=>{
     const newQtList = questionnaire.pageList[pages-1].qtList.concat(qtList)
-    questionnaire.pageList[pages-1].qtList = newQtList
+    questionnaire.pageList[pages-1].qtList = this.props.qt
     this.props.dispatch({
         type: 'edit/save',
         payload: {
@@ -197,6 +226,8 @@ class Edit extends Component {
       this.setState({
         isOpened:false
       })
+        })
+    
   }
 
   render() {
