@@ -5,11 +5,13 @@ export default {
   namespace: 'edit',
   state: {
     qtn:{},
-    optsList:{},
+    optsList:{},//记录要修改的题目
     isChange:true,
     logicVersion:'',
     questionnaire:{},
-    qt:{}
+    qt:{},
+    page:'',//记录修改题目所在页
+    index:'',//记录题目位置
   },
 
   effects: {

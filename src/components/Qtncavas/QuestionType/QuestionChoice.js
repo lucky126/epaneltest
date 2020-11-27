@@ -29,11 +29,13 @@ class QuestionChoice extends Component {
   }
 
   handelEditOpt(){
-    const {opts} = this.props
+    const {opts,page,index} = this.props
     this.props.dispatch({
       type: 'edit/save',
       payload: {
-        optsList:opts
+        optsList:opts,
+        page:page,
+        index
       }
     })
     Taro.navigateTo({url:'/pages/edit/editOpt'})

@@ -24,6 +24,7 @@ class EditOpt extends Component {
     this.state = {currentBar:null
     }
     this.HandleSave = this.HandleSave.bind(this)
+    this.addPage = this.addPage.bind(this)
   }
 
   componentDidMount(){
@@ -44,6 +45,29 @@ class EditOpt extends Component {
       });   
   }
 
+  addPage(){
+    const {qtn,page,index,isChange} = this.props
+    let questionnaire = qtn
+    //let qtList = []
+   const qtList = questionnaire.pageList[page-1].qtList
+   //截取分页后的题目
+   const qt = qtList.slice(index+1,qtList.length)
+   //删除分页后的题目
+   questionnaire.pageList[page-1].qtList.splice(index+1,qtList.length-index-1)
+   //增加一页
+   questionnaire.pageList.splice(page,0,questionnaire.pageList[page-1])
+  //给增加页放入截取的题目
+   //questionnaire.pageList[page].qtList = qt
+   console.log(questionnaire)
+   this.props.dispatch({
+    type: 'edit/save',
+    payload: {
+      questionnaire,
+      isChange:!isChange
+    }
+  })
+  }
+
   render() {
       const {optsList} = this.props
     return (
@@ -60,8 +84,8 @@ class EditOpt extends Component {
              <View>必答</View>
              </View>
              <View className='edit-select'>
-             <Checkbox value='选中' ></Checkbox>
-             <View>增加分页</View>
+             <Checkbox value='选中' onClick={this.addPage}></Checkbox>
+             <View >增加分页</View>
              </View>
          </View>
          <View className='opt-save'><AtButton type='primary' onClick={this.HandleSave}>保存修改</AtButton></View>

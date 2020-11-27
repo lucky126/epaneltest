@@ -162,7 +162,7 @@ class Questionaire extends Component {
           </View>
           <View className='at-col at-col-2'>
             {(canData || canProgress) && <AtIcon value='analytics' size='15' color='#108ee9' onClick={this.handleData.bind(this, qtn.id, canData)}></AtIcon>}
-            {((canData || canProgress) && <Text onClick={this.handleData.bind(this, qtn.id, canData)}>分享</Text>)}
+            {((canData || canProgress) && <Text onClick={this.handleData.bind(this, qtn.id, canData)}>分析</Text>)}
           </View>
         </View>
       </View>

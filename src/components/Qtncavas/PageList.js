@@ -29,9 +29,9 @@ class PageList extends Component {
       <View className='pagelist'>
         {qtn.pageList.map((val,key)=>(
             <View className='page'>
-                {val.qtList.map((qtList)=>(
+                {val.qtList.map((qtList,qtIndex)=>(
                 <View className='qtlist'>
-                    <Question questions={qtList} />
+                    <Question questions={qtList} page={key+1} index={qtIndex}/>
                 </View>
                 ))}
                 <View className='pages'>

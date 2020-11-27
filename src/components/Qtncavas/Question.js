@@ -31,12 +31,12 @@ class Question extends Component {
   }
 
   render() {
-      const {questions} = this.props
+      const {questions,page,index} = this.props
     return (
       <View className='question'>
-       {questions.type === 6 && <QuestionText opts={questions} />}
-       {questions.type === 1 && <QuestionChoice  opts={questions} />}
-       {questions.type === 2 &&  <QuestionOpen opts={questions} />}
+       {questions.type === 6 && <QuestionText opts={questions} page={page} index={index} />}
+       {questions.type === 1 && <QuestionChoice  opts={questions} page={page} index={index} />}
+       {questions.type === 2 &&  <QuestionOpen opts={questions} page={page} index={index} />}
       </View>
     )
   }
