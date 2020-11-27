@@ -113,8 +113,20 @@ class Edit extends Component {
           payload: params,
           token: this.props.token
         }).then(()=>{
-    const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
+    let setQt = this.props.qt
+    const newQtList = questionnaire.pageList[pages-1].qtList.concat(setQt)
     questionnaire.pageList[pages-1].qtList = newQtList
+    questionnaire.pageList.map((pg)=>{
+      pg.qtList.map((qt,key)=>{
+        if(qt.type != 6){
+          console.log(qt)
+          qt.seq = key
+          qt.disSeq = `Q${key}`
+          qt.mySeq = `Q${key}`
+        }
+        
+      })
+    })
     this.props.dispatch({
         type: 'edit/save',
         payload: {

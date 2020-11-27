@@ -17,7 +17,6 @@ class QuestionBottom extends Component {
       this.state = {
           vaule:''
       }
-      this.handleChange = this.handleChange.bind(this)
       this.addOpt = this.addOpt.bind(this)
   }
 

@@ -1,7 +1,6 @@
 /**
  * data utils
  */
-import _ from "lodash";
 import { fromJS } from "immutable";
 import { QTypes, QTypes2 } from "../../../config/enum";
 import * as seq from "./seq";
@@ -93,24 +92,6 @@ export function findLogicByQt(premise, field = "qt") {
   const searchFun = item => item.get(field).indexOf(premise) > -1;
   return logic =>
     logic.get("source").find(searchFun) || logic.get("target").find(searchFun);
-}
-
-/**
- * 根据所有选项计算新加选项的fixSeq
- * @param opts array
- * @param prefix 前缀，默认为A
- */
-export function getNextFixSeqOpt(opts, prefix = "A") {
-  const maxFixSeq = _.reduce(
-    opts,
-    (acc, item) => {
-      let fixSeq = (item.fixSeq || "").replace(/[^\d]/g, "");
-      fixSeq = parseInt(fixSeq) || 0;
-      return fixSeq > acc ? fixSeq : acc;
-    },
-    0
-  );
-  return `${prefix}${maxFixSeq + 1}`;
 }
 
 /**
