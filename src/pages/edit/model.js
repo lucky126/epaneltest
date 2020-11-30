@@ -12,6 +12,7 @@ export default {
     qt:{},
     page:'',//记录修改题目所在页
     index:'',//记录题目位置
+    extQuery:''
   },
 
   effects: {

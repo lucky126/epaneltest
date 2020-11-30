@@ -3,10 +3,14 @@ import { View, Image, Text } from '@tarojs/components'
 import { AtIcon } from 'taro-ui';
 import PropTypes from 'prop-types';
 import cx from 'classnames'
+import { connect } from '@tarojs/redux';
 import { formatOnlyDate } from '../../utils/common'
 
 import './index.scss'
 
+@connect(({ edit }) => ({
+  ...edit
+}))
 class Questionaire extends Component {
   static propTypes = {
     qtn: PropTypes.object
@@ -58,14 +62,22 @@ class Questionaire extends Component {
     })
   }
 
-  handleEdit =(id) => {
+  handleEdit =(id,canLink, canSetInv) => {
+    const { view } = this.props;
+    let extQuery = '&view=' + view + '&canLink=' + canLink + '&canSetInv=' + canSetInv
+    this.props.dispatch({
+      type: 'edit/save',
+      payload: {
+        extQuery
+      },
+    });
     Taro.navigateTo({
       url: '/pages/edit/index?id=' + id
     })
   }
 
   render() {
-    const { qtn, index, qtnTypes, onChangeStatus, prjFlag, prjId } = this.props;
+    const { qtns, index, qtnTypes, onChangeStatus, prjFlag, prjId } = this.props;
 
     // let ftAction = this.handleShow.bind(this, qtn.id)
     // if (qtn.status === 0) {
@@ -79,7 +91,7 @@ class Questionaire extends Component {
     let canProgress = !prjId
 
     if (prjId) {
-      qtn.tasks.map((task) => {
+      qtns.tasks.map((task) => {
         //项目问卷type=1 题目制作有权限则可以预览
         if (task.taskType === 1 && task.operates && task.activated) {
           canShow = true
@@ -108,26 +120,26 @@ class Questionaire extends Component {
         <View className='InfoRow'>
           <View className='titleRow'>
             <Text>
-              （ID: {qtn.id}) {qtn.qtnTitle.replace(/<[^>]+>/g,"")}
+              （ID: {qtns.id}) {qtns.qtnTitle.replace(/<[^>]+>/g,"")}
             </Text>
             <Text className={cx({
-              statusDescDot_default: qtn.status === 0,
-              statusDescDot_run: qtn.status === 2,
-              statusDescDot_stop: qtn.status == 5
+              statusDescDot_default: qtns.status === 0,
+              statusDescDot_run: qtns.status === 2,
+              statusDescDot_stop: qtns.status == 5
             })}
             style={{float:'right'}}
             >●</Text>
-            <Text className='statusDesc' style={{float:'right'}}>{qtn.statusDescn}</Text>
+            <Text className='statusDesc' style={{float:'right'}}>{qtns.statusDescn}</Text>
             </View>
           <View className='dataRow'>
-            <Text>{formatOnlyDate(qtn.createTime)} </Text>
-            <Text className='collect'>收集数据：<Text className='finishNum'>{qtn.finishNum}</Text></Text>
+            <Text>{formatOnlyDate(qtns.createTime)} </Text>
+            <Text className='collect'>收集数据：<Text className='finishNum'>{qtns.finishNum}</Text></Text>
           </View>
           <View className='typeRow'>
-            <Text className='typeName'>{qtnTypes[qtn.qtnType]}</Text>
-            {prjFlag === 1 && (<Text className='type'>类型：<Text>{qtn.whatQtn === 2
+            <Text className='typeName'>{qtnTypes[qtns.qtnType]}</Text>
+            {prjFlag === 1 && (<Text className='type'>类型：<Text>{qtns.whatQtn === 2
               ? "前置"
-              : qtn.whatQtn === 4
+              : qtns.whatQtn === 4
                 ? "后置"
                 : "外部"}</Text></Text>)}
           </View>
@@ -137,32 +149,32 @@ class Questionaire extends Component {
             
             {!!!prjId && (<Text className='seperator'> </Text>)}
             {/* 开启操作，只有0，5状态才可以，目标状态2 */}
-            {!!!prjId && (qtn.status == 0 || qtn.status == 5) && (
-              <AtIcon value='play' size='15' onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 2)} ></AtIcon>)}
-            {!!!prjId && (qtn.status == 0 || qtn.status == 5) && (<Text onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 2)}>开启</Text>)}
+            {!!!prjId && (qtns.status == 0 || qtns.status == 5) && (
+              <AtIcon value='play' size='15' onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 2)} ></AtIcon>)}
+            {!!!prjId && (qtns.status == 0 || qtns.status == 5) && (<Text onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 2)}>开启</Text>)}
             {/* 暂停操作，执行中2才可以，目标状态0 */}
-            {!!!prjId && qtn.status == 2 && (<AtIcon value='pause' size='15' color='#108ee9'  onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 0)} ></AtIcon>)}
-            {!!!prjId && qtn.status == 2 && (<Text onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 0)}>暂停</Text>)}
+            {!!!prjId && qtns.status == 2 && (<AtIcon value='pause' size='15' color='#108ee9'  onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 0)} ></AtIcon>)}
+            {!!!prjId && qtns.status == 2 && (<Text onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 0)}>暂停</Text>)}
             {!!!prjId && (<Text className='seperator'> </Text>)}
             {/* 停止操作，执行中2才可以，目标状态5 */}
-            {!!!prjId && qtn.status == 2 && (<AtIcon value='stop' size='15' color='#108ee9'  onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 5)} ></AtIcon>)}
-            {!!!prjId && qtn.status == 2 && (<Text onClick={onChangeStatus.bind(this, `${qtn.id}`, `${index}`, `${qtn.status}`, 5)}>关闭</Text>)}
+            {!!!prjId && qtns.status == 2 && (<AtIcon value='stop' size='15' color='#108ee9'  onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 5)} ></AtIcon>)}
+            {!!!prjId && qtns.status == 2 && (<Text onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 5)}>关闭</Text>)}
           </View>
           <View className='at-col at-col-2'>
-            {canShow && <AtIcon value='edit' size='15' color='#108ee9' onClick={this.handleEdit.bind(this, qtn.id)} ></AtIcon>}
-            {canShow && <Text onClick={this.handleEdit.bind(this, qtn.id)}>编辑</Text>}
+            {!!!prjId && (qtns.status == 0 || qtns.status == 5) &&  <AtIcon value='edit' size='15' color='#108ee9' onClick={this.handleEdit.bind(this, qtns.id)} ></AtIcon>}
+            {!!!prjId && (qtns.status == 0 || qtns.status == 5) &&  <Text onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>编辑</Text>}
           </View>
           <View className='at-col at-col-2'>
-            {canShow && <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtn.id)} ></AtIcon>}
-            {canShow && <Text onClick={this.handleShow.bind(this, qtn.id)}>预览</Text>}
+            {canShow && <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtns.id)} ></AtIcon>}
+            {canShow && <Text onClick={this.handleShow.bind(this, qtns.id)}>预览</Text>}
           </View>
           <View className='at-col at-col-2'>
-            {<AtIcon value='share' size='15' color='#108ee9' onClick={this.handleInvitation.bind(this, qtn.id, canLink, canSetInv)} ></AtIcon>}
-            {((canLink || canSetInv) && <Text onClick={this.handleInvitation.bind(this, qtn.id, canLink, canSetInv)}>设置</Text>)}
+            {<AtIcon value='share' size='15' color='#108ee9' onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)} ></AtIcon>}
+            {((canLink || canSetInv) && <Text onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)}>设置</Text>)}
           </View>
           <View className='at-col at-col-2'>
-            {(canData || canProgress) && <AtIcon value='analytics' size='15' color='#108ee9' onClick={this.handleData.bind(this, qtn.id, canData)}></AtIcon>}
-            {((canData || canProgress) && <Text onClick={this.handleData.bind(this, qtn.id, canData)}>分析</Text>)}
+            {(canData || canProgress) && <AtIcon value='analytics' size='15' color='#108ee9' onClick={this.handleData.bind(this, qtns.id, canData)}></AtIcon>}
+            {((canData || canProgress) && <Text onClick={this.handleData.bind(this, qtns.id, canData)}>分析</Text>)}
           </View>
         </View>
       </View>

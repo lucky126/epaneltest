@@ -76,6 +76,15 @@ class Edit extends Component {
     if(val === 1){
       this.handleSave()
     }
+
+    if(val === 2){
+      const id = this.$router.params.id
+      const {extQuery} = this.props
+      this.handleSave()
+      Taro.redirectTo({
+        url: '/pages/invitation/index?id=' + id + extQuery
+      })
+    }
   }
 
   //保存问卷

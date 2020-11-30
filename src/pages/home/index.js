@@ -377,7 +377,7 @@ class Home extends Component {
           {qtnList && qtnList.map((item, key) => (
             // <View>({item.id}){item.qtnTitle}</View>
             <View key={item.id}>
-              <Questionaires qtn={item} index={key} {...qtProps} />
+              <Questionaires qtns={item} index={key} {...qtProps} />
             </View>
 
           ))}
