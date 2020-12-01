@@ -5,7 +5,6 @@ import { AtRadio }  from 'taro-ui'
 import MultipleChoice from './Choice/MultipleChoice'
 import SingleChoice from './Choice/SingleChoice'
 import QuestionBottom from './Choice/QuestionBottom'
-import QtnSet from './Choice/QtnSet'
 import './Choice/style/choice.scss'
 
 class QuestionChoice extends Component {
@@ -30,7 +29,6 @@ class QuestionChoice extends Component {
             {opts.selectType === 0 &&  <SingleChoice opts={opts}/>}
             {opts.selectType === 1 &&  <MultipleChoice opts={opts}/>}
             <QuestionBottom opts={opts} />
-            <QtnSet opts={opts} />
       </View>
     )
   }

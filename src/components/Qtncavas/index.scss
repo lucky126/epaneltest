@@ -1,5 +1,7 @@
 .qtnheader{
     text-align: center;
+    width: 100%;
+    margin: 20px 0 20px -12px;
 }
 .pagelist{
     .qtlist{
@@ -17,9 +19,18 @@
     .page{
         width: 96%;
         margin:auto;
+        margin-bottom: 100px;
     }
 }
 .question{
     width: 94%;
     margin:auto;
+    .question-set{
+        height: 80px;
+        line-height: 80px;
+        border-bottom: 1rpx solid #ecebeb;
+        .question-edit{
+            float: right;
+        }
+    }
 }

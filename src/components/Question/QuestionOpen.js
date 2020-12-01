@@ -3,7 +3,6 @@ import { View } from '@tarojs/components'
 import PropTypes from 'prop-types';
 import { AtRadio,AtInput }  from 'taro-ui'
 import './Open/open.scss'
-import QtnSet from './Choice/QtnSet'
 import './Choice/style/open.scss'
 import { connect } from '@tarojs/redux';
 
@@ -59,7 +58,6 @@ class QuestionOpen extends Component {
             value={opts.text}
             onChange={this.handleText}
          />
-        <QtnSet opts={opts} />
         </View>
       </View>
     )

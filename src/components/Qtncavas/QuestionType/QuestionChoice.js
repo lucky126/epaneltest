@@ -21,25 +21,13 @@ class QuestionChoice extends Component {
         
     }
     this.handleChange = this.handleChange.bind(this)
-    this.handelEditOpt = this.handelEditOpt.bind(this)
   }
 
   handleChange(val){
     console.log(val)
   }
 
-  handelEditOpt(){
-    const {opts,page,index} = this.props
-    this.props.dispatch({
-      type: 'edit/save',
-      payload: {
-        optsList:opts,
-        page:page,
-        index
-      }
-    })
-    Taro.navigateTo({url:'/pages/edit/editOpt'})
-  }
+  
 
   render() {
       const {opts} = this.props
@@ -49,7 +37,6 @@ class QuestionChoice extends Component {
             <View className='choice-text'>
               {opts.disSeq + '.' + opts.text}
             </View>
-            <View onClick={this.handelEditOpt}><AtIcon value='edit' size='18' color='#2d8cf0'></AtIcon></View>
           </View>
           {opts.selectType == 0 && (
                 <View>
