@@ -30,7 +30,6 @@ class EditOpt extends Component {
     this.HandleSave = this.HandleSave.bind(this)
     this.addPage = this.addPage.bind(this)
     this.handleRequired = this.handleRequired.bind(this)
-    this.addPage1 = this.addPage1.bind(this)
   }
 
   componentDidMount(){
@@ -52,34 +51,23 @@ class EditOpt extends Component {
   }
 
   addPage(){
-    const {qtn,page,index,isChange} = this.props
+    const {qtn,pageIndex,index,isChange} = this.props
     let questionnaire = qtn
-    //let qtList = []
-   const qtList = questionnaire.pageList[page-1].qtList
-   //截取分页后的题目
-   const qt = qtList.slice(index+1,qtList.length)
-   const qt1 = qtList.slice(0,index+1)
-   //删除分页后的题目
-   //questionnaire.pageList[page-1].qtList.splice(index+1,qtList.length-index-1)
-   //增加一页
-   questionnaire.pageList.splice(page,0,questionnaire.pageList[page-1])
-  //给增加页放入截取的题目
-  console.log(questionnaire)
-  console.log(qt)
-  console.log(fromJS(questionnaire).getIn(['pageList',page-1]))
-  fromJS(questionnaire).setIn(['pageList',page,'qtList'],qt).toJS()
-  fromJS(questionnaire).setIn(['pageList',page-1,'qtList'],qt1).toJS()
-  // questionnaire.pageList[page].qtList = qt
-  // questionnaire.pageList[page-1].qtList = qt1
-  // questionnaire.pageList.map((pg,key)=>{
-  //   if(key === page) {
-  //     pg.qtList = qt
-  //     pg.pageName = `第${page}页`
-  //     pg.title = `第${page}页`
-  //   }
-  // })
-  this.addPage1(page,index)
-  console.log(this.addPage1(page,index))
+    const pageItem = questionnaire.pageList[pageIndex-1];
+    const qtList = pageItem.qtList;
+    // 题目在当前页最后位置时，不必添加翻页
+    if (qtList.length <= index) {
+      questionnaire.pageList;
+    } else {
+      questionnaire.pageList.splice(
+        pageIndex-1,
+        1,
+        ...[
+          fromJS(pageItem).set("qtList", qtList.slice(0, index + 1)).toJS(),
+          fromJS(pageItem).set("qtList", qtList.slice(index + 1)).toJS()
+        ]
+      );
+    }
    this.props.dispatch({
     type: 'edit/save',
     payload: {
@@ -89,57 +77,8 @@ class EditOpt extends Component {
   })
   }
 
-
-  addPage1(page, position) {
-    const {qtn} = this.props
-    fromJS(qtn.pageList).map((pageList)=>{
-      const pageItem = pageList.get(page);
-      console.log(pageItem.toJS())
-      const qtList = pageItem.get("qtList");
-  
-      //获取要插入页码位置的题型和序号
-      let curType = pageList.getIn([page, "qtList", position, "type"]);
-      let curSeq = pageList.getIn([page, "qtList", position, "seq"]);
-      let curMySeq = pageList
-        .getIn([page, "qtList", position, "mySeq"])
-        .replace(/\.\w+/g, "");
-  
-      //指标题只能在最后一个追问题后面添加分页
-      if (curType === 10 || curType == 9) {
-        //如果当前题是指标题或者追问题则需要寻找该题最大的位置编号
-        pageList.getIn([page, "qtList"]).map(question => {
-          let mySeq = question.get("mySeq").replace(/\.\w+/g, "");
-          //比当前题号大的指标题一定只能是追问题
-          if (
-            question.get("seq") > curSeq &&
-            question.get("type") === 10 &&
-            mySeq == curMySeq
-          ) {
-            //得到该题追问题的最大位置
-            position++;
-          }
-        });
-      }
-  
-      // 题目在当前页最后位置时，不必添加翻页
-      if (qtList.size <= position + 1) {
-        return pageList;
-      } else {
-        return pageList.splice(
-          page,
-          1,
-          ...[
-            pageItem.set("qtList", qtList.slice(0, position + 1)),
-            pageItem.set("qtList", qtList.slice(position + 1))
-          ]
-        );
-      }
-    })
-  }
-
   //必答设置
   handleRequired(required){
-    console.log()
     const {qtn,optsList,isChange} = this.props
     let questionnaire = qtn
     questionnaire.pageList.map((pg)=>{
@@ -160,7 +99,6 @@ class EditOpt extends Component {
 
   render() {
       const {optsList} = this.props
-      console.log(optsList)
     return (
       <View className='editOpt'>
          <View>

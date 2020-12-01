@@ -10,7 +10,7 @@ export default {
     logicVersion:'',
     questionnaire:{},
     qt:{},
-    page:'',//记录修改题目所在页
+    pageIndex:'',//记录修改题目所在页
     index:'',//记录题目位置
     extQuery:''
   },
@@ -22,6 +22,16 @@ export default {
         type: 'save',
         payload: {
             qtn: data.message.data.qtn
+        }
+      });
+    },
+    * saveQuestion({payload: values, token  }, { call, put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          optsList:values.optsList,
+          pageIndex:values.pageIndex,
+          index:values.index
         }
       });
     },

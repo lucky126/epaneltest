@@ -33,15 +33,18 @@ class Question extends Component {
 
   handelEditOpt(){
     const {questions,page,index} = this.props
+    console.log(page)
+    console.log(index)
     this.props.dispatch({
-      type: 'edit/save',
+      type: 'edit/saveQuestion',
       payload: {
         optsList:questions,
-        page:page,
+        pageIndex:page,
         index
       }
+    }).then(()=>{
+      Taro.navigateTo({url:'/pages/edit/editOpt'})
     })
-    Taro.navigateTo({url:'/pages/edit/editOpt'})
   }
 
   render() {
