@@ -46,6 +46,19 @@ export default {
     },
     * saveQuestionnaire({payload: values, token  }, { call, put }) {
       const { data } = yield call(editApi.saveQuestionnaire, values, token);
+      if(data.status == 200) {
+        Taro.atMessage({
+          'message': '保存成功',
+          'type': 'success',
+          'duration': 1500
+        })
+      } else {
+        Taro.atMessage({
+          'message': '保存失败',
+          'type': 'error',
+          'duration': 1500
+        })
+      }
       yield put({
         type: 'save',
       });

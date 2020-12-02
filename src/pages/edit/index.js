@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro';
 import {fromJS} from 'immutable'
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtTabBar,AtFloatLayout,AtGrid } from 'taro-ui'
+import { AtTabBar,AtFloatLayout,AtGrid,AtMessage  } from 'taro-ui'
 import './index.scss';
 import {QtnHeader} from '../../components/Qtncavas/QtnHeader'
 import {PageList} from '../../components/Qtncavas/PageList'
@@ -113,6 +113,7 @@ class Edit extends Component {
   addQuestion(e,value){
     const {isChange} = this.props
     let questionnaire = this.props.qtn
+    console.log(questionnaire)
     const pages = questionnaire.pageList.length
     const type = value == 0 || value == 1 ? 1 : 2
     const selectType = value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :''
@@ -122,12 +123,16 @@ class Edit extends Component {
           payload: params,
           token: this.props.token
         }).then(()=>{
-    let setQt = this.props.qt
-    const newQtList = questionnaire.pageList[pages-1].qtList.concat(setQt)
+          console.log(questionnaire.pageList[pages-1].qtList)
+    const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
+    console.log(pages-1)
+    console.log(this.props.qt)
+    console.log(newQtList)
     questionnaire.pageList[pages-1].qtList = newQtList
     questionnaire.pageList.map((pg)=>{
       pg.qtList.map((qt,key)=>{
         if(qt.type != 6){
+          console.log('=====')
           console.log(qt)
           qt.seq = key
           qt.disSeq = `Q${key}`
@@ -136,6 +141,7 @@ class Edit extends Component {
         
       })
     })
+    console.log(questionnaire)
     this.props.dispatch({
         type: 'edit/save',
         payload: {
@@ -154,6 +160,7 @@ class Edit extends Component {
     const {isOpened} = this.state
     return (
       <View className='edit'>
+         <AtMessage />
          <View className='editor__main'>
             <QtnHeader />
             <PageList />

@@ -24,7 +24,14 @@ class QtnHeader extends Component {
   }
 
   handleChange(val){
-    console.log(val)
+    let questionnaire = this.props.qtn
+    questionnaire.title = val
+    this.props.dispatch({
+      type: 'edit/save',
+      payload: {
+        qtn:questionnaire
+      }
+    })
   }
 
   render() {
@@ -37,7 +44,7 @@ class QtnHeader extends Component {
          type='text'
          placeholder='问卷标题'
          value={qtn.title}
-         onChange={this.handleChange()}
+         onChange={(val)=>this.handleChange(val)}
       />
       </View>
     )

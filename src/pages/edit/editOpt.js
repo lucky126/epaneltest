@@ -30,6 +30,7 @@ class EditOpt extends Component {
     this.HandleSave = this.HandleSave.bind(this)
     this.addPage = this.addPage.bind(this)
     this.handleRequired = this.handleRequired.bind(this)
+    this.removePage = this.removePage.bind(this)
   }
 
   componentDidMount(){
@@ -38,43 +39,47 @@ class EditOpt extends Component {
 
   HandleSave(){
     const {questionnaire,isChange} = this.props
-    this.props.dispatch({
-      type: 'edit/save',
-      payload: {
-        qtn:questionnaire,
-        isChange:!isChange
-      }
-    })
+    // this.props.dispatch({
+    //   type: 'edit/save',
+    //   payload: {
+    //     qtn:questionnaire,
+    //     isChange:!isChange
+    //   }
+    // })
     Taro.navigateBack({
       delta: 1 // 返回上一级页面。
       });   
   }
 
-  addPage(){
+  addPage(val){
     const {qtn,pageIndex,index,isChange} = this.props
     let questionnaire = qtn
     const pageItem = questionnaire.pageList[pageIndex-1];
     const qtList = pageItem.qtList;
     // 题目在当前页最后位置时，不必添加翻页
-    if (qtList.length <= index) {
-      questionnaire.pageList;
-    } else {
-      questionnaire.pageList.splice(
-        pageIndex-1,
-        1,
-        ...[
-          fromJS(pageItem).set("qtList", qtList.slice(0, index + 1)).toJS(),
-          fromJS(pageItem).set("qtList", qtList.slice(index + 1)).toJS()
-        ]
-      );
+    if(val){
+      if (qtList.length <= index) {
+            questionnaire.pageList;
+          } else {
+            questionnaire.pageList.splice(
+              pageIndex-1,
+              1,
+              ...[
+                fromJS(pageItem).set("qtList", qtList.slice(0, index + 1)).toJS(),
+                fromJS(pageItem).set("qtList", qtList.slice(index + 1)).toJS()
+              ]
+            );
+          }
+          this.props.dispatch({
+            type: 'edit/save',
+            payload: {
+              questionnaire,
+              isChange:!isChange
+            }
+          })
+    }else{
+      this.removePage()
     }
-   this.props.dispatch({
-    type: 'edit/save',
-    payload: {
-      questionnaire,
-      isChange:!isChange
-    }
-  })
   }
 
   //必答设置
@@ -97,8 +102,34 @@ class EditOpt extends Component {
     })
   }
 
+  removePage() {
+    const {qtn,pageIndex,index,isChange} = this.props
+    let questionnaire = qtn
+      if (pageIndex + 1 === questionnaire.pageList.size) {
+         questionnaire.pageList;
+      }
+  
+      const pageItem = questionnaire.pageList[pageIndex-1];
+      const pageNextItem = questionnaire.pageList[pageIndex];
+       questionnaire.pageList.splice(
+        pageIndex-1,
+        2,
+        fromJS(pageItem).update("qtList", qtList =>
+          qtList.concat(pageNextItem.qtList)
+        ).toJS()
+      );
+      this.props.dispatch({
+        type: 'edit/save',
+        payload: {
+          qtn:questionnaire,
+          isChange:!isChange
+        }
+      })
+  }
+
   render() {
-      const {optsList} = this.props
+      const {optsList,pageIndex,qtn,index} = this.props
+      const isAdd = qtn.pageList[pageIndex-1].qtList.length-1 == index
     return (
       <View className='editOpt'>
          <View>
@@ -110,7 +141,7 @@ class EditOpt extends Component {
              <View className='editOpt-type'>属性修改</View>
              <View className='edit-select'>
              <AtSwitch title='必答' checked={optsList.required} onChange={this.handleRequired} />
-             <AtSwitch title='增加分页' checked={this.state.value} onChange={this.addPage} />
+             <AtSwitch title='增加分页' checked={isAdd} onChange={this.addPage} />
              </View>
          </View>
          <View className='opt-save'><AtButton type='primary' onClick={this.HandleSave}>保存修改</AtButton></View>
