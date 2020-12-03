@@ -113,7 +113,6 @@ class Edit extends Component {
   addQuestion(e,value){
     const {isChange} = this.props
     let questionnaire = this.props.qtn
-    console.log(questionnaire)
     const pages = questionnaire.pageList.length
     const type = value == 0 || value == 1 ? 1 : 2
     const selectType = value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :''
@@ -125,15 +124,10 @@ class Edit extends Component {
         }).then(()=>{
           console.log(questionnaire.pageList[pages-1].qtList)
     const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
-    console.log(pages-1)
-    console.log(this.props.qt)
-    console.log(newQtList)
     questionnaire.pageList[pages-1].qtList = newQtList
     questionnaire.pageList.map((pg)=>{
       pg.qtList.map((qt,key)=>{
         if(qt.type != 6){
-          console.log('=====')
-          console.log(qt)
           qt.seq = key
           qt.disSeq = `Q${key}`
           qt.mySeq = `Q${key}`

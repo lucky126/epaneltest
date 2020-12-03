@@ -7,6 +7,7 @@ import { AtIcon } from 'taro-ui'
 import { QuestionChoice } from "./QuestionType/QuestionChoice";
 import { QuestionOpen } from "./QuestionType/QuestionOpen";
 import { QuestionText } from "./QuestionType/QuestionText";
+import {fromJS} from 'immutable'
 
 @connect(({ edit, home, common }) => ({
     ...edit,
@@ -25,6 +26,7 @@ class Question extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handelEditOpt = this.handelEditOpt.bind(this)
+    this.handelDelete = this.handelDelete.bind(this)
   }
 
   handleChange(val){
@@ -33,8 +35,6 @@ class Question extends Component {
 
   handelEditOpt(){
     const {questions,page,index} = this.props
-    console.log(page)
-    console.log(index)
     this.props.dispatch({
       type: 'edit/saveQuestion',
       payload: {
@@ -47,13 +47,51 @@ class Question extends Component {
     })
   }
 
+  handelDelete(){
+    const {qtn,index,page,isChange} = this.props
+    let nextPage = fromJS(qtn.pageList);
+    let questionnaire = qtn
+    nextPage = nextPage.deleteIn([page-1, "qtList", index]);
+    nextPage
+        .filter(pageItem => pageItem.get("qtList").size > 0)
+  let seq = 1; // seq是全局的，不分题型
+  let qSeq = 1;
+  let dSeq = 1; //过渡题 
+     nextPage.map(pageItem =>
+      pageItem.update("qtList", qtList =>
+        qtList.map(question => {
+          if (question.get("type") === 6) {
+            question
+              .set("seq", seq++)
+              .set("mySeq", `D${dSeq}`)
+              .set("disSeq", `D${dSeq++}`);
+          }else {
+             question
+              .set("seq", seq++)
+              .set("mySeq", `Q${qSeq}`)
+              .set("disSeq", `Q${qSeq++}`);
+          }
+        })
+      )
+    );
+    questionnaire.pageList = nextPage.toJS()
+    this.props.dispatch({
+      type: 'edit/save',
+      payload: {
+        qtn:questionnaire,
+        isChange:!isChange
+      }
+    })
+
+  }
+
   render() {
       const {questions,page,index} = this.props
     return (
       <View className='question'>
         <View className='question-set'>
-        <View onClick={this.handelEditOpt} className='question-edit'><AtIcon value='trash' size='18' color='#242425'></AtIcon></View>
-        <View onClick={this.handelEditOpt} className='question-edit' style={{marginRight:'10px'}}><AtIcon value='edit' size='18' color='#242425'></AtIcon></View>
+        <View  onClick={this.handelDelete} className='question-edit'><AtIcon value='trash' size='18' color='#242425'></AtIcon></View>
+        <View  onClick={this.handelEditOpt} className='question-edit' style={{marginRight:'10px'}}><AtIcon value='edit' size='18' color='#242425'></AtIcon></View>
         </View>
        {questions.type === 6 && <QuestionText opts={questions} page={page} index={index} />}
        {questions.type === 1 && <QuestionChoice  opts={questions} page={page} index={index} />}
