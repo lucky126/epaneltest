@@ -54,7 +54,6 @@ class Question extends Component {
     nextPage = nextPage.deleteIn([page-1, "qtList", index]);
     nextPage
         .filter(pageItem => pageItem.get("qtList").size > 0)
-    console.log(nextPage.toJS())
     let newQt = []
     nextPage.toJS().map((val,key)=>{
       newQt.push(JSON.parse(JSON.stringify(val)))

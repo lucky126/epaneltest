@@ -125,17 +125,22 @@ class Edit extends Component {
           console.log(questionnaire.pageList[pages-1].qtList)
     const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
     questionnaire.pageList[pages-1].qtList = newQtList
-    questionnaire.pageList.map((pg)=>{
-      pg.qtList.map((qt,key)=>{
-        if(qt.type != 6){
-          qt.seq = key
-          qt.disSeq = `Q${key}`
-          qt.mySeq = `Q${key}`
+    let newQt = []
+    questionnaire.pageList.map((val,key)=>{
+      newQt.push(JSON.parse(JSON.stringify(val)))
+    })
+    let seq = 1
+    let deq = 1
+    newQt.map((val)=>{
+      val.qtList.map((item,key)=>{
+        if(item.type == 6 ){
+          item.disSeq = `D${deq++}`
+        }else{
+          item.disSeq = `Q${seq++}`
         }
-        
       })
     })
-    console.log(questionnaire)
+    questionnaire.pageList = newQt
     this.props.dispatch({
         type: 'edit/save',
         payload: {
