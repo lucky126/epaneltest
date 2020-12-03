@@ -33,7 +33,7 @@ class QuestionBottom extends Component {
       img: '',
       input: false,
       label:"新选项",
-      mySeq: '',
+      mySeq: `A${opts.opts.length + 1}`,
       optQuote: false,
       position: 0,
       required,

@@ -73,12 +73,12 @@ class MultipleChoice extends Component {
       let newQtlist = questionnaire.pageList.map((pg)=>{
         pg.qtList.filter((val) => val.disSeq != opts.disSeq)
       })
-      newQtlist.map((item, key) => {
-        item.disSeq = `Q${key + 1}`
-        item.mySeq = `Q${key + 1}`
+      newQtlist.map((val, key) => {
+        val.disSeq = `Q${key + 1}`
+        val.mySeq = `Q${key + 1}`
       })
-      questionnaire.pageList.map((item) => {
-        item.qtList = newQtlist
+      questionnaire.pageList.map((val) => {
+        val.qtList = newQtlist
       })
       this.props.dispatch({
         type: 'edit/save',
@@ -95,9 +95,9 @@ class MultipleChoice extends Component {
       val.mySeq = `A${key1+1}`
     })
     questionnaire.pageList.map((pg)=>{
-      pg.qtList.map((item,key)=>{
-        if(item.disSeq === opts.disSeq){
-           item.opts = newOptList
+      pg.qtList.map((val,key)=>{
+        if(val.disSeq === opts.disSeq){
+           val.opts = newOptList
         } 
       })
     })
