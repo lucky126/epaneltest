@@ -54,27 +54,23 @@ class Question extends Component {
     nextPage = nextPage.deleteIn([page-1, "qtList", index]);
     nextPage
         .filter(pageItem => pageItem.get("qtList").size > 0)
-  let seq = 1; // seq是全局的，不分题型
-  let qSeq = 1;
-  let dSeq = 1; //过渡题 
-     nextPage.map(pageItem =>
-      pageItem.update("qtList", qtList =>
-        qtList.map(question => {
-          if (question.get("type") === 6) {
-            question
-              .set("seq", seq++)
-              .set("mySeq", `D${dSeq}`)
-              .set("disSeq", `D${dSeq++}`);
-          }else {
-             question
-              .set("seq", seq++)
-              .set("mySeq", `Q${qSeq}`)
-              .set("disSeq", `Q${qSeq++}`);
-          }
-        })
-      )
-    );
-    questionnaire.pageList = nextPage.toJS()
+    console.log(nextPage.toJS())
+    let newQt = []
+    nextPage.toJS().map((val,key)=>{
+      newQt.push(JSON.parse(JSON.stringify(val)))
+    })
+    let seq = 1
+    let deq = 1
+    newQt.map((val)=>{
+      val.qtList.map((item,key)=>{
+        if(item.type == 6 ){
+          item.disSeq = `D${deq++}`
+        }else{
+          item.disSeq = `Q${seq++}`
+        }
+      })
+    })
+    questionnaire.pageList = newQt
     this.props.dispatch({
       type: 'edit/save',
       payload: {
