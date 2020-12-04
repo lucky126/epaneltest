@@ -27,7 +27,7 @@ class PageList extends Component {
       const {qtn} = this.props
     return (
       <View className='pagelist'>
-        {qtn.pageList.map((val,key)=>(
+        {qtn.pageList && qtn.pageList.map((val,key)=>(
             <View className='page'>
                 {val.qtList.map((qtList,qtIndex)=>(
                 <View className='qtlist'>
