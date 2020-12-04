@@ -35,9 +35,13 @@ class Edit extends Component {
     this.handleSave = this.handleSave.bind(this)
   }
 
-  componentDidMount(){
+  componentWillMount(){
       this.getQuestionnaire()
       this.getQuestionnaireVersion()
+  }
+  
+  componentDidMount(){
+    
   }
 
   //获得问卷信息
@@ -122,7 +126,6 @@ class Edit extends Component {
           payload: params,
           token: this.props.token
         }).then(()=>{
-          console.log(questionnaire.pageList[pages-1].qtList)
     const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
     questionnaire.pageList[pages-1].qtList = newQtList
     let newQt = []

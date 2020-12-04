@@ -31,7 +31,7 @@ class QuestionText extends Component {
       const {opts} = this.props
     return (
       <View className='describe'>
-        {opts.text}
+        {opts.text.replace(/<\/?.+?>/g, "")}
       </View>
     )
   }

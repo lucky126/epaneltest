@@ -33,7 +33,7 @@ class QuestionOpen extends Component {
       <View className='open'>
           <View className='open-edit'>
             <View className='open-text'>
-              {opts.disSeq + '.' + opts.text}
+              {opts.disSeq + '.' + opts.text.replace(/<\/?.+?>/g, "")}
             </View>
           </View>
           {(opts.selectType == 1 || opts.selectType == 2) && opts.opts.map((item)=>(

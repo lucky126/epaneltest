@@ -35,7 +35,7 @@ class QuestionChoice extends Component {
       <View className='choice'>
           <View className='choice-edit'>
             <View className='choice-text'>
-              {opts.disSeq + '.' + opts.text}
+              {opts.disSeq + '.' + opts.text.replace(/<\/?.+?>/g, "")}
             </View>
           </View>
           {opts.selectType == 0 && (
@@ -46,7 +46,7 @@ class QuestionChoice extends Component {
                         style={{transform: 'scale(0.8)'}}
                         value='选中' 
                     ></Radio>
-                    <Text>{opt.label}</Text>
+                    <Text>{opt.label.replace(/<\/?.+?>/g, "")}</Text>
                     </View>
                 ))}
                 </View>
@@ -59,7 +59,7 @@ class QuestionChoice extends Component {
                           style={{transform: 'scale(0.8,0.8)'}}
                          value='选中' 
                      ></Checkbox>
-                     <Text>{opt.label}</Text>
+                     <Text>{opt.label.replace(/<\/?.+?>/g, "")}</Text>
                    </View>
                ))}
            </View>

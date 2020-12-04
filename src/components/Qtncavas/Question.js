@@ -100,7 +100,7 @@ class Question extends Component {
        {questions.type !== 2  && questions.type !== 1 && questions.type !== 6 && (
          <View className='other-type'>
          <View className='other-text'>
-           {questions.disSeq + '.' + questions.text}
+           {questions.disSeq + '.' + questions.text.replace(/<\/?.+?>/g, "")}
          </View>
          <View className='other-mes'>此题不可编辑</View>
        </View>
