@@ -64,7 +64,12 @@ class QuestionChoice extends Component {
                ))}
            </View>
          )}
-         
+         {(opts.selectType != 0 && opts.selectType !== 1) && (
+            <View style={{lineHeight:'35px'}}>
+           此题不可编辑
+         </View>
+         )}
+        
       </View>
     )
   }

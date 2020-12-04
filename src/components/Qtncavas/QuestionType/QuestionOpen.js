@@ -36,13 +36,18 @@ class QuestionOpen extends Component {
               {opts.disSeq + '.' + opts.text}
             </View>
           </View>
-          {opts.opts.map((item)=>(
+          {(opts.selectType == 1 || opts.selectType == 2) && opts.opts.map((item)=>(
             <View className='open-height'>
               <Text className='open-label' style={{width: !!item.label ?'20%':'' }}>{item.label}</Text>
               <Input className='open-input' style={{width: !!item.label ?'80%':'100%' }}></Input>
           </View>
           ))}
-          
+           {(opts.selectType != 1 && opts.selectType !== 2) && (
+            <View style={{lineHeight:'35px'}}>
+           此题不可编辑
+         </View>
+         )}
+        
       </View>
     )
   }

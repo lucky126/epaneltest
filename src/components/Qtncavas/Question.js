@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import PropTypes from 'prop-types';
 import './index.scss'
 import { connect } from '@tarojs/redux';
-import { AtIcon } from 'taro-ui'
+import { AtIcon, AtDivider } from 'taro-ui'
 import { QuestionChoice } from "./QuestionType/QuestionChoice";
 import { QuestionOpen } from "./QuestionType/QuestionOpen";
 import { QuestionText } from "./QuestionType/QuestionText";
@@ -52,8 +52,7 @@ class Question extends Component {
     let nextPage = fromJS(qtn.pageList);
     let questionnaire = qtn
     nextPage = nextPage.deleteIn([page-1, "qtList", index]);
-    nextPage
-        .filter(pageItem => pageItem.get("qtList").size > 0)
+    nextPage = nextPage.filter(pageItem => pageItem.get("qtList").size > 0)
     let newQt = []
     nextPage.toJS().map((val,key)=>{
       newQt.push(JSON.parse(JSON.stringify(val)))
@@ -85,12 +84,27 @@ class Question extends Component {
     return (
       <View className='question'>
         <View className='question-set'>
-        <View  onClick={this.handelDelete} className='question-edit'><AtIcon value='trash' size='18' color='#242425'></AtIcon></View>
-        <View  onClick={this.handelEditOpt} className='question-edit' style={{marginRight:'10px'}}><AtIcon value='edit' size='18' color='#242425'></AtIcon></View>
+          {((questions.type === 1 && (questions.selectType === 0 || questions.selectType === 1 )) 
+          || questions.type === 2 && (questions.selectType === 1 || questions.selectType === 2 )) && (
+              <View  onClick={this.handelDelete} className='question-edit'><AtIcon value='trash' size='18' color='#242425'></AtIcon></View>
+          )}
+          {((questions.type === 1 && (questions.selectType === 0 || questions.selectType === 1 )) 
+          || questions.type === 2 && (questions.selectType === 1 || questions.selectType === 2 )) && (
+             <View  onClick={this.handelEditOpt} className='question-edit' style={{marginRight:'10px'}}><AtIcon value='edit' size='18' color='#242425'></AtIcon></View>
+            )}
         </View>
+        
        {questions.type === 6 && <QuestionText opts={questions} page={page} index={index} />}
        {questions.type === 1 && <QuestionChoice  opts={questions} page={page} index={index} />}
        {questions.type === 2 &&  <QuestionOpen opts={questions} page={page} index={index} />}
+       {questions.type !== 2  && questions.type !== 1 && questions.type !== 6 && (
+         <View className='other-type'>
+         <View className='other-text'>
+           {questions.disSeq + '.' + questions.text}
+         </View>
+         <View className='other-mes'>此题不可编辑</View>
+       </View>
+       )}
       </View>
     )
   }
