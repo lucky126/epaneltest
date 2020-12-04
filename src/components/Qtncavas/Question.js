@@ -85,11 +85,11 @@ class Question extends Component {
       <View className='question'>
         <View className='question-set'>
           {((questions.type === 1 && (questions.selectType === 0 || questions.selectType === 1 )) 
-          || questions.type === 2 && (questions.selectType === 1 || questions.selectType === 2 )) && (
+          || questions.type === 2 && (questions.selectType === 1 )) && (
               <View  onClick={this.handelDelete} className='question-edit'><AtIcon value='trash' size='18' color='#242425'></AtIcon></View>
           )}
           {((questions.type === 1 && (questions.selectType === 0 || questions.selectType === 1 )) 
-          || questions.type === 2 && (questions.selectType === 1 || questions.selectType === 2 )) && (
+          || questions.type === 2 && (questions.selectType === 1 )) && (
              <View  onClick={this.handelEditOpt} className='question-edit' style={{marginRight:'10px'}}><AtIcon value='edit' size='18' color='#242425'></AtIcon></View>
             )}
         </View>
