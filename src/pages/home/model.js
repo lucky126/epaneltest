@@ -52,6 +52,14 @@ export default {
       });
 
     },
+    * createQuestionnaire({ payload: values, token }, { call, put, select }) {
+      const { data } = yield call(homeApi.createQuestionnaire, values, token);
+
+      yield put({
+        type: 'save'
+      });
+
+    },
     * verifyUserExistProjects({ token }, { call, put }) {
       const { data } = yield call(homeApi.verifyUserExistProjects, {}, token);
       yield put({

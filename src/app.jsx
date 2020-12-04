@@ -71,7 +71,9 @@ class App extends Component {
       'pages/invitation/collect',
       'pages/invitation/answer',
       'pages/project/index',
-      'pages/project/manage'
+      'pages/project/manage',
+      'pages/edit/index',
+      'pages/edit/editOpt'
     ],
     window: {
       backgroundTextStyle: 'light',

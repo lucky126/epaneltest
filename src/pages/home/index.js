@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View,Button,Text,Radio } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtMessage, AtModal, AtSearchBar, AtDrawer } from 'taro-ui'
+import { AtNavBar, AtMessage, AtInput,AtModal, AtSearchBar, AtDrawer,AtModalHeader,AtModalContent,AtModalAction } from 'taro-ui'
 import Questionaires from '../../components/questionaire'
 import './index.scss';
 
@@ -35,8 +35,16 @@ class Home extends Component {
       index: 0,
       oldStatus: 0,
       newStatus: 0,
-      drawerShow: false
+      drawerShow: false,
+      isCreate:false,
+      qtnName1:'',
+      type:''
     }
+    this.handleCreate = this.handleCreate.bind(this)
+    this.handleName = this.handleName.bind(this)
+    this.HandleQtnType = this.HandleQtnType.bind(this)
+    this.handleConfirm = this.handleConfirm.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   componentWillMount() {
@@ -249,9 +257,65 @@ class Home extends Component {
     }
   }
 
+  handleCreate(){
+    this.setState({
+      isCreate:true
+    })
+  }
+
+  handleName(val){
+    this.setState({
+      qtnName1:val
+    })
+  }
+
+  HandleQtnType(val){
+    this.setState({
+      type:val
+    })
+  }
+
+  handleConfirm(){
+    const {qtnName1,type} = this.state
+    if(qtnName1.length === 0){
+      Taro.atMessage({
+        'message': '问卷名称不能为空',
+        'type': 'error',
+      })
+      return
+    }
+    if(type.length === 0){
+      Taro.atMessage({
+        'message': '请选择问卷类型',
+        'type': 'error',
+      })
+      return
+    }
+    const params = {
+      qtnName:qtnName1,
+      qtnType:type 
+  }
+  this.props.dispatch({
+      type: 'home/createQuestionnaire',
+      payload: params,
+      token: this.props.token
+  }).then(()=>{
+    this.setState({
+      isCreate:false
+    })
+    this.getData()
+  })
+  }
+
+  handleClose(){
+    this.setState({
+      isCreate:false
+    })
+  }
+
   render() {
     const { qtnList, qtnTypes, projectExist } = this.props
-
+    const {isCreate,qtnName1,type} = this.state
     const qtProps = {
       qtnTypes,
       view: false,
@@ -298,22 +362,51 @@ class Home extends Component {
         >
           <View>我的问卷</View>
         </AtNavBar>
-
-        <AtSearchBar
-          value={this.state.qtnName}
-          onChange={this.onChangeSearch.bind(this)}
-          onActionClick={this.onActionClick.bind(this)}
-        />
-
+        <View className='create-question'>
+          <View className='search'>
+            <AtSearchBar
+              value={this.state.qtnName}
+              onChange={this.onChangeSearch.bind(this)}
+              onActionClick={this.onActionClick.bind(this)}
+            />
+          </View>  
+          <View className='create' onClick={this.handleCreate}>新建问卷</View>
+        </View>
+        
         <View className='questionaires'>
           {qtnList && qtnList.map((item, key) => (
             // <View>({item.id}){item.qtnTitle}</View>
             <View key={item.id}>
-              <Questionaires qtn={item} index={key} {...qtProps} />
+              <Questionaires qtns={item} index={key} {...qtProps} />
             </View>
 
           ))}
         </View>
+        <AtModal isOpened={isCreate} closeOnClickOverlay={false}>
+          <AtModalHeader>问卷创建</AtModalHeader>
+          <AtModalContent>
+            <View>
+            <AtInput
+              name='value'
+              title='问卷名称'
+              type='text'
+              placeholder='请填写问卷名称'
+              value={qtnName1}
+              onChange={this.handleName}
+            />
+            </View>
+            <View className='typelist'>
+              <View className='select_type'>选择类型</View>
+              {qtnTypes.map((val,key)=>(
+                !!val && (key != 80 && key != 90) && <View>
+                  <Radio name='list' style={{transform: 'scale(0.8)'}} value='选中' checked={key == type ? true :false} onClick={()=>this.HandleQtnType(key)}></Radio>
+                  <Text>{val}</Text>
+                </View>
+              ))}
+            </View>
+          </AtModalContent>
+          <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.handleConfirm}>确定</Button> </AtModalAction>
+        </AtModal>
       </View>
     )
   }

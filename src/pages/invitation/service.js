@@ -57,3 +57,11 @@ export const updateLimitConstraints = (data, token) => syncAction({
   data,
   token
 });
+
+//这个是报错了增加的
+export const getQtnQuota = (data, token) => syncAction({
+  method: 'InvitationManager.updateLimitConstraints',
+  type: INVITION,
+  data,
+  token
+});

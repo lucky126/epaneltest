@@ -34,7 +34,7 @@ const config = {
     ]
   },
    // 编译插件配置
-  plugins: [],
+  plugins: ['@tarojs/plugin-sass'],
    // 全局变量设置
   defineConstants: {
   },

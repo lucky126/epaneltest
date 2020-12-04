@@ -24,5 +24,5 @@ Taro.navigateTo = (data) => {
  * Component挂载分享方法
  */
 Component.prototype.onShareAppMessage = function () {
-  return SHAREINFO
+  //return SHAREINFO
 }

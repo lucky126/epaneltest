@@ -1,0 +1,44 @@
+.choice{
+    .choice-single{
+        height: 84px;
+        line-height: 84px;
+    }
+    .choice-edit{
+        display: flex;
+        justify-content: space-between;
+        .choice-text{
+            padding-top:20px;
+        }
+    }
+}
+.describe{
+    font-size: 28px;
+    line-height: 52px;
+}
+.open{
+    .open-edit{
+        display: flex;
+        justify-content: space-between;
+        .open-text{
+        padding-top:20px;
+    }
+    }
+    
+    .open-height{
+        height: 112px;
+        display: flex;
+        line-height: 112px;
+        .open-label{
+            margin-right: 20px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .open-input{
+        height: 76px;
+        border: 1px solid #ccc;
+        margin: 20px 0 20px 0;
+        width: 80%;
+    }
+    }
+    
+}

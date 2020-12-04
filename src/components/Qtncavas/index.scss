@@ -1,0 +1,45 @@
+.qtnheader{
+    text-align: center;
+    width: 100%;
+    margin: 20px 0 20px -12px;
+}
+.pagelist{
+    margin-bottom: 100px;
+    .qtlist{
+        width: 100%;
+        background-color: #FFF;
+        color: #333;
+        border-radius: 10rpx;
+        //box-shadow: 2rpx 2rpx 5rpx #333333;
+        margin-bottom: 20rpx;
+    }
+    .pages{
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    .page{
+        width: 96%;
+        margin:auto;
+    }
+}
+.question{
+    width: 94%;
+    margin:auto;
+    .question-set{
+        height: 80px;
+        line-height: 80px;
+        border-bottom: 1rpx solid #ecebeb;
+        .question-edit{
+            float: right;
+        }
+       
+    }
+    .other-type{
+        .other-text{
+            margin-top:20px;
+        }
+        .other-mes{
+            line-height: 80px;
+        }
+    }
+}
