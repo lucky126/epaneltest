@@ -161,8 +161,8 @@ class Questionaire extends Component {
             {!!!prjId && qtns.status == 2 && (<Text onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 5)}>关闭</Text>)}
           </View>
           <View className='at-col at-col-2'>
-            {!!!prjId && (qtns.status == 0 || qtns.status == 5) &&  <AtIcon value='edit' size='15' color='#108ee9' onClick={this.handleEdit.bind(this, qtns.id)} ></AtIcon>}
-            {!!!prjId && (qtns.status == 0 || qtns.status == 5) &&  <Text onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>编辑</Text>}
+            {!!!prjId && (qtns.status == 0) &&  <AtIcon value='edit' size='15' color='#108ee9' onClick={this.handleEdit.bind(this, qtns.id)} ></AtIcon>}
+            {!!!prjId && (qtns.status == 0) &&  <Text onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>编辑</Text>}
           </View>
           <View className='at-col at-col-2'>
             {canShow && <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtns.id)} ></AtIcon>}
