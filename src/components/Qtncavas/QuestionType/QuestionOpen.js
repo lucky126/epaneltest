@@ -43,7 +43,7 @@ class QuestionOpen extends Component {
           </View>
           ))}
            {(opts.selectType != 1 && opts.selectType !== 2) && (
-            <View style={{lineHeight:'35px'}}>
+            <View style={{lineHeight:'35px',color: '#b7b3b3'}}>
            此题不可编辑
          </View>
          )}
