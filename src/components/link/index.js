@@ -28,7 +28,7 @@ class Link extends Component {
   onQrCodeImage = () => {
     // console.log(this.props.linkData.tcodeUrl)
     Taro.downloadFile({
-      url: this.props.linkData.tcodeUrl,
+      url: this.props.linkData.weblinkUrl,
       success: function (res) {
         Taro.saveImageToPhotosAlbum({
           filePath: res.tempFilePath, //返回的临时文件路径，下载后的文件会存储到一个临时文件

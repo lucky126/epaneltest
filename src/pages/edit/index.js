@@ -97,6 +97,11 @@ class Edit extends Component {
         url: '/pages/invitation/index?id=' + id + extQuery
       })
     }
+
+    if(val === 3){
+      const id = this.$router.params.id
+      this.handleShow(id)
+    }
   }
 
   //保存问卷
@@ -166,6 +171,13 @@ class Edit extends Component {
     
   }
 
+  //预览
+  handleShow = (id) => {
+    Taro.navigateTo({
+      url: '/pages/home/show?id=' + id
+    })
+  }
+
   render() {
     const {isOpened,isSave} = this.state
     let text = '保存中'
@@ -183,7 +195,8 @@ class Edit extends Component {
            tabList={[
             { title: '添加题目', iconType: 'add' },
             { title: '保存', iconType: 'check' },
-            { title: '发布问卷', iconType: 'share-2' }
+            { title: '发布问卷', iconType: 'share-2' },
+            { title: '预览', iconType: 'share' }
           ]}
            onClick={this.handleClickBar}
            current={this.state.currentBar}
