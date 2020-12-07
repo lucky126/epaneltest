@@ -31,7 +31,7 @@ class PageList extends Component {
             <View className='page'>
                 {val.qtList.map((qtList,qtIndex)=>(
                 <View className='qtlist'>
-                    <Question questions={qtList} page={key+1} index={qtIndex}/>
+                    <Question questions={qtList} page={key+1} index={qtIndex} qtApg={key+','+qtIndex} />
                 </View>
                 ))}
                 <View className='pages'>

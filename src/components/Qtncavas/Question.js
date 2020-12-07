@@ -34,13 +34,14 @@ class Question extends Component {
   }
 
   handelEditOpt(){
-    const {questions,page,index} = this.props
+    const {questions,page,index,qtApg} = this.props
+    const newPg = qtApg.split(',')
     this.props.dispatch({
       type: 'edit/saveQuestion',
       payload: {
         optsList:questions,
-        pageIndex:page,
-        index
+        pageIndex: parseInt(newPg[0])+1,
+        index:parseInt(newPg[1])
       }
     }).then(()=>{
       Taro.navigateTo({url:'/pages/edit/editOpt'})
