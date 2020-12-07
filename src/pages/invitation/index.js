@@ -88,6 +88,8 @@ class Invitation extends Component {
       type: 'invitation/beginRetrieve',
       payload: { qtnId },
       token: this.props.token
+    }).then(()=>{
+      this.getWebLink(qtnId)
     })
   }
 

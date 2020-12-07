@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro';
 import {fromJS} from 'immutable'
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtTabBar,AtFloatLayout,AtGrid,AtMessage  } from 'taro-ui'
+import { AtTabBar,AtFloatLayout,AtGrid,AtMessage,AtToast  } from 'taro-ui'
 import './index.scss';
 import {QtnHeader} from '../../components/Qtncavas/QtnHeader'
 import {PageList} from '../../components/Qtncavas/PageList'
@@ -25,7 +25,8 @@ class Edit extends Component {
     super(props)
     this.state = {
         currentBar:null,
-        isOpened:false
+        isOpened:false,
+        isSave:false
         
     }
     this.handleClickBar = this.handleClickBar.bind(this)
@@ -67,6 +68,10 @@ class Edit extends Component {
       type: 'edit/getQuestionnaireVersion',
       payload: params,
       token: this.props.token
+  }).then(()=>{
+    this.setState({
+      isSave:false
+    })
   })
   }
 
@@ -78,6 +83,9 @@ class Edit extends Component {
       })
     }
     if(val === 1){
+      this.setState({
+        isSave:true
+      })
       this.handleSave()
     }
 
@@ -159,10 +167,12 @@ class Edit extends Component {
   }
 
   render() {
-    const {isOpened} = this.state
+    const {isOpened,isSave} = this.state
+    let text = '保存中'
     return (
       <View className='edit'>
          <AtMessage />
+         <AtToast isOpened={isSave} hasMask text={text}></AtToast>
          <View className='editor__main'>
             <QtnHeader />
             <PageList />
