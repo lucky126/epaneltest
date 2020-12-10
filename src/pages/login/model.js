@@ -93,6 +93,7 @@ export default {
     },
 
     * wechatLogin({ payload: data }, { put }) {
+      Taro.hideLoading()
       if (data.status == HTTP_STATUS.SUCCESS && data.data.token) {
         let token = data.data.token
         let user = data.data.user

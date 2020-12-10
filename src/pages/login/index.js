@@ -61,6 +61,7 @@ class Login extends Component {
           }).then(()=>{
             let params = { encryptedData: encryptedData, iv: iv, code: code, userId: '0',oid:'gh_6c5ec0632c0c' }
             if (!!encryptedData && !!iv) {
+              Taro.showLoading({title: '正在登录...'})
               this.props.dispatch({
                 type: 'login/wxLogin',
                 payload: params

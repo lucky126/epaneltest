@@ -382,7 +382,7 @@ class Home extends Component {
 
           ))}
         </View>
-        <AtModal isOpened={isCreate} closeOnClickOverlay={false}>
+        {isCreate && <AtModal isOpened={isCreate} closeOnClickOverlay={false}>
           <AtModalHeader>问卷创建</AtModalHeader>
           <AtModalContent>
             <View>
@@ -406,7 +406,7 @@ class Home extends Component {
             </View>
           </AtModalContent>
           <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.handleConfirm}>确定</Button> </AtModalAction>
-        </AtModal>
+        </AtModal>}
       </View>
     )
   }

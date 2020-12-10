@@ -120,7 +120,7 @@ class Questionaire extends Component {
         <View className='InfoRow'>
           <View className='titleRow'>
             <Text>
-              （ID: {qtns.id}) {qtns.qtnTitle.replace(/<[^>]+>/g,"")}
+              （ID: {qtns.id}）{qtns.qtnTitle.replace(/<[^>]+>/g,"")}
             </Text>
             <Text className={cx({
               statusDescDot_default: qtns.status === 0,
@@ -146,7 +146,8 @@ class Questionaire extends Component {
         </View>
         <View className='optRow at-row'>
           <View className='at-col at-col-4' style={{marginRight:'10px'}}>
-            
+          {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+            <View>
             {!!!prjId && (<Text className='seperator'> </Text>)}
             {/* 开启操作，只有0，5状态才可以，目标状态2 */}
             {!!!prjId && (qtns.status == 0 || qtns.status == 5) && (
@@ -160,17 +161,25 @@ class Questionaire extends Component {
             {!!!prjId && qtns.status == 2 && (<AtIcon value='stop' size='15' color='#108ee9'  onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 5)} ></AtIcon>)}
             {!!!prjId && qtns.status == 2 && (<Text onClick={onChangeStatus.bind(this, `${qtns.id}`, `${index}`, `${qtns.status}`, 5)}>关闭</Text>)}
           </View>
-          <View className='at-col at-col-2'>
-            {!!!prjId && (qtns.status == 0) &&  <AtIcon value='edit' size='15' color='#108ee9' onClick={this.handleEdit.bind(this, qtns.id)} ></AtIcon>}
-            {!!!prjId && (qtns.status == 0) &&  <Text onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>编辑</Text>}
+          )}
           </View>
           <View className='at-col at-col-2'>
-            {canShow && <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtns.id)} ></AtIcon>}
-            {canShow && <Text onClick={this.handleShow.bind(this, qtns.id)}>预览</Text>}
+          {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+            <View>{!!!prjId && (qtns.status == 0) &&  <AtIcon value='edit' size='15' color='#108ee9' onClick={this.handleEdit.bind(this, qtns.id)} ></AtIcon>}
+            {!!!prjId && (qtns.status == 0) &&  <Text onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>编辑</Text>}</View>
+          )}
           </View>
           <View className='at-col at-col-2'>
-            {<AtIcon value='share' size='15' color='#108ee9' onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)} ></AtIcon>}
-            {((canLink || canSetInv) && <Text onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)}>设置</Text>)}
+          {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+            <View>{canShow && <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtns.id)} ></AtIcon>}
+            {canShow && <Text onClick={this.handleShow.bind(this, qtns.id)}>预览</Text>}</View>
+            )}
+          </View>
+          <View className='at-col at-col-2'>
+          {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+            <View>{<AtIcon value='share' size='15' color='#108ee9' onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)} ></AtIcon>}
+            {((canLink || canSetInv) && <Text onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)}>设置</Text>)}</View>
+            )}
           </View>
           <View className='at-col at-col-2'>
             {(canData || canProgress) && <AtIcon value='analytics' size='15' color='#108ee9' onClick={this.handleData.bind(this, qtns.id, canData)}></AtIcon>}
