@@ -71,5 +71,19 @@
     padding: 0 10PX 0 0
   }
 }
-
-
+.more {
+  position: relative;
+  .more-info {
+    position: absolute;
+    width: 110px;
+    bottom: 100%;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid #666;
+    z-index: 1;
+    .more-function {
+      height: 48px;
+      line-height: 1.2;
+    }
+  }
+}

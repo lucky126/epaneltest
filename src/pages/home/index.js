@@ -38,13 +38,19 @@ class Home extends Component {
       drawerShow: false,
       isCreate:false,
       qtnName1:'',
-      type:''
+      type:'',
+      selectid: 0,
+      modelTitle: '问卷创建',
+      mode: ''
     }
     this.handleCreate = this.handleCreate.bind(this)
     this.handleName = this.handleName.bind(this)
     this.HandleQtnType = this.HandleQtnType.bind(this)
     this.handleConfirm = this.handleConfirm.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.changeId = this.changeId.bind(this)
+    this.copy = this.copy.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   componentWillMount() {
@@ -208,7 +214,8 @@ class Home extends Component {
       qtnId: id,
       index: index,
       oldStatus: oldStatus,
-      newStatus: newStatus
+      newStatus: newStatus,
+      mode: 'edit'
     })
   }
 
@@ -219,8 +226,25 @@ class Home extends Component {
   }
 
   handleConfirmChange = () => {
-    const { qtnId, index, newStatus } = this.state
-
+    const { qtnId, index, newStatus, mode } = this.state
+    Taro.showLoading({title: '正在删除...', mask: true})
+    if(mode == 'delete') {
+      this.props.dispatch({
+        type: 'home/deleteQuestionnaire',
+        payload: {
+          qtnId,
+        },
+        token: this.props.token
+      }).then(() => {
+        this.setState({isModalChangeOpened: false})
+        this.props.dispatch({
+          type: 'home/save',
+          payload: { page: 1 },
+        })
+        this.getData()
+      })
+      return
+    }
     this.props.dispatch({
       type: 'home/updateQtnStatus',
       payload: {
@@ -229,12 +253,16 @@ class Home extends Component {
       },
       index,
       token: this.props.token
-    });
-
-    this.setState({
-      ['isModalChangeOpened']: false
+    }).then(() => {
+      this.setState({
+        ['isModalChangeOpened']: false
+      })
+      this.props.dispatch({
+        type: 'home/save',
+        payload: { page: 1 },
+      })
+      this.getData()
     })
-    this.getData()
   }
 
   handleDrawerShow = () => {
@@ -259,7 +287,8 @@ class Home extends Component {
 
   handleCreate(){
     this.setState({
-      isCreate:true
+      isCreate:true,
+      modelTitle: '问卷创建'
     })
   }
 
@@ -274,9 +303,9 @@ class Home extends Component {
       type:val
     })
   }
-
+  // 确定
   handleConfirm(){
-    const {qtnName1,type} = this.state
+    const {qtnName1,type, modelTitle, qtnId} = this.state
     if(qtnName1.length === 0){
       Taro.atMessage({
         'message': '问卷名称不能为空',
@@ -291,35 +320,78 @@ class Home extends Component {
       })
       return
     }
-    const params = {
+    Taro.showLoading({title: '加载中...',mask: true})
+    if (modelTitle == '复制问卷') {
+      var params = {
+        qtnId,
+        qtnName: qtnName1,
+        qtnType: type
+      }
+      this.props.dispatch({
+        type: 'home/copyQuestionnaire',
+        payload: params,
+        token: this.props.token
+      }).then(() => {
+        this.setState({
+          isCreate: false
+        })
+        this.props.dispatch({
+          type: 'home/save',
+          payload: { page: 1 },
+        })
+        this.getData()
+      })
+      return
+    }
+    var params = {
       qtnName:qtnName1,
       qtnType:type 
-  }
-  this.props.dispatch({
+    }
+    this.props.dispatch({
       type: 'home/createQuestionnaire',
       payload: params,
       token: this.props.token
-  }).then(()=>{
-    this.setState({
-      isCreate:false
+    }).then(()=>{
+      this.setState({
+        isCreate:false
+      })
+      Taro.hideLoading()
+      this.props.dispatch({
+        type: 'home/save',
+        payload: { page: 1 },
+      })
+      this.getData()
     })
-    this.getData()
-  })
   }
-
+  // 关闭弹框
   handleClose(){
     this.setState({
-      isCreate:false
+      isCreate:false,
+      qtnName1: '',
+      type: ''
     })
+  }
+  changeId(id) {
+    this.setState({selectid: id})
+  }
+  copy(item) {
+    this.setState({isCreate: true, modelTitle: '复制问卷', qtnName1: item.qtnTitle + '-副本', type: item.qtnType, qtnId: item.id})
+  }
+  delete(item) {
+    this.setState({isModalChangeOpened: true, changeText: '确认删除此项问卷？', qtnId: item.id, mode: 'delete'})
   }
 
   render() {
     const { qtnList, qtnTypes, projectExist } = this.props
-    const {isCreate,qtnName1,type} = this.state
+    const {isCreate,qtnName1,type,selectid, modelTitle} = this.state
     const qtProps = {
       qtnTypes,
       view: false,
-      onChangeStatus: this.handleChangeStatus
+      onChangeStatus: this.handleChangeStatus,
+      selectid,
+      changeId: this.changeId,
+      copy: this.copy,
+      delete: this.delete
     }
     //leftText='+新建问卷'
     return (
@@ -327,6 +399,7 @@ class Home extends Component {
         <AtMessage />
         <AtModal
           isOpened={this.state.isModalExitOpened}
+          closeOnClickOverlay={false}
           title='确认退出？'
           cancelText='取消'
           confirmText='确认'
@@ -337,6 +410,7 @@ class Home extends Component {
         />
         <AtModal
           isOpened={this.state.isModalChangeOpened}
+          closeOnClickOverlay={false}
           title='确认提示'
           cancelText='取消'
           confirmText='确认'
@@ -377,13 +451,13 @@ class Home extends Component {
           {qtnList && qtnList.map((item, key) => (
             // <View>({item.id}){item.qtnTitle}</View>
             <View key={item.id}>
-              <Questionaires qtns={item} index={key} {...qtProps} />
+              <Questionaires qtns={item} index={key} {...qtProps}/>
             </View>
 
           ))}
         </View>
         {isCreate && <AtModal isOpened={isCreate} closeOnClickOverlay={false}>
-          <AtModalHeader>问卷创建</AtModalHeader>
+          <AtModalHeader>{modelTitle}</AtModalHeader>
           <AtModalContent>
             <View>
             <AtInput
@@ -398,8 +472,8 @@ class Home extends Component {
             <View className='typelist'>
               <View className='select_type'>选择类型</View>
               {qtnTypes.map((val,key)=>(
-                !!val && (key != 80 && key != 90) && <View>
-                  <Radio name='list' style={{transform: 'scale(0.8)'}} value='选中' checked={key == type ? true :false} onClick={()=>this.HandleQtnType(key)}></Radio>
+                !!val && (key != 80 && key != 90) && <View key={key}>
+                  <Radio name='list' style={{ transform: 'scale(0.8)' }} value='选中' checked={key == type ? true : false} onClick={() => this.HandleQtnType(key)}></Radio>
                   <Text>{val}</Text>
                 </View>
               ))}

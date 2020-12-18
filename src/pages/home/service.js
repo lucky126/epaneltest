@@ -50,3 +50,15 @@ export const createQuestionnaire = (data, token) => syncAction({
   data,
   token
 });
+export const copyQuestionnaire = (data, token) => syncAction({
+  method: 'QuestionnaireCreater.copyQuestionnaire',
+  type: QUESTIONNAIRE,
+  data,
+  token
+});
+export const deleteQuestionnaire = (data, token) => syncAction({
+  method: 'QuestionnaireService.deleteQuestionnaire',
+  type: QUESTIONNAIRE,
+  data,
+  token
+});

@@ -9,6 +9,7 @@ export default {
     qtnTypes: '',
     qtnName: '',
     projectExist: false,
+    questionTypes: []
   },
 
   effects: {
@@ -36,6 +37,7 @@ export default {
         type: 'save',
         payload: {
           qtnTypes: dic,
+          questionTypes: qtnTypes
         }
       });
     },
@@ -54,11 +56,33 @@ export default {
     },
     * createQuestionnaire({ payload: values, token }, { call, put, select }) {
       const { data } = yield call(homeApi.createQuestionnaire, values, token);
-
       yield put({
         type: 'save'
       });
-
+    },
+    * copyQuestionnaire({ payload: values, token }, { call, put, select }) {
+      const { data } = yield call(homeApi.copyQuestionnaire, values, token);
+      yield put({
+        type: 'save'
+      });
+      Taro.hideLoading()
+      if(data.status == 200) {
+        Taro.atMessage({message: '复制成功', type: 'success'})
+      } else {
+        Taro.atMessage({message: '操作失败，请检查网络或联系管理员', type: 'error'})
+      }
+    },
+    * deleteQuestionnaire({ payload: values, token }, { call, put, select }) {
+      const { data } = yield call(homeApi.deleteQuestionnaire, values, token);
+      yield put({
+        type: 'save'
+      });
+      Taro.hideLoading()
+      if(data.status == 200) {
+        Taro.atMessage({message: '删除成功', type: 'success'})
+      } else {
+        Taro.atMessage({message: '操作失败，请检查网络或联系管理员', type: 'error'})
+      }
     },
     * verifyUserExistProjects({ token }, { call, put }) {
       const { data } = yield call(homeApi.verifyUserExistProjects, {}, token);
