@@ -53,7 +53,7 @@ class Home extends Component {
     this.delete = this.delete.bind(this)
   }
 
-  componentWillMount() {
+  componentDidShow() {
     const token = this.props.token || Taro.getStorageSync('token');
 
     if (!token) {
@@ -61,6 +61,12 @@ class Home extends Component {
         url: '../login/index'
       })
     }
+    this.props.dispatch({
+      type: 'home/save',
+      payload: {
+        page: 1
+      },
+    });
 
     this.getData()
   };
@@ -77,10 +83,6 @@ class Home extends Component {
         qtnList: []
       },
     });
-  }
-
-  componentDidShow = () => {
-    this.getData()
   }
 
   getData() {
@@ -227,8 +229,8 @@ class Home extends Component {
 
   handleConfirmChange = () => {
     const { qtnId, index, newStatus, mode } = this.state
-    Taro.showLoading({title: '正在删除...', mask: true})
     if(mode == 'delete') {
+      Taro.showLoading({title: '正在删除...', mask: true})
       this.props.dispatch({
         type: 'home/deleteQuestionnaire',
         payload: {

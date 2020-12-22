@@ -142,18 +142,18 @@ class Questionaire extends Component {
       <View className='questionaire-wrap'>
         <View className='InfoRow'>
           <View className='titleRow'>
-            <Text>
+            <View>
               （ID: {qtns.id}）{qtns.qtnTitle.replace(/<[^>]+>/g,"")}
-            </Text>
-            <Text className={cx({
-              statusDescDot_default: qtns.status === 0,
-              statusDescDot_run: qtns.status === 2,
-              statusDescDot_stop: qtns.status == 5
-            })}
-            style={{float:'right'}}
-            >●</Text>
-            <Text className='statusDesc' style={{float:'right'}}>{qtns.statusDescn}</Text>
             </View>
+            <View className='statusDesc'>{qtns.statusDescn}
+              <Text className={cx({
+                statusDescDot_default: qtns.status === 0,
+                statusDescDot_run: qtns.status === 2,
+                statusDescDot_stop: qtns.status == 5
+              })}
+              >●</Text>
+            </View>
+          </View>
           <View className='dataRow'>
             <Text>{formatOnlyDate(qtns.createTime)} </Text>
             <Text className='collect'>收集数据：<Text className='finishNum'>{qtns.finishNum}</Text></Text>

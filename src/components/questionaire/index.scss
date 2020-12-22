@@ -17,6 +17,8 @@
 
   .titleRow{
     padding: 10PX 0 5PX 0;
+    display: flex;
+    justify-content: space-between;
   }
 
   .dataRow{
@@ -56,6 +58,7 @@
 
   .statusDesc{
     padding: 0;
+    min-width: 124px;
   }
 
   .statusDescDot_stop{
