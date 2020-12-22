@@ -58,7 +58,8 @@
 
   .statusDesc{
     padding: 0;
-    min-width: 124px;
+    min-width: 144px;
+    text-align: right;
   }
 
   .statusDescDot_stop{
@@ -80,6 +81,7 @@
     position: absolute;
     width: 110px;
     bottom: 100%;
+    right: 0;
     text-align: center;
     background: #fff;
     overflow: hidden;
@@ -89,5 +91,11 @@
       height: 48px;
       line-height: 1.2;
     }
+  }
+}
+.r-btn {
+  display: flex;
+  .function {
+    margin-right: 10px;
   }
 }

@@ -186,9 +186,25 @@ class Questionaire extends Component {
           </View>
           )}
           </View>
-          <View className='more at-col at-col-1 at-col--auto'>
-            <AtIcon value='menu' size='15' color='#108ee9' onClick={() => this.more(qtns)}></AtIcon>
-            <Text onClick={() => this.more(qtns)}>更多</Text>
+          <View className='more at-col at-col-1 at-col--auto r-btn'>
+            {qtns.qtnType != 80 && qtns.qtnType != 90 && canShow && (
+              <View className='function'>
+                <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtns.id)} ></AtIcon>
+                <Text onClick={this.handleShow.bind(this, qtns.id)}>预览</Text>
+              </View>
+            )}
+            {(canData || canProgress) && (
+              <View className='function'>
+                <AtIcon value='analytics' size='15' color='#108ee9' onClick={this.handleData.bind(this, qtns.id, canData)}></AtIcon>
+                <Text onClick={this.handleData.bind(this, qtns.id, canData)}>分析</Text>
+              </View>
+            )}
+            {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+              <View onClick={() => this.more(qtns)}>
+                <AtIcon value='menu' size='15' color='#108ee9'></AtIcon>
+                <Text>更多</Text>
+              </View>
+            )}
             {showmore && selectid == qtns.id && (
               <View className='more-info'>
                 {qtns.qtnType != 80 && qtns.qtnType != 90 && (
@@ -209,22 +225,10 @@ class Questionaire extends Component {
                     <Text onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>编辑</Text>
                   </View>
                 )}
-                {qtns.qtnType != 80 && qtns.qtnType != 90 && canShow && (
-                  <View className='more-function'>
-                    <AtIcon value='file-generic' size='15' color='#108ee9' onClick={this.handleShow.bind(this, qtns.id)} ></AtIcon>
-                    <Text onClick={this.handleShow.bind(this, qtns.id)}>预览</Text>
-                  </View>
-                )}
                 {qtns.qtnType != 80 && qtns.qtnType != 90 && (canLink || canSetInv) && (
                   <View className='more-function'>
                     <AtIcon value='settings' size='15' color='#108ee9' onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)} ></AtIcon>
                     <Text onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)}>设置</Text>
-                  </View>
-                )}
-                {(canData || canProgress) && (
-                  <View className='more-function'>
-                    <AtIcon value='analytics' size='15' color='#108ee9' onClick={this.handleData.bind(this, qtns.id, canData)}></AtIcon>
-                    <Text onClick={this.handleData.bind(this, qtns.id, canData)}>分析</Text>
                   </View>
                 )}
               </View>
