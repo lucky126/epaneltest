@@ -133,7 +133,15 @@ class Edit extends Component {
     const pages = questionnaire.pageList.length
     const type = value == 0 || value == 1 ? 1 : 2
     const selectType = value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :''
-    const params = utils.getInitialData(type, selectType, fromJS(this.props.qtn));
+    let params = utils.getInitialData(type, selectType, fromJS(questionnaire));
+    const pageIndex = questionnaire.pageList.length
+    const qtIndex = questionnaire.pageList[pageIndex-1].qtList.length
+    const disIndex = questionnaire.pageList[pageIndex-1].qtList[qtIndex-1].disSeq.replace(/[^0-9]/ig,"")
+    const fixIndex = questionnaire.pageList[pageIndex-1].qtList[qtIndex-1].fixSeq.replace(/[^0-9]/ig,"")
+    const lastType = questionnaire.pageList[pageIndex-1].qtList[qtIndex-1].type
+    params.disSeq = `Q${lastType == 6 ? 1 :parseInt(disIndex)+1}`
+    params.fixSeq = `Q${lastType == 6 ? 1:parseInt(fixIndex)+1}`
+    params.mySeq = `Q${lastType == 6 ? 1:parseInt(disIndex)+1}`
     this.props.dispatch({
           type: 'edit/addQuestion',
           payload: params,
@@ -151,8 +159,10 @@ class Edit extends Component {
       val.qtList.map((item,key)=>{
         if(item.type == 6 ){
           item.disSeq = `D${deq++}`
+          //item.mySeq = `D${deq++}`
         }else{
           item.disSeq = `Q${seq++}`
+          //item.mySeq = `Q${seq++}`
         }
       })
     })
