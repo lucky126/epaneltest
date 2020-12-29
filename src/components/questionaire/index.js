@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { AtIcon } from 'taro-ui';
+import { AtIcon,AtActionSheet,AtActionSheetItem } from 'taro-ui';
 import PropTypes from 'prop-types';
 import cx from 'classnames'
 import { connect } from '@tarojs/redux';
@@ -20,6 +20,7 @@ class Questionaire extends Component {
     this.more = this.more.bind(this)
     this.onShowModeal = this.onShowModeal.bind(this)
     this.showConfirm = this.showConfirm.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
   static propTypes = {
     qtn: PropTypes.object
@@ -57,6 +58,7 @@ class Questionaire extends Component {
 
   handleInvitation = (id, canLink, canSetInv, qtnType) => {
     const { prjId, view } = this.props;
+    this.setState({showmore:false})
     //设定开放连接查看权限
     let extQuery = '&canLink=' + canLink + '&canSetInv=' + canSetInv
     
@@ -73,6 +75,7 @@ class Questionaire extends Component {
 
   handleEdit =(id,canLink, canSetInv) => {
     const { view } = this.props;
+    this.setState({showmore: false})
     let extQuery = '&view=' + view + '&canLink=' + canLink + '&canSetInv=' + canSetInv
     this.props.dispatch({
       type: 'edit/save',
@@ -85,17 +88,22 @@ class Questionaire extends Component {
     })
   }
   more(item) {
-    const {showmore} = this.state
-    this.setState({showmore: !showmore})
+    this.setState({showmore: true})
     this.props.changeId(item.id)
   }
   // 复制
   onShowModeal(qtn) {
+    this.setState({showmore:false})
     this.props.copy(qtn)
   }
   // 删除
   showConfirm(qtn) {
+    this.setState({showmore:false})
     this.props.delete(qtn)
+  }
+
+  handleClose(){
+    this.setState({showmore:false})
   }
 
   render() {
@@ -205,7 +213,32 @@ class Questionaire extends Component {
                 <Text>更多</Text>
               </View>
             )}
-            {showmore && selectid == qtns.id && (
+            <AtActionSheet isOpened={showmore && selectid == qtns.id}>
+              {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+                  <AtActionSheetItem onClick={() => this.onShowModeal(qtns)}>
+                  复制
+                </AtActionSheetItem>
+                )}
+                {qtns.qtnType != 80 && qtns.qtnType != 90 && (
+                  <AtActionSheetItem onClick={() => this.showConfirm(qtns)}>
+                  删除
+                </AtActionSheetItem>
+                )}
+                {qtns.qtnType != 80 && qtns.qtnType != 90 && !!!prjId && (qtns.status == 0) && (
+                  <AtActionSheetItem onClick={this.handleEdit.bind(this, qtns.id, canLink, canSetInv)}>
+                   编辑
+                </AtActionSheetItem>
+                )}
+                {qtns.qtnType != 80 && qtns.qtnType != 90 && (canLink || canSetInv) && (
+                  <AtActionSheetItem onClick={this.handleInvitation.bind(this, qtns.id, canLink, canSetInv)}>
+                  设置
+                  </AtActionSheetItem>
+                )}
+               <AtActionSheetItem onClick={this.handleClose}>
+                取消
+               </AtActionSheetItem>
+            </AtActionSheet>
+            {/* {showmore && selectid == qtns.id && (
               <View className='more-info'>
                 {qtns.qtnType != 80 && qtns.qtnType != 90 && (
                   <View className='more-function' onClick={() => this.onShowModeal(qtns)}>
@@ -232,7 +265,7 @@ class Questionaire extends Component {
                   </View>
                 )}
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>
