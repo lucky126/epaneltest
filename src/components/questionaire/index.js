@@ -109,7 +109,6 @@ class Questionaire extends Component {
   render() {
     const { qtns, index, qtnTypes, onChangeStatus, prjFlag, prjId, selectid } = this.props;
     const {showmore} = this.state
-
     // let ftAction = this.handleShow.bind(this, qtn.id)
     // if (qtn.status === 0) {
     //   ftAction = this.handleEdit.bind(this, qtn.id)
@@ -213,7 +212,7 @@ class Questionaire extends Component {
                 <Text>更多</Text>
               </View>
             )}
-            <AtActionSheet isOpened={showmore && selectid == qtns.id}>
+            <AtActionSheet isOpened={showmore && selectid == qtns.id} onClose={this.handleClose}>
               {qtns.qtnType != 80 && qtns.qtnType != 90 && (
                   <AtActionSheetItem onClick={() => this.onShowModeal(qtns)}>
                   复制
