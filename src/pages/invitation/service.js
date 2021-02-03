@@ -65,3 +65,25 @@ export const getQtnQuota = (data, token) => syncAction({
   data,
   token
 });
+// 获取通讯录
+export const TreePrivatization = (data) => syncAction({
+  url: '/surveyprivatization/api/contacts/getDepartmentTree',
+  method: 'getDepartment.TreePrivatization',
+  type: 'user',
+  plugInit: "plugInit",
+  data
+});
+export const getSendList = (data) => syncAction({
+  url: '/surveyprivatization/api/collect/querySendList',
+  method: 'query.SendList',
+  type: 'user',
+  plugInit: "plugInit",
+  data
+});
+export const send = (data) => syncAction({
+  url: '/surveyprivatization/api/collect/qyWechatCollect',
+  method: 'qy.WechatCollect',
+  type: 'user',
+  plugInit: "plugInit",
+  data
+});

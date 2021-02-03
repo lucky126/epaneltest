@@ -3,6 +3,8 @@ import * as invitationApi from './service';
 export default {
   namespace: 'invitation',
   state: {
+    sendList: [],
+    treeData: [],
     qtnStatus: '',
     limitConstraints: '',
     limitPanelNum: '',
@@ -123,6 +125,24 @@ export default {
       }
     });
   },
+    * TreePrivatization({ payload: values, plugInit }, { call, put }) {
+      const { data } = yield call(invitationApi.TreePrivatization, values, plugInit);
+      yield put({
+        type: 'save',
+        payload: {
+          treeData: data.message.data.department
+        }
+      });
+    },
+    * getSendList({ payload: values }, { call, put }) {
+      const { data } = yield call(invitationApi.getSendList, values);
+      yield put({
+        type: 'save',
+        payload: {
+          sendList: data.message.data.list
+        }
+      });
+    },
   },
 
   reducers: {

@@ -30,6 +30,7 @@ export function syncAction(options) {
       "method": options.method,
       "params": options.data,
       "type": options.type,
+      // "plugInit": options.plugInit,
       ...commonParame
     },
     header: {

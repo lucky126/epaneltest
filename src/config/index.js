@@ -11,6 +11,10 @@ export const ONLINEHOST = 'https://www.epanel.cn'
  * 测试环境
  */
 export const QAHOST = 'https://f.epanel.cn'
+/**
+ * 中证
+ */
+export const TAHOST = 'http://etc.epanel.cn'
 
 /** 
  * 线上mock
