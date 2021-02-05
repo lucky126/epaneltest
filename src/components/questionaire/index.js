@@ -57,13 +57,13 @@ class Questionaire extends Component {
   }
 
   handleInvitation = (id, canLink, canSetInv, qtnType) => {
-    const { prjId, view } = this.props;
+    const { prjId, view, qtns } = this.props;
     this.setState({showmore:false})
     //设定开放连接查看权限
     let extQuery = '&canLink=' + canLink + '&canSetInv=' + canSetInv
     
     Taro.navigateTo({
-      url: '/pages/invitation/index?id=' + id + '&view=' + view + extQuery + '&qtnType=' + qtnType
+      url: '/pages/invitation/index?id=' + id + '&view=' + view + extQuery + '&qtnType=' + qtnType + '&title=' + qtns.qtnTitle
     })
   }
 

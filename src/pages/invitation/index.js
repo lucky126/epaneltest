@@ -106,7 +106,7 @@ class Invitation extends Component {
 
   onShareAppMessage(res) {
     const { qtnName, linkData } = this.props
-
+    const qtnTitle = this.$router.params.title
     let weblinkUrl = linkData ? linkData.weblinkUrl : ''
 
     if (res.from === 'button') {
@@ -115,7 +115,7 @@ class Invitation extends Component {
     }
 
     return {
-      title: qtnName + '--云调查',
+      title: qtnTitle + '--云调查',
       path: '/pages/invitation/answer?url=' + encodeURI(weblinkUrl),
       imageUrl: 'https://www.epanel.cn/images/answer.jpg'
     }
@@ -125,7 +125,7 @@ class Invitation extends Component {
     const { canLink, canSetInv } = this.state
     const { qtnStatus, linkData, qtnName, QuotaList } = this.props
     const qtnType = this.$router.params.qtnType
-
+    const qtnTitle = this.$router.params.title
     let rightFirstIconType = ''
     let tabList = [{ title: '收集设置' }]
     if (qtnStatus !== 0) {
@@ -133,7 +133,7 @@ class Invitation extends Component {
       rightFirstIconType = canSetInv && qtnType != 80 && qtnType != 90 ? 'settings' : ''
     }
 
-    let title = '收集数据--' + qtnName
+    let title = '收集数据--' + qtnTitle
 
     return (
       <View className='page'>
