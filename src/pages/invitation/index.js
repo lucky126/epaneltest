@@ -1,5 +1,5 @@
-import Taro, { atMessage, Component } from '@tarojs/taro';
-import { View, Text, Picker } from '@tarojs/components';
+import Taro, { Component } from '@tarojs/taro';
+import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtTabs, AtTabsPane, AtNavBar, AtButton, AtTextarea, AtMessage, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtRadio, AtList, AtListItem } from 'taro-ui'
 import { BeginToCollect } from '../../components/beginToCollect'
@@ -45,6 +45,7 @@ class Invitation extends Component {
     this.sendTypeChange = this.sendTypeChange.bind(this)
     this.send = this.send.bind(this)
     this.getSendList = this.getSendList.bind(this)
+    this.getContent = this.getContent.bind(this)
   }
 
   componentWillMount() {
@@ -57,7 +58,15 @@ class Invitation extends Component {
     this.getData(this.$router.params.id)
     this.getTreeData()
     this.getSendList()
+    this.getContent()
   };
+  // 获取发送消息内容
+  getContent() {
+    this.props.dispatch({
+      type: 'invitation/getContent',
+      payload: {qtnId: this.state.qtnId},
+    })
+  }
   // 获取名单
   getTreeData() {
     this.props.dispatch({
@@ -144,6 +153,9 @@ class Invitation extends Component {
   }
   // 选择的人
   change(values, current) {
+    Taro.showLoading({
+      title: '加载中',
+    })
     const { selectedList } = this.state
     var list = JSON.parse(JSON.stringify(selectedList)) // 选框绑定的值
     var uniqueIds = JSON.parse(JSON.stringify(this.state.uniqueId)) // ids
@@ -216,7 +228,9 @@ class Invitation extends Component {
         lop(value.userList, value.id)
       }
     }
-    this.setState({ selectedList: list, uniqueId: uniqueIds, UserContactsVo: UserContactsVos })
+    this.setState({ selectedList: list, uniqueId: uniqueIds, UserContactsVo: UserContactsVos }, () => {
+      Taro.hideLoading()
+    })
   }
   // 下一步
   toNext(step) {
@@ -229,8 +243,8 @@ class Invitation extends Component {
       }
       this.setState({step: 2})
     } else if(step == 2) {
-      const { value } = this.state
-      if (!value) {
+      const { content } = this.props
+      if (!content) {
         Taro.atMessage({ message: '消息内容不能为空', type: 'error' })
         return
       }
@@ -241,7 +255,10 @@ class Invitation extends Component {
   }
   // 发送的文本
   textareaChange(e) {
-    this.setState({value: e.detail.value})
+    this.props.dispatch({
+      type: 'invitation/save',
+      payload: { content: e.detail.value },
+    })
   }
   // 取消
   cancel () {
@@ -258,8 +275,20 @@ class Invitation extends Component {
     //   Taro.atMessage({ message: '请选择发送方式', type: 'error' })
     //   return
     // }
-    this.setState({ isOpened: false, step: 0 })
-    this.getSendList()
+    const { UserContactsVo, uniqueId, qtnId } = this.state
+    const { content } = this.props
+    this.props.dispatch({
+      type: 'invitation/send',
+      payload: { 
+        qtnId,
+        UserContactsVo,
+        uniqueId,
+        content
+      }
+    }).then(() => {
+      this.setState({ isOpened: false, step: 0, UserContactsVo: [], uniqueId: [] })
+      this.getSendList()
+    })
   }
   onTimeChange = e => {
     this.setState({
@@ -293,7 +322,7 @@ class Invitation extends Component {
   }
 
   render() {
-    const { canLink, canSetInv, selectedList, step, isOpened } = this.state
+    const { canLink, canSetInv, selectedList, step, isOpened, UserContactsVo } = this.state
     const { qtnStatus, linkData, qtnName, QuotaList, treeData, sendList } = this.props
     const qtnType = this.$router.params.qtnType
     let rightFirstIconType = ''
@@ -357,10 +386,10 @@ class Invitation extends Component {
             )}
             {step == 1 && (
               <View>
-                <View className='head'>添加联系人（已选中 {selectedList.length} 个）</View>
+                <View className='head'>添加联系人（已选中 {UserContactsVo.length} 个）</View>
                 <View className="tree-con">
                   {data.map((item, index) => (
-                    <Tree key={item.id} oid={item.id} index={index} data={item} depth={0} change={this.change} selectedList={this.state.selectedList}></Tree>
+                    <Tree key={item.id} oid={item.id} index={index} data={item} depth={0} change={this.change} selectedList={selectedList}></Tree>
                     
                   ))}
                 </View>
@@ -373,7 +402,7 @@ class Invitation extends Component {
               <View className="step2">
                 <View className='head'>编辑消息内容</View>
                 <AtTextarea
-                  value={this.state.value}
+                  value={this.props.content}
                   onChange={this.textareaChange}
                   maxLength={200}
                   placeholder='你的问题是...'

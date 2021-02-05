@@ -87,3 +87,10 @@ export const send = (data) => syncAction({
   plugInit: "plugInit",
   data
 });
+export const getContent = (data) => syncAction({
+  url: '/surveyprivatization/api/collect/getContent',
+  method: 'getZlx.CollectContent',
+  type: 'user',
+  plugInit: "plugInit",
+  data
+});

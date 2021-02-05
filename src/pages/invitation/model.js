@@ -1,8 +1,10 @@
+import Taro from '@tarojs/taro';
 import * as invitationApi from './service';
 
 export default {
   namespace: 'invitation',
   state: {
+    content: '', // 发送内容
     sendList: [],
     treeData: [],
     qtnStatus: '',
@@ -142,6 +144,26 @@ export default {
           sendList: data.message.data.list
         }
       });
+    },
+    * getContent({ payload: values }, { call, put }) {
+      const { data } = yield call(invitationApi.getContent, values);
+      yield put({
+        type: 'save',
+        payload: {
+          content: data.message.data.content
+        }
+      });
+    },
+    * send({ payload: values }, { call, put }) {
+      const { data } = yield call(invitationApi.send, values);
+      yield put({
+        type: 'save'
+      });
+      if(data.status == 200) {
+        Taro.atMessage({ message: '发送成功', type: 'success' })
+      } else {
+        Taro.atMessage({ message: '发送失败', type: 'error' })
+      }
     },
   },
 
