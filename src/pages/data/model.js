@@ -4,6 +4,8 @@ import { HTTP_STATUS } from '../../config';
 export default {
   namespace: 'data',
   state: {
+    response: {},
+    exportResponse: {},
     RetrievalProgressData: '',
     resultData: [],
     resultPage: 1,
@@ -102,8 +104,35 @@ export default {
         QuotaList:Quota
       }
     });
-
   },
+    * exportExcelData({ payload: values }, { call, put }) {
+      const { data } = yield call(dataApi.exportExcelData, values);
+      yield put({
+        type: 'save',
+        payload: {
+          exportResponse: data
+        }
+      });
+    },
+    * getTaskInfo({ payload: values }, { call, put }) {
+      const data = yield call(dataApi.getTaskInfo, values);
+      console.log('555555',data)
+      yield put({
+        type: 'save',
+        payload: {
+          response: data.data
+        }
+      });
+    },
+    * updTaskStatus({ payload: values }, { call, put }) {
+      const data = yield call(dataApi.updTaskStatus, values);
+      yield put({
+        type: 'save',
+        payload: {
+          response: data.data
+        }
+      });
+    },
   },
 
   reducers: {

@@ -109,7 +109,7 @@ class Data extends Component {
   // 小程序上拉加载
   onReachBottom() {
     // 只允许样本数据上拉加载
-    if(this.state.current===1)
+    if(this.state.current===2)
     {
       const { qtnId } = this.state
       this.props.dispatch({
@@ -145,7 +145,7 @@ class Data extends Component {
             <QuotaProgress data={this.props.QuotaList}  onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
-            <AnswerData data={this.props.resultData} view={view} onShowResult={this.onShowResult} />
+            <AnswerData qtnId={this.$router.params.id} data={this.props.resultData} view={view} onShowResult={this.onShowResult} />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={3}>
             <ChartData data={this.props.chartList} />

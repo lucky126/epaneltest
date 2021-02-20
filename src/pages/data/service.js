@@ -49,3 +49,21 @@ export const getQuotaProgress = (data, token) => syncAction({
   data,
   token
 });
+//导出
+export const exportExcelData = (data) => syncAction({
+  method: 'DataExporter.exportExcelData',
+  type: DATAANALYSE,
+  data
+});
+//导出
+export const getTaskInfo = (data) => syncAction({
+  method: 'DataExporter.getTaskInfo',
+  type: DATAANALYSE,
+  data
+});
+//导出
+export const updTaskStatus = (data) => syncAction({
+  method: 'DataExporter.updTaskStatus',
+  type: DATAANALYSE,
+  data
+});

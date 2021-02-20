@@ -1,22 +1,116 @@
 import Taro, { Component } from '@tarojs/taro'
+import { connect } from '@tarojs/redux';
 import { View, Text } from '@tarojs/components'
-import PropTypes from 'prop-types';
+import { AtButton, AtMessage } from 'taro-ui'
 import cx from 'classnames'
 import { formatOnlyDate } from '../../utils/common'
 import './index.scss'
+import {MAINHOST} from '../../config/index'
+
+@connect(({ data, common }) => ({
+  ...data,
+  ...common
+}))
 
 class AnswerData extends Component {
-  static propTypes = {
-  };
-
-  static defaultProps = {
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      current: 2,
+      pageSize: 20,
+      status: null,
+      startTime: null,
+      endTime: null,
+    }
+    this.exportExcelData = this.exportExcelData.bind(this)
+    this.export = this.export.bind(this)
+  }
+  // 导出
+  exportExcelData() {
+    Taro.showLoading({
+      title: '导出中...',
+      mask: true
+    })
+    const { qtnId } = this.props
+    this.props.dispatch({
+      type: 'data/exportExcelData',
+      payload: {
+        endTime: null,
+        qtnId,
+        startTime: null,
+        status: null
+      }
+    }).then(() => {
+      const { exportResponse } = this.props
+      this.export(exportResponse)
+      // Taro.hideLoading()
+    })
+  }
+  export(response) {
+    const taskId = response.message.data.taskId
+    this._timer = setInterval(() => {
+      try{
+        this.props.dispatch({
+          type: 'data/getTaskInfo',
+          payload: { taskId }
+        }).then(() => {
+          const { response } = this.props
+          const status = response.message.data.taskInfo.status;
+          if (status == 2) {
+            const taskId = response.message.data.taskInfo.id;
+            const outputMessageData = response.message.data.taskInfo.outputMessageData;
+            this.props.dispatch({
+              type: 'data/updTaskStatus',
+              payload: { taskId }
+            }).then(() => {
+              // 下载
+              Taro.downloadFile({
+                url: MAINHOST +'/' + outputMessageData,
+                complete: (res) => {
+                  console.log('调完了', res)
+                  if (res.statusCode == 200) {
+                    Taro.saveFile({
+                      tempFilePath: res.tempFilePath,
+                      success: (res) => {
+                        console.log('kkk', res)
+                      }
+                    })
+                  }
+                }
+              })
+              // utils.download(outputMessageData);
+              Taro.hideLoading()
+              clearInterval(this._timer);
+            })
+          }
+          if (status == 3) {
+            Taro.hideLoading()
+            Taro.atMessage({
+              'message': '导出失败',
+              'type': 'error',
+            })
+            clearInterval(this._timer);
+          }
+        })
+      } catch (e) {
+        Taro.hideLoading()
+        Taro.atMessage({
+          'message': '导出失败',
+          'type': 'error',
+        })
+        clearInterval(this._timer);
+      }
+    }, 4000);
+  }
 
   render() {
     const { data, onShowResult, view } = this.props
-
     return (
       <View className='answerData-wrap'>
+        <AtMessage />
+        <View className="btn">
+          <AtButton type='primary' size='small' onClick={this.exportExcelData}>导出表格</AtButton>
+        </View>
         <View className='table'>
           <View className='tr'>
             <View className='th'>答题序号</View>
