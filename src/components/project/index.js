@@ -28,7 +28,7 @@ class Project extends Component {
     return (
       <View className='Project-wrap'>
         <View className='InfoRow'>
-          <View className='titleRow'>（ID: {prj.id}) {prj.prjName}</View>
+          <View className='titleRow'>（ID: {prj.id}） {prj.prjName}</View>
           <View className='dataRow'>
             <Text>{formatOnlyDate(prj.createTime)} </Text>
             <Text className='collect'>外部问卷：<Text className='finishNum'>{prj.prjFlag == 1 ? '使用' : '不使用'}</Text></Text>

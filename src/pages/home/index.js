@@ -69,12 +69,7 @@ class Home extends Component {
     });
 
     this.getData()
-  };
-
-  componentWillUnmount() {
-
-  }
-  
+  };  
   componentWillUnmount = ()=>{
     this.props.dispatch({
       type: 'home/save',
