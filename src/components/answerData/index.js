@@ -65,7 +65,7 @@ class AnswerData extends Component {
             }).then(() => {
               // 下载
               Taro.downloadFile({
-                url: MAINHOST +'/' + outputMessageData,
+                url: MAINHOST +'/v2/service/download/' + outputMessageData,
                 complete: (res) => {
                   console.log('调完了', res)
                   if (res.statusCode == 200) {
