@@ -16,28 +16,24 @@ class PageList extends Component {
   static propTypes = {
     qtn: PropTypes.object
   };
-
   static defaultProps = {
     qtn: '',
   };
-
- 
-
   render() {
-      const {qtn} = this.props
+    const { qtn } = this.props
     return (
       <View className='pagelist'>
-        {qtn.pageList && qtn.pageList.map((val,key)=>(
-            <View className='page'>
-                {val.qtList.map((qtList,qtIndex)=>(
-                <View className='qtlist'>
-                    <Question questions={qtList} page={key+1} index={qtIndex} qtApg={key+','+qtIndex} />
-                </View>
-                ))}
-                <View className='pages'>
-                   <AtDivider content={`第${key+1}页`} fontColor='#2d8cf0' lineColor='#ccc' /> 
-                </View>
+        {qtn.pageList && qtn.pageList.map((val, key) => (
+          <View className='page' key={key}>
+            {val.qtList.map((qtList, qtIndex) => (
+              <View className='qtlist' key={qtList.id}>
+                <Question questions={qtList} page={key + 1} index={qtIndex} qtApg={key + ',' + qtIndex} />
+              </View>
+            ))}
+            <View className='pages'>
+              <AtDivider content={`第${key + 1}页`} fontColor='#2d8cf0' lineColor='#ccc' />
             </View>
+          </View>
         ))}
       </View>
     )

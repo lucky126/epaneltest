@@ -5,9 +5,8 @@ import { connect } from '@tarojs/redux';
 import './index.scss';
 import { QuestionChoice } from "../../components/Question/QuestionChoice";
 import { QuestionOpen } from "../../components/Question/QuestionOpen";
-// eslint-disable-next-line import/first
+import { QuestionDescribe } from "../../components/Question/QuestionDescribe";
 import { AtButton,AtSwitch } from 'taro-ui'
-// eslint-disable-next-line import/first
 import {fromJS} from 'immutable'
 
 @connect(({ edit, home, common }) => ({
@@ -128,23 +127,24 @@ class EditOpt extends Component {
   }
 
   render() {
-      const {optsList,pageIndex,qtn,index} = this.props
-      const isAdd = qtn.pageList[pageIndex-1].qtList.length-1 == index
+    const { optsList, pageIndex, qtn, index } = this.props
+    const isAdd = qtn.pageList[pageIndex - 1].qtList.length - 1 == index
     return (
       <View className='editOpt'>
-         <View>
-         <View className='editOpt-type'>题目修改</View>
-         {optsList.type === 1 && <QuestionChoice  opts={optsList} />}
-         {optsList.type === 2 &&  <QuestionOpen opts={optsList} />}
-         </View>
-         <View>
-             <View className='editOpt-type'>属性修改</View>
-             <View className='edit-select'>
-             <AtSwitch title='必答' checked={optsList.required} onChange={this.handleRequired} />
-             <AtSwitch title='增加分页' checked={isAdd} onChange={this.addPage} />
-             </View>
-         </View>
-         <View className='opt-save'><AtButton type='primary' onClick={this.HandleSave}>保存修改</AtButton></View>
+        <View>
+          <View className='editOpt-type'>题目修改</View>
+          {optsList.type === 1 && <QuestionChoice opts={optsList} />}
+          {optsList.type === 2 && <QuestionOpen opts={optsList} />}
+          {optsList.type === 6 && <QuestionDescribe opts={optsList} />}
+        </View>
+        <View>
+          <View className='editOpt-type'>属性修改</View>
+          <View className='edit-select'>
+            {optsList.type != 6 && optsList.selectType != 0 && <AtSwitch title='必答' checked={optsList.required} onChange={this.handleRequired} />}
+            <AtSwitch title='增加分页' checked={isAdd} onChange={this.addPage} />
+          </View>
+        </View>
+        <View className='opt-save'><AtButton type='primary' onClick={this.HandleSave}>保存修改</AtButton></View>
       </View>
     )
   }

@@ -41,7 +41,7 @@ class QuestionChoice extends Component {
           {opts.selectType == 0 && (
                 <View>
                 {opts.opts.map((opt,index)=>(
-                    <View className='choice-single'>
+                    <View className='choice-single' key={index}>
                     <Radio 
                         style={{transform: 'scale(0.8)'}}
                         value='选中' 
@@ -54,7 +54,7 @@ class QuestionChoice extends Component {
           {opts.selectType == 1 && (
                <View>
                {opts.opts.map((opt,index)=>(
-                   <View className='choice-single'>
+                   <View className='choice-single' key={index}>
                      <Checkbox 
                           style={{transform: 'scale(0.8,0.8)'}}
                          value='选中' 

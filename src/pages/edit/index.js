@@ -127,58 +127,59 @@ class Edit extends Component {
   }
 
   //添加题目
-  addQuestion(e,value){
-    const {isChange} = this.props
+  addQuestion(e, value) {
+    const { isChange } = this.props
     let questionnaire = this.props.qtn
     const pages = questionnaire.pageList.length
     const type = value == 0 || value == 1 ? 1 : 2
-    const selectType = value == 0 ? 0 :value == 1 ? 1 :value == 2 ? 1 :value == 3 ? 7 :''
+    const selectType = value == 0 ? 0 : value == 1 ? 1 : value == 2 ? 1 : value == 3 ? 7 : ''
     let params = utils.getInitialData(type, selectType, fromJS(questionnaire));
-    const pageIndex = questionnaire.pageList.length
-    const qtIndex = questionnaire.pageList[pageIndex-1].qtList.length
-    const disIndex = questionnaire.pageList[pageIndex-1].qtList[qtIndex-1].disSeq.replace(/[^0-9]/ig,"")
-    const fixIndex = questionnaire.pageList[pageIndex-1].qtList[qtIndex-1].fixSeq.replace(/[^0-9]/ig,"")
-    const lastType = questionnaire.pageList[pageIndex-1].qtList[qtIndex-1].type
-    params.disSeq = `Q${lastType == 6 ? 1 :parseInt(disIndex)+1}`
-    params.fixSeq = `Q${lastType == 6 ? 1:parseInt(fixIndex)+1}`
-    params.mySeq = `Q${lastType == 6 ? 1:parseInt(disIndex)+1}`
+    // const pageIndex = questionnaire.pageList.length
+    // const qtIndex = questionnaire.pageList[pageIndex - 1].qtList.length
+    // const disIndex = questionnaire.pageList[pageIndex - 1].qtList[qtIndex - 1].disSeq.replace(/[^0-9]/ig, "")
+    // const fixIndex = questionnaire.pageList[pageIndex - 1].qtList[qtIndex - 1].fixSeq.replace(/[^0-9]/ig, "")
+    // const lastType = questionnaire.pageList[pageIndex - 1].qtList[qtIndex - 1].type
+    // params.disSeq = `Q${lastType == 6 ? 1 : parseInt(disIndex) + 1}`
+    // params.fixSeq = `Q${lastType == 6 ? 1 : parseInt(fixIndex) + 1}`
+    // params.mySeq = `Q${lastType == 6 ? 1 : parseInt(disIndex) + 1}`
     this.props.dispatch({
-          type: 'edit/addQuestion',
-          payload: params,
-          token: this.props.token
-        }).then(()=>{
-    const newQtList = questionnaire.pageList[pages-1].qtList.concat(this.props.qt)
-    questionnaire.pageList[pages-1].qtList = newQtList
-    let newQt = []
-    questionnaire.pageList.map((val,key)=>{
-      newQt.push(JSON.parse(JSON.stringify(val)))
-    })
-    let seq = 1
-    let deq = 1
-    newQt.map((val)=>{
-      val.qtList.map((item,key)=>{
-        if(item.type == 6 ){
-          item.disSeq = `D${deq++}`
-          //item.mySeq = `D${deq++}`
-        }else{
-          item.disSeq = `Q${seq++}`
-          //item.mySeq = `Q${seq++}`
-        }
+      type: 'edit/addQuestion',
+      payload: params,
+      token: this.props.token
+    }).then(() => {
+      const newQtList = questionnaire.pageList[pages - 1].qtList.concat(this.props.qt)
+      questionnaire.pageList[pages - 1].qtList = newQtList
+      let newQt = []
+      questionnaire.pageList.map((val, key) => {
+        newQt.push(JSON.parse(JSON.stringify(val)))
       })
-    })
-    questionnaire.pageList = newQt
-    this.props.dispatch({
+      let seq = 1
+      let deq = 1
+      newQt.map((val) => {
+        val.qtList.map((item, key) => {
+          if (item.type == 6) {
+            item.disSeq = `D${deq}`
+            item.mySeq = `D${deq++}`
+            item.seq = key + 1
+          } else {
+            item.disSeq = `Q${seq}`
+            item.mySeq = `Q${seq++}`
+            item.seq = key + 1
+          }
+        })
+      })
+      questionnaire.pageList = newQt
+      this.props.dispatch({
         type: 'edit/save',
         payload: {
-          qtn:questionnaire,
-          isChange:!isChange
+          qtn: questionnaire,
+          isChange: !isChange
         }
       })
       this.setState({
-        isOpened:false
+        isOpened: false
       })
-        })
-    
+    })
   }
 
   //预览

@@ -36,8 +36,8 @@ class QuestionOpen extends Component {
               {opts.disSeq + '.' + opts.text.replace(/<\/?.+?>/g, "")}
             </View>
           </View>
-          {(opts.selectType == 1 || opts.selectType == 2) && opts.opts.map((item)=>(
-            <View className='open-height'>
+          {(opts.selectType == 1 || opts.selectType == 2) && opts.opts.map((item, key)=>(
+            <View className='open-height' key={key}>
               <Text className='open-label' style={{width: !!item.label ?'20%':'' }}>{item.label}</Text>
               <Input className='open-input' style={{width: !!item.label ?'80%':'100%' }}></Input>
           </View>
