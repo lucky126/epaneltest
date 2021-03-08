@@ -67,7 +67,18 @@ class Home extends Component {
         page: 1
       },
     });
-
+    //获得问卷类型
+    this.props.dispatch({
+      type: 'home/getQuestionaireTypes',
+      payload: {},
+      token: this.props.token
+    })
+    //验证用户是否有项目权限
+    this.props.dispatch({
+      type: 'home/verifyUserExistProjects',
+      payload: {},
+      token: this.props.token
+    })
     this.getData()
   };
 
@@ -96,9 +107,7 @@ class Home extends Component {
       sortOrder,
       qtnName
     } = this.state
-
     const { page } = this.props
-
     let params = {
       page,
       pageSize,
@@ -114,25 +123,10 @@ class Home extends Component {
       createTimeEnd:
         createTimeEnd == '' ? createTimeEnd : createTimeEnd + ' 23:59:59'
     }
-
-    //获得问卷类型
-    this.props.dispatch({
-      type: 'home/getQuestionaireTypes',
-      payload: {},
-      token: this.props.token
-    })
-
     //获得问卷列表
     this.props.dispatch({
       type: 'home/getQuestionaires',
       payload: params,
-      token: this.props.token
-    })
-
-    //验证用户是否有项目权限
-    this.props.dispatch({
-      type: 'home/verifyUserExistProjects',
-      payload: {},
       token: this.props.token
     })
   }
@@ -161,13 +155,18 @@ class Home extends Component {
 
   // 小程序上拉加载
   onReachBottom() {
-    this.props.dispatch({
-      type: 'home/save',
-      payload: {
-        page: this.props.page + 1,
-      },
-    });
-    this.getData()
+    const { qtnListTotal, qtnList } = this.props
+    if (qtnListTotal > qtnList.length) {
+      this.props.dispatch({
+        type: 'home/save',
+        payload: {
+          page: this.props.page + 1,
+        },
+      });
+      this.getData()
+    } else {
+      Taro.showToast({title: '暂无更多数据', duration: 2000})
+    }
   }
 
   onChangeSearch = (value) => {

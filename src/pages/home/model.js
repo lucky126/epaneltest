@@ -4,6 +4,7 @@ import * as homeApi from './service';
 export default {
   namespace: 'home',
   state: {
+    qtnListTotal: 0,
     qtnList: [],
     page: 1,
     qtnTypes: '',
@@ -50,6 +51,7 @@ export default {
         payload: {
           qtnList:
             page > 1 ? [...qtnList, ...data.message.data.list] : data.message.data.list,
+          qtnListTotal: data.message.data.total
         }
       });
 

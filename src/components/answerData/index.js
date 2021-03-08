@@ -66,13 +66,24 @@ class AnswerData extends Component {
               // 下载
               Taro.downloadFile({
                 url: MAINHOST +'/v2/service/download/' + outputMessageData,
-                complete: (res) => {
+                success: (res) => {
                   console.log('调完了', res)
                   if (res.statusCode == 200) {
                     Taro.saveFile({
                       tempFilePath: res.tempFilePath,
                       success: (res) => {
-                        console.log('kkk', res)
+                        console.log('保存成功', res)
+                        const savedFilePath = res.savedFilePath;
+                        // 打开文件
+                        Taro.openDocument({
+                          filePath: savedFilePath,
+                          success: function (res) {
+                            console.log('打开文档成功', res)
+                          },
+                          fail: function(res) {
+                            console.log('失败了',res)
+                          }
+                        });
                       }
                     })
                   }
